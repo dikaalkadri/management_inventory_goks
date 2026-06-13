@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Gudang — Goks! Stock-In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --green-dark: #6113a7;
+        --green-mid: #5a189a;
+        --green-main: #7b2cbf;
+        --green-light: #ffffff;
+        --green-pale: #ffffff;
+        --green-bg: #f8f0ff;
+        --accent: #f9a826;
+        --red: #e63946;
+        --white: #fafff8;
+        --gray: #6b7280;
+        --border: #b7e4c7;
+        --shadow: 0 2px 12px rgba(27, 67, 50, 0.12);
+        --radius: 14px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--green-bg);
+        color: var(--green-dark);
+        min-height: 100vh;
+      }
+
+      /* ── HEADER ── */
+      header {
+        background: var(--green-dark);
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+      }
+      .logo {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.3rem;
+        color: #fafff8;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-badge {
+        background: var(--accent);
+        color: var(--green-dark);
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+      nav {
+        display: flex;
+        gap: 8px;
+      }
+      nav a {
+        color: var(--green-pale);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      nav a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
+      nav a.active {
+        background: var(--green-main);
+        color: white;
+      }
+
+      /* ── MAIN ── */
+      main {
+        padding: 28px;
+        max-width: 860px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      /* ── PAGE TITLE ── */
+      .page-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .page-title h1 {
+        font-family: "Syne", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--green-dark);
+      }
+      .page-title .subtitle {
+        font-size: 0.82rem;
+        color: var(--gray);
+        margin-top: 2px;
+      }
+
+      /* ── SECTION CARD ── */
+      .section-card {
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .section-head {
+        background: var(--green-mid);
+        color: white;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .section-head h2 {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+      .section-body {
+        padding: 20px;
+      }
+
+      /* ── STOK GRID ── */
+      .stok-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .stok-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: var(--green-bg);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      .stok-item label {
+        font-size: 0.8rem;
+        flex: 1;
+        font-weight: 500;
+        color: var(--green-dark);
+      }
+      .stok-item input {
+        width: 80px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.82rem;
+        text-align: right;
+        transition: border-color 0.2s;
+      }
+      .stok-item input:focus {
+        outline: none;
+        border-color: var(--green-main);
+      }
+
+      /* ── INFO BOX ── */
+      .info-box {
+        background: rgba(249, 168, 38, 0.1);
+        border: 1px solid rgba(249, 168, 38, 0.3);
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        color: #856404;
+        margin-bottom: 14px;
+      }
+
+      /* ── BUTTONS ── */
+      .btn {
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-primary {
+        background: var(--green-mid);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: var(--green-dark);
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* ── SISA STOK TABLE ── */
+      .sisa-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.83rem;
+      }
+      .sisa-table th {
+        background: var(--green-pale);
+        padding: 8px 12px;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--green-dark);
+      }
+      .sisa-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--green-bg);
+        vertical-align: middle;
+      }
+      .sisa-table tr:last-child td {
+        border-bottom: none;
+      }
+      .sisa-table tr:hover td {
+        background: var(--green-bg);
+      }
+      .sisa-val {
+        font-family: "DM Mono", monospace;
+        font-weight: 600;
+        color: var(--green-mid);
+      }
+      .badge-sheet {
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+      .badge-utama {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .badge-topping {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+      .badge-powder {
+        background: #fce7f3;
+        color: #9d174d;
+      }
+      .badge-lainnya {
+        background: #f3f4f6;
+        color: #374151;
+      }
+
+      /* ── TOAST ── */
+      #toast {
+        position: fixed;
+        top: 75px;
+        right: 20px;
+        background: var(--green-dark);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        max-width: 360px;
+        z-index: 9999;
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+        border-left: 4px solid var(--green-light);
+        box-shadow: var(--shadow);
+      }
+      #toast.show {
+        transform: translateX(0);
+      }
+      #toast.error {
+        border-left-color: var(--red);
+      }
+      #toast.success {
+        border-left-color: var(--green-light);
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 16px;
+        }
+        .stok-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="/static/Goks.png" alt="Goks Logo" class="logo-img" />
+      </div>
+
+      <nav>
+        <a href="/">Upload</a>
+        <a href="/stock-gudang" class="active">Stock Gudang</a>
+        <a href="/eresto">eResto Analysis</a>
+        <a href="/sinkronisasi">sinkronisasi</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ── PAGE TITLE ── -->
+      <div class="page-title">
+        <div>
+          <h1>🏭 Stock Gudang</h1>
+          <div class="subtitle">
+            Kelola stok awal bulan dan pantau sisa stok terkini dari Excel
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STOK AWAL BULAN ── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>📊 Stok Awal Bulan</h2>
+          <span
+            id="stok-filename"
+            style="
+              font-family: &quot;DM Mono&quot;, monospace;
+              font-size: 0.75rem;
+              opacity: 0.7;
+            "
+            >—</span
+          >
+        </div>
+        <div class="section-body">
+          <div class="info-box">
+            💡 Tutup file Excel sebelum menyimpan. Stok awal disimpan per file
+            Excel — ganti file akan otomatis memuat nilai yang sesuai. Setelah
+            disimpan, histori transaksi lama akan langsung dihitung ulang.
+          </div>
+          <div class="stok-grid" id="stok-grid">
+            <div style="color: var(--gray); font-size: 0.85rem; padding: 8px">
+              Memuat data item...
+            </div>
+          </div>
+          <button
+            class="btn btn-primary"
+            id="btn-simpan"
+            onclick="saveStokAwal()"
+          >
+            💾 Simpan Stok Awal
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SISA STOK TERKINI ── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>📦 Sisa Stok Terkini</h2>
+          <button
+            class="btn"
+            style="
+              background: rgba(255, 255, 255, 0.15);
+              color: white;
+              padding: 5px 14px;
+              font-size: 0.78rem;
+            "
+            onclick="loadSisaStok()"
+          >
+            🔄 Refresh
+          </button>
+        </div>
+        <div class="section-body" style="padding: 0">
+          <table class="sisa-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Sheet</th>
+                <th style="text-align: right">Stok Awal</th>
+                <th style="text-align: right">Sisa Stok</th>
+              </tr>
+            </thead>
+            <tbody id="sisa-tbody">
+              <tr>
+                <td
+                  colspan="4"
+                  style="text-align: center; padding: 20px; color: var(--gray)"
+                >
+                  Memuat...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <div id="toast"></div>
+
+    <script>
+      let inventoryItems = [];
+
+      async function init() {
+        await loadInventory();
+        await loadStokAwal();
+        await loadSisaStok();
+      }
+
+      async function loadInventory() {
+        try {
+          const r = await fetch("/api/inventory");
+          const d = await r.json();
+          inventoryItems = d.items || [];
+          renderStokGrid();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      async function loadStokAwal() {
+        try {
+          const r = await fetch("/api/config/stok-awal");
+          const d = await r.json();
+          document.getElementById("stok-filename").textContent =
+            d.filename || "—";
+          const stokMap = d.stok_awal || {};
+          inventoryItems.forEach((item) => {
+            const input = document.getElementById(`stok-${item.id}`);
+            if (input && stokMap[item.display] !== undefined) {
+              input.value = stokMap[item.display];
+            }
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      async function loadSisaStok() {
+        const tbody = document.getElementById("sisa-tbody");
+        tbody.innerHTML =
+          '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--gray)">Memuat...</td></tr>';
+        try {
+          const [sisaRes, cfgRes] = await Promise.all([
+            fetch("/api/sisa-stok"),
+            fetch("/api/config/stok-awal"),
+          ]);
+          const sisaData = await sisaRes.json();
+          const cfgData = await cfgRes.json();
+          const sisaMap = sisaData.sisa || {};
+          const stokMap = cfgData.stok_awal || {};
+
+          if (!inventoryItems.length) {
+            tbody.innerHTML =
+              '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--gray)">Belum ada item inventory.</td></tr>';
+            return;
+          }
+
+          const sheetBadge = (s) => {
+            const map = {
+              "Bahan Utama": "badge-utama",
+              Topping: "badge-topping",
+              Powder: "badge-powder",
+              "Bahan Lainnya": "badge-lainnya",
+            };
+            return `<span class="badge-sheet ${map[s] || "badge-lainnya"}">${s || "—"}</span>`;
+          };
+
+          tbody.innerHTML = inventoryItems
+            .map((item) => {
+              const sisa = sisaMap[item.id];
+              const stokAwal = stokMap[item.display] ?? "—";
+              const sisaStr = sisa !== undefined ? sisa : "—";
+              return `
+              <tr>
+                <td>${item.display}</td>
+                <td>${sheetBadge(item.sheet)}</td>
+                <td style="text-align:right"><span class="sisa-val">${stokAwal}</span></td>
+                <td style="text-align:right"><span class="sisa-val">${sisaStr}</span></td>
+              </tr>`;
+            })
+            .join("");
+        } catch (e) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--red)">Gagal memuat: ${e.message}</td></tr>`;
+        }
+      }
+
+      function renderStokGrid() {
+        const grid = document.getElementById("stok-grid");
+        if (!inventoryItems.length) {
+          grid.innerHTML =
+            '<div style="color:var(--gray);font-size:.85rem;padding:8px">Belum ada item inventory.</div>';
+          return;
+        }
+        grid.innerHTML = inventoryItems
+          .map(
+            (item) => `
+          <div class="stok-item">
+            <label>${item.display}</label>
+            <input type="number" id="stok-${item.id}" placeholder="0" step="0.001" min="0">
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      async function saveStokAwal() {
+        const btn = document.getElementById("btn-simpan");
+        btn.disabled = true;
+        btn.textContent = "⏳ Menyimpan...";
+
+        const stokMap = {};
+        inventoryItems.forEach((item) => {
+          const input = document.getElementById(`stok-${item.id}`);
+          if (input) stokMap[item.display] = parseFloat(input.value) || 0;
+        });
+
+        try {
+          const r = await fetch("/api/config/stok-awal", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ stok_awal: stokMap }),
+          });
+          const d = await r.json();
+          if (d.status === "ok") {
+            showToast(
+              "✅ Stok awal disimpan & histori Excel diperbarui!",
+              "success",
+            );
+            await loadSisaStok();
+          } else {
+            showToast("❌ " + (d.message || d.warning), "error");
+          }
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "💾 Simpan Stok Awal";
+        }
+      }
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = `show ${type}`;
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => (t.className = ""), 4000);
+      }
+
+      init();
+    </script>
+  </body>
+</html>

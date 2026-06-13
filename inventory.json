@@ -1,0 +1,1090 @@
+{
+  "items": [
+    {
+      "id": "tapioca_pearl",
+      "name": "Tapioca Pearl",
+      "display": "Tapioca Pearl",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "tapioca pearl",
+        "bubble pearl",
+        "boba pearl"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "tea_kayu_aro",
+      "name": "Tea Kayu Aro",
+      "display": "Tea Kayu Aro",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "tea kayu aro",
+        "kayu aro"
+      ],
+      "pdf_unit_qty": 500,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "chatramue_400",
+      "name": "Chatramue Tea (400gr)",
+      "display": "Chatramue Tea (400gr)",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "chatramue",
+        "chatramue tea"
+      ],
+      "pdf_unit_qty": 400,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "kopi_robusta",
+      "name": "Kopi Robusta",
+      "display": "Kopi Robusta",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "kopi robusta",
+        "robusta"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "display": "UHT",
+      "name": "UHT",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 12000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "botol",
+      "pdf_keywords": [
+        "uht",
+        "susu uht"
+      ],
+      "id": "uht"
+    },
+    {
+      "id": "fructose",
+      "name": "Fructose (5000)",
+      "display": "Fructose (5000)",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "fructose 5000",
+        "fructose 5.000",
+        "fructose"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "gula_aren_bubuk",
+      "name": "Gula Aren Bubuk",
+      "display": "Gula Aren Bubuk",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "gula aren bubuk"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "gula_aren_cair",
+      "name": "Gula Aren Cair",
+      "display": "Gula Aren Cair",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "gula aren cair"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "soft_mix_vanilla",
+      "name": "Soft Mix Vanilla",
+      "display": "Soft Mix Vanilla",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "soft mix vanilla"
+      ],
+      "pdf_unit_qty": 10000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "soft_mix_mocca",
+      "name": "Soft Mix Mocca",
+      "display": "Soft Mix Mocca",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "soft mix Mocca"
+      ],
+      "pdf_unit_qty": 10000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "soft_mix_chocolate",
+      "name": "Soft Mix Chocolate",
+      "display": "Soft Mix Chocolate",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "soft mix chocolate"
+      ],
+      "pdf_unit_qty": 10000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "display": "Cone",
+      "name": "Cone",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "cone"
+      ],
+      "id": "cone"
+    },
+    {
+      "id": "skm_2000",
+      "name": "SKM (Susu Kental Manis) 2000gr",
+      "display": "SKM (Susu Kental Manis) 2000gr",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "skm",
+        "susu kental manis"
+      ],
+      "pdf_unit_qty": 2000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "skm_2440",
+      "name": "SKM (Susu Kental Manis) 2440gr",
+      "display": "SKM (Susu Kental Manis) 2440gr",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "skm 2440",
+        "susu kental manis 2440"
+      ],
+      "pdf_unit_qty": 2440,
+      "pdf_unit_type": "gr",
+      "excel_factor": 5,
+      "default_unit": "gr"
+    },
+    {
+      "id": "donat",
+      "name": "Donat",
+      "display": "Donat",
+      "sheet": "Bahan Utama",
+      "pdf_keywords": [
+        "donat",
+        "donut"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "syrup_hazelnut",
+      "name": "Syrup Hazelnut",
+      "display": "Syrup Hazelnut",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "syrup hazelnut",
+        "hazelnut syrup"
+      ],
+      "pdf_unit_qty": 750,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "oreo_crumbs",
+      "name": "Oreo Crumbs",
+      "display": "Oreo Crumbs",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "oreo crumbs",
+        "oreo"
+      ],
+      "pdf_unit_qty": 12000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "lotus_crumbs",
+      "name": "Lotus Crumbs",
+      "display": "Lotus Crumbs",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "lotus crumbs",
+        "lotus"
+      ],
+      "pdf_unit_qty": 750,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "strawberry_jam",
+      "name": "Strawberry Jam",
+      "display": "Strawberry Jam",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "strawberry jam"
+      ],
+      "pdf_unit_qty": 2300,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "mango_jam",
+      "name": "Mango Jam",
+      "display": "Mango Jam",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "mango jam"
+      ],
+      "pdf_unit_qty": 2300,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "chocolate_topping",
+      "name": "Chocolate Topping",
+      "display": "Chocolate Topping",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "chocolate topping"
+      ],
+      "pdf_unit_qty": 5000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "kacang_morin",
+      "name": "Kacang Morin",
+      "display": "Kacang Morin",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "kacang morin"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "kiwi_jam",
+      "name": "Kiwi Jam",
+      "display": "Kiwi Jam",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "kiwi jam"
+      ],
+      "pdf_unit_qty": 2300,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "lychee_jam",
+      "name": "Lychee Jam",
+      "display": "Lychee Jam",
+      "sheet": "Topping",
+      "pdf_keywords": [
+        "lychee jam"
+      ],
+      "pdf_unit_qty": 2300,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "taro",
+      "name": "Taro",
+      "display": "Taro",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "taro"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "ovaltine",
+      "name": "Ovaltine",
+      "display": "Ovaltine",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "ovaltine"
+      ],
+      "pdf_unit_qty": 900,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "milo",
+      "name": "Milo",
+      "display": "Milo",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "milo"
+      ],
+      "pdf_unit_qty": 960,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "royal_chocolate",
+      "name": "Royal Chocolate",
+      "display": "Royal Chocolate",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "royal chocolate"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "vanilla",
+      "name": "Vanilla",
+      "display": "Vanilla",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "vanilla"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "lemon_tea",
+      "name": "Lemon Tea",
+      "display": "Lemon Tea",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "lemon tea"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "lychee_tea",
+      "name": "Lychee Tea",
+      "display": "Lychee Tea",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "lychee tea"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "mango",
+      "name": "Mango",
+      "display": "Mango",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "mango"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "lychee",
+      "name": "Lychee",
+      "display": "Lychee",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "lychee"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "greentea",
+      "name": "Greentea",
+      "display": "Greentea",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "greentea",
+        "green tea"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "es_permen_karet",
+      "name": "Es Permen Karet",
+      "display": "Es Permen Karet",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "es permen karet"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "ndc_creamer",
+      "name": "NDC Creamer",
+      "display": "NDC Creamer",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "ndc creamer"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "bubble_gum",
+      "name": "Buble Gum",
+      "display": "Buble Gum",
+      "sheet": "Powder",
+      "pdf_keywords": [
+        "bubble gum",
+        "buble gum"
+      ],
+      "pdf_unit_qty": 1000,
+      "pdf_unit_type": "gr",
+      "excel_factor": 1,
+      "default_unit": "gr"
+    },
+    {
+      "id": "cup_12_oz",
+      "name": "Cup 12 Oz",
+      "display": "Cup 12 Oz",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cup 12 oz"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "cup_14_oz",
+      "name": "Cup 14 Oz",
+      "display": "Cup 14 Oz",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cup 14 oz"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "cup_22_oz",
+      "name": "Cup 22 Oz",
+      "display": "Cup 22 Oz",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cup 22 oz"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "cup_14_gowes",
+      "name": "Cup 14 GOWES",
+      "display": "Cup 14 GOWES",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cup 14 gowes"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "cup_04_oz",
+      "name": "Cup 04 Oz",
+      "display": "Cup 04 Oz",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cup 04 oz"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "plastik_cup_1_panjang",
+      "name": "Plastik Cup 1 Panjang",
+      "display": "Plastik Cup 1 Panjang",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "plastik cup 1 panjang"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pack",
+      "excel_factor": 1,
+      "default_unit": "pack"
+    },
+    {
+      "id": "plastik_cup_2_panjang",
+      "name": "Plastik Cup 2 Panjang",
+      "display": "Plastik Cup 2 Panjang",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "plastik cup 2 panjang"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pack",
+      "excel_factor": 1,
+      "default_unit": "pack"
+    },
+    {
+      "id": "plastik_cup_2_takeaway",
+      "name": "Plastik Cup 2 Takeaway",
+      "display": "Plastik Cup 2 Takeaway",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "plastik cup 2 takeaway"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pack",
+      "excel_factor": 1,
+      "default_unit": "pack"
+    },
+    {
+      "id": "plastik_cup_4_takeaway",
+      "name": "Plastik Cup 4 Takeaway",
+      "display": "Plastik Cup 4 Takeaway",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "plastik cup 4 takeaway"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pack",
+      "excel_factor": 1,
+      "default_unit": "pack"
+    },
+    {
+      "display": "Plastik Sampah Biru",
+      "name": "Plastik Sampah Biru",
+      "sheet": "Bahan Lainnya",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "plastik sampah besar",
+        "plastik sampah biru"
+      ],
+      "id": "plastik_sampah_besar"
+    },
+    {
+      "display": "Thermal",
+      "name": "Thermal",
+      "sheet": "Bahan Lainnya",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "thermal"
+      ],
+      "id": "thermal"
+    },
+    {
+      "id": "baterai_a3",
+      "name": "Baterai Kecil AAA",
+      "display": "Baterai Kecil AAA",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "baterai a3",
+        "Baterai Kecil AAA",
+        "Baterai AAA"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "baterai_aa",
+      "name": "Baterai Besar AA",
+      "display": "Baterai Besar AA",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "baterai aa",
+        "Baterai Besar ABC",
+        "Baterai AA"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "ultra_pencuci_piring_825",
+      "name": "Cairan Cuci Piring 825ml",
+      "display": "Cairan Cuci Piring 825ml",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "ultra pencuci piring 825ml"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "ultra_pencuci_piring_600",
+      "name": "Cairan Cuci Piring 600ml",
+      "display": "Cairan Cuci Piring 600ml",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "ultra pencuci piring 600ml",
+        "Cairan Cuci Piring 600ml"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "ml"
+    },
+    {
+      "id": "hand_gloves",
+      "name": "Hand Gloves",
+      "display": "Hand Gloves",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "hand gloves",
+        "sarung tangan"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "display": "Tissue Jolly",
+      "name": "Tissue Jolly",
+      "sheet": "Bahan Lainnya",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "tissue jolly"
+      ],
+      "id": "tissue_jolly"
+    },
+    {
+      "id": "wipol",
+      "name": "Wipol",
+      "display": "Wipol",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "wipol"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "botol",
+      "excel_factor": 1,
+      "default_unit": "botol"
+    },
+    {
+      "id": "sedotan_boba",
+      "name": "Sedotan Boba",
+      "display": "Sedotan Boba",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "sedotan boba"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "sedotan_kecil",
+      "name": "Sedotan Kecil",
+      "display": "Sedotan Kecil",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "sedotan kecil"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "seal_cup",
+      "name": "Seal Cup",
+      "display": "Seal Cup",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "seal cup"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "sendok_ice_cream",
+      "name": "Sendok Ice Cream",
+      "display": "Sendok Ice Cream",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "sendok ice cream"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "sendok_silky_pudding",
+      "name": "Sendok Silky Pudding",
+      "display": "Sendok Silky Pudding",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "sendok silky pudding"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "lem_tikus",
+      "name": "Lem Tikus",
+      "display": "Lem Tikus",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "lem tikus"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "detergen",
+      "name": "Detergen",
+      "display": "Detergen",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "detergen"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "hit_baygon",
+      "name": "HIT/Baygon",
+      "display": "HIT/Baygon",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "hit",
+        "baygon",
+        "hit baygon"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "botol",
+      "excel_factor": 1,
+      "default_unit": "botol"
+    },
+    {
+      "id": "kapur_ajaib",
+      "name": "Kapur Ajaib",
+      "display": "Kapur Ajaib",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "kapur ajaib"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "pisau_donut",
+      "name": "Pisau Donut",
+      "display": "Pisau Donut",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "pisau donut"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "garpu_donut",
+      "name": "Garpu Donut",
+      "display": "Garpu Donut",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "garpu donut"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "tray_donut",
+      "name": "Tray Donut",
+      "display": "Tray Donut",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "tray donut"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "cairan_pembersih_lantai",
+      "name": "Cairan Pembersih Lantai",
+      "display": "Cairan Pembersih Lantai",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cairan pembersih lantai",
+        "Cairan Pembersih Lantai 4L"
+      ],
+      "pdf_unit_qty": 4000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "botol"
+    },
+    {
+      "id": "cairan_pembersih_kaca",
+      "name": "Cairan Pembersih Kaca",
+      "display": "Cairan Pembersih Kaca",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cairan pembersih kaca",
+        "Cairan Pembersih Kaca 4L"
+      ],
+      "pdf_unit_qty": 4000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "botol"
+    },
+    {
+      "id": "cup_twist",
+      "name": "CUP TWIST",
+      "display": "CUP TWIST",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "cup twist"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "id": "tutup_twist",
+      "name": "TUTUP TWIST",
+      "display": "TUTUP TWIST",
+      "sheet": "Bahan Lainnya",
+      "pdf_keywords": [
+        "tutup twist"
+      ],
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs"
+    },
+    {
+      "display": "Teh Poci Vanilla",
+      "name": "Teh Poci Vanilla",
+      "sheet": "Bahan Lainnya",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "teh poci vanilla"
+      ],
+      "id": "teh_poci_vanilla"
+    },
+    {
+      "display": "Teh Poci Jasmin",
+      "name": "Teh Poci Jasmin",
+      "sheet": "Bahan Lainnya",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "teh poci jasmin"
+      ],
+      "id": "teh_poci_jasmin"
+    },
+    {
+      "name": "Soft Mix Greentea",
+      "display": "Soft Mix Greentea",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 10000,
+      "pdf_unit_type": "ml",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "Soft Mix Greentea"
+      ],
+      "id": "soft_mix_greentea"
+    },
+    {
+      "name": "Fructose (2000)",
+      "display": "Fructose (2000)",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "fructose 2000",
+        "fructose 2.000"
+      ],
+      "id": "fructose_1"
+    },
+    {
+      "name": "Fructose (1000)",
+      "display": "Fructose (1000)",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "fructose 1000",
+        "fructose 1.000"
+      ],
+      "id": "fructose_2"
+    },
+    {
+      "name": "Fructose (10000)",
+      "display": "Fructose (10000)",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "fructose 10000",
+        "fructose 10.000"
+      ],
+      "id": "fructose_3"
+    },
+    {
+      "name": "Fructose (15000)",
+      "display": "Fructose (15000)",
+      "sheet": "Bahan Utama",
+      "pdf_unit_qty": 1,
+      "pdf_unit_type": "pcs",
+      "excel_factor": 1,
+      "default_unit": "pcs",
+      "pdf_keywords": [
+        "fructose 15000",
+        "fructose 15.000"
+      ],
+      "id": "fructose_4"
+    }
+  ],
+  "outlets": [
+    "000. Gudang",
+    "001. TC",
+    "002. Ranah",
+    "003. Kantor",
+    "01. Taplau",
+    "02. Air Tawar",
+    "03. Gunung Pangilun",
+    "04. Belibis",
+    "05. Siteba",
+    "06. Pasar Baru",
+    "07. Tunggul Hitam",
+    "08. Anduring",
+    "09. Jati",
+    "10. Air Pacah",
+    "11. Lubuk Begalung",
+    "12. Balai Baru",
+    "13. Cendrawasih",
+    "14. Seberang Padang",
+    "15. Bandar Buat",
+    "16. Air Dingin",
+    "17. Tabing",
+    "18. Belimbing",
+    "19. Rawang",
+    "20. Lubuk Buaya",
+    "21. Parak Laweh",
+    "22. Lubuk Lintah",
+    "23. Kasang",
+    "24. Bungus",
+    "25. Lubuk Alung",
+    "26. Kurai Taji",
+    "27. Lohong",
+    "28. Manggung",
+    "29. Pauh Kambar",
+    "30. Sicincin",
+    "31. Tanah Garam",
+    "32. Selayo",
+    "33. Gunung Talang",
+    "34. Sungai Sarik",
+    "35. Simpang Rumbio"
+  ]
+}

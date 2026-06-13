@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings — Goks! Stock-In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --green-dark: #6113a7;
+        --green-mid: #5a189a;
+        --green-main: #7b2cbf;
+        --green-light: #ffffff;
+        --green-pale: #ffffff;
+        --green-bg: #f8f0ff;
+        --accent: #f9a826;
+        --red: #e63946;
+        --white: #fafff8;
+        --gray: #6b7280;
+        --border: #b7e4c7;
+        --shadow: 0 2px 12px rgba(27, 67, 50, 0.12);
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--green-bg);
+        color: var(--green-dark);
+        min-height: 100vh;
+      }
+
+      header {
+        background: var(--green-dark);
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+      }
+
+      .logo {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.3rem;
+        color: #fafff8;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-badge {
+        background: var(--accent);
+        color: var(--green-dark);
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+
+      nav {
+        display: flex;
+        gap: 8px;
+      }
+
+      nav a {
+        color: var(--green-pale);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+
+      nav a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
+
+      nav a.active {
+        background: var(--green-main);
+        color: white;
+      }
+
+      main {
+        padding: 28px;
+        max-width: 860px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .section-card {
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+
+      .section-head {
+        background: var(--green-mid);
+        color: white;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .section-head h2 {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+
+      /* ── INVENTORY TABLE ── */
+      .inv-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        margin-bottom: 16px;
+      }
+
+      .inv-table th {
+        background: var(--green-pale);
+        padding: 8px 10px;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--green-dark);
+      }
+
+      .inv-table th:first-child {
+        border-radius: 8px 0 0 8px;
+      }
+
+      .inv-table th:last-child {
+        border-radius: 0 8px 8px 0;
+      }
+
+      .inv-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--green-bg);
+        vertical-align: middle;
+      }
+
+      .inv-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .inv-table tr:hover td {
+        background: var(--green-bg);
+      }
+
+      .inv-table input,
+      .inv-table select {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        font-family: "DM Sans", sans-serif;
+        background: white;
+        color: var(--green-dark);
+        width: 100%;
+        transition: border-color 0.2s;
+      }
+
+      .inv-table input:focus,
+      .inv-table select:focus {
+        outline: none;
+        border-color: var(--green-main);
+      }
+
+      .inv-table input[type="number"] {
+        font-family: "DM Mono", monospace;
+        text-align: right;
+      }
+
+      /* ── BUTTONS ── */
+      .btn {
+        padding: 7px 16px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .btn-primary {
+        background: var(--green-mid);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--green-dark);
+      }
+
+      .btn-accent {
+        background: var(--accent);
+        color: var(--green-dark);
+      }
+
+      .btn-accent:hover {
+        background: #e09400;
+      }
+
+      .btn-danger {
+        background: var(--red);
+        color: white;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+      }
+
+      .btn-ghost {
+        background: none;
+        border: 1.5px solid var(--border);
+        color: var(--green-mid);
+      }
+
+      .btn-ghost:hover {
+        background: var(--green-pale);
+      }
+
+      /* ── INFO BOX ── */
+      .info-box {
+        background: rgba(249, 168, 38, 0.1);
+        border: 1px solid rgba(249, 168, 38, 0.3);
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        color: #856404;
+        margin-bottom: 14px;
+      }
+
+      /* ── ADD ITEM FORM ── */
+      .add-form {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 8px;
+        align-items: end;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px dashed var(--border);
+      }
+
+      .add-form .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .add-form label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--gray);
+        text-transform: uppercase;
+      }
+
+      .add-form input,
+      .add-form select {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        font-family: "DM Sans", sans-serif;
+        transition: border-color 0.2s;
+      }
+
+      .add-form input:focus,
+      .add-form select:focus {
+        outline: none;
+        border-color: var(--green-main);
+      }
+
+      /* ── TOAST ── */
+      #toast {
+        position: fixed;
+        top: 75px;
+        right: 20px;
+        background: var(--green-dark);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        max-width: 340px;
+        z-index: 9999;
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+        border-left: 4px solid var(--green-light);
+        box-shadow: var(--shadow);
+      }
+
+      #toast.show {
+        transform: translateX(0);
+      }
+
+      #toast.error {
+        border-left-color: var(--red);
+      }
+
+      #toast.success {
+        border-left-color: var(--green-light);
+      }
+
+      /* ── KEYWORDS ── */
+      .kw-input {
+        font-family: "DM Mono", monospace !important;
+        font-size: 0.75rem !important;
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 16px;
+        }
+
+        .add-form {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <img src="/static/Goks.png" alt="Goks Logo" class="logo-img" />
+      </div>
+      <nav>
+        <a href="/">Stock Gudang</a>
+        <a href="/settings" class="active">Konfigurasi SO</a>
+        <a href="/eresto">eResto Analysis</a>
+        <a href="/sinkronisasi">sinkronisasi</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ── INVENTORY ITEMS ── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>🗃️ Manajemen Inventory</h2>
+          <button class="btn btn-accent" onclick="scrollToAddForm()">
+            + Tambah Item
+          </button>
+        </div>
+        <div class="section-body">
+          <table class="inv-table" id="inv-table">
+            <thead>
+              <tr>
+                <th>Nama Display</th>
+                <th>Sheet</th>
+                <th>PDF Unit Qty</th>
+                <th>PDF Unit</th>
+                <th>Faktor Excel</th>
+                <th>Unit Default</th>
+                <th>PDF Keywords</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="inv-tbody">
+              <tr>
+                <td
+                  colspan="8"
+                  style="text-align: center; padding: 20px; color: var(--gray)"
+                >
+                  Memuat...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Add Item Form -->
+          <div id="add-form" class="add-form">
+            <div class="form-group">
+              <label>Nama Display</label>
+              <input
+                type="text"
+                id="new-name"
+                placeholder="Chatramue Tea (400gr)"
+              />
+            </div>
+            <div class="form-group">
+              <label>Sheet</label>
+              <select id="new-sheet">
+                <option>Bahan Utama</option>
+                <option>Topping</option>
+                <option>Powder</option>
+                <option>Bahan Lainnya</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>PDF Unit Qty</label>
+              <input
+                type="number"
+                id="new-pdf-qty"
+                placeholder="400"
+                step="0.001"
+              />
+            </div>
+            <div class="form-group">
+              <label>PDF Unit</label>
+              <input type="text" id="new-pdf-unit" placeholder="gr" />
+            </div>
+            <div class="form-group">
+              <label>Faktor</label>
+              <input
+                type="number"
+                id="new-factor"
+                placeholder="1"
+                step="0.001"
+              />
+            </div>
+            <div class="form-group">
+              <label>Unit Default</label>
+              <input type="text" id="new-unit" placeholder="gr" />
+            </div>
+            <div class="form-group" style="grid-column: 1/-1">
+              <label>PDF Keywords (pisah koma)</label>
+              <input
+                type="text"
+                id="new-keywords"
+                placeholder="chatramue, chatramue tea, chatramuea"
+                class="kw-input"
+              />
+            </div>
+            <div class="form-group">
+              <label>Auto-pair ID (opsional)</label>
+              <input type="text" id="new-pair" placeholder="tutup_twist" />
+            </div>
+            <div class="form-group" style="justify-content: flex-end">
+              <label>&nbsp;</label>
+              <button class="btn btn-primary" onclick="addItem()">
+                ➕ Tambah Item
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── OUTLETS ── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>🏪 Daftar Outlet</h2>
+          <button
+            class="btn btn-ghost"
+            onclick="saveOutlets()"
+            style="color: white; border-color: rgba(255, 255, 255, 0.3)"
+          >
+            💾 Simpan
+          </button>
+        </div>
+        <div class="section-body">
+          <p
+            style="font-size: 0.82rem; color: var(--gray); margin-bottom: 10px"
+          >
+            Satu outlet per baris. Format: "01. Nama Outlet"
+          </p>
+          <textarea
+            id="outlets-textarea"
+            style="
+              width: 100%;
+              height: 260px;
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              padding: 12px;
+              font-family: &quot;DM Mono&quot;, monospace;
+              font-size: 0.78rem;
+              resize: vertical;
+              line-height: 1.6;
+              color: var(--green-dark);
+            "
+            placeholder="01. Taplau&#10;02. Air Tawar&#10;..."
+          ></textarea>
+        </div>
+      </div>
+    </main>
+
+    <div id="toast"></div>
+
+    <script>
+      let inventoryItems = [];
+      let outlets = [];
+
+      async function init() {
+        await loadInventory();
+      }
+
+      async function loadInventory() {
+        try {
+          const r = await fetch("/api/inventory");
+          const d = await r.json();
+          inventoryItems = d.items || [];
+          outlets = d.outlets || [];
+
+          // Sort items by sheet in the order: Bahan Utama -> Topping -> Powder -> Bahan Lainnya
+          const sheetOrder = [
+            "Bahan Utama",
+            "Topping",
+            "Powder",
+            "Bahan Lainnya",
+          ];
+          inventoryItems.sort((a, b) => {
+            const indexA = sheetOrder.indexOf(a.sheet || "Bahan Lainnya");
+            const indexB = sheetOrder.indexOf(b.sheet || "Bahan Lainnya");
+            return indexA - indexB;
+          });
+
+          renderInventoryTable();
+          document.getElementById("outlets-textarea").value =
+            outlets.join("\n");
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // ─── INVENTORY TABLE ──────────────────────────────────────────────────────
+      function renderInventoryTable() {
+        const tbody = document.getElementById("inv-tbody");
+        if (!inventoryItems.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--gray)">Belum ada item. Tambah di bawah.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = inventoryItems
+          .map(
+            (item) => `
+    <tr id="row-${item.id}">
+      <td><input type="text" value="${esc(item.display)}" onchange="markDirty('${item.id}')"></td>
+      <td>
+        <select onchange="markDirty('${item.id}')">
+          <option ${item.sheet === "Bahan Utama" ? "selected" : ""}>Bahan Utama</option>
+          <option ${item.sheet === "Topping" ? "selected" : ""}>Topping</option>
+          <option ${item.sheet === "Powder" ? "selected" : ""}>Powder</option>
+          <option ${item.sheet === "Bahan Lainnya" ? "selected" : ""}>Bahan Lainnya</option>
+        </select>
+      </td>
+      <td><input type="number" value="${item.pdf_unit_qty || 1}" step="0.001" onchange="markDirty('${item.id}')"></td>
+      <td><input type="text" value="${esc(item.pdf_unit_type || "")}" onchange="markDirty('${item.id}')"></td>
+      <td><input type="number" value="${item.excel_factor || 1}" step="0.001" onchange="markDirty('${item.id}')"></td>
+      <td><input type="text" value="${esc(item.default_unit || "")}" onchange="markDirty('${item.id}')"></td>
+      <td><input type="text" class="kw-input" value="${esc((item.pdf_keywords || []).join(", "))}" onchange="markDirty('${item.id}')"></td>
+      <td style="display:flex;gap:4px;padding:8px 6px">
+        <button class="btn btn-primary" style="padding:4px 10px;font-size:.75rem" onclick="saveItem('${item.id}')">💾</button>
+        <button class="btn btn-danger" onclick="deleteItem('${item.id}')">🗑</button>
+      </td>
+    </tr>
+  `,
+          )
+          .join("");
+      }
+
+      function markDirty(id) {
+        const row = document.getElementById(`row-${id}`);
+        if (row) row.style.background = "rgba(249,168,38,.07)";
+      }
+
+      function getRowData(id) {
+        const row = document.getElementById(`row-${id}`);
+        if (!row) return null;
+        const inputs = row.querySelectorAll("input, select");
+        return {
+          display: inputs[0].value.trim(),
+          name: inputs[0].value.trim(),
+          sheet: inputs[1].value,
+          pdf_unit_qty: parseFloat(inputs[2].value) || 1,
+          pdf_unit_type: inputs[3].value.trim(),
+          excel_factor: parseFloat(inputs[4].value) || 1,
+          default_unit: inputs[5].value.trim(),
+          pdf_keywords: inputs[6].value
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+          auto_generate_pair: inputs[7]?.value.trim() || undefined,
+        };
+      }
+
+      async function saveItem(id) {
+        const data = getRowData(id);
+        if (!data) return;
+        try {
+          const r = await fetch(`/api/inventory/item/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+          const d = await r.json();
+          if (d.status === "ok") {
+            showToast("✅ Item disimpan", "success");
+            const row = document.getElementById(`row-${id}`);
+            if (row) row.style.background = "";
+            await loadInventory();
+          }
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+      }
+
+      async function deleteItem(id) {
+        if (!confirm("Hapus item ini?")) return;
+        try {
+          await fetch(`/api/inventory/item/${id}`, { method: "DELETE" });
+          showToast("🗑 Item dihapus", "success");
+          await loadInventory();
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+      }
+
+      async function addItem() {
+        const name = document.getElementById("new-name").value.trim();
+        if (!name) {
+          showToast("Isi nama item dulu", "error");
+          return;
+        }
+
+        const keywords = document
+          .getElementById("new-keywords")
+          .value.split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        const newItem = {
+          name,
+          display: name,
+          sheet: document.getElementById("new-sheet").value,
+          pdf_unit_qty:
+            parseFloat(document.getElementById("new-pdf-qty").value) || 1,
+          pdf_unit_type:
+            document.getElementById("new-pdf-unit").value.trim() || "pcs",
+          excel_factor:
+            parseFloat(document.getElementById("new-factor").value) || 1,
+          default_unit:
+            document.getElementById("new-unit").value.trim() || "pcs",
+          pdf_keywords: keywords.length ? keywords : [name.toLowerCase()],
+          auto_generate_pair:
+            document.getElementById("new-pair").value.trim() || undefined,
+        };
+
+        try {
+          const r = await fetch("/api/inventory/item", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newItem),
+          });
+          const d = await r.json();
+          if (d.status === "ok") {
+            showToast("✅ Item ditambahkan!", "success");
+            // Reset form
+            [
+              "new-name",
+              "new-pdf-qty",
+              "new-pdf-unit",
+              "new-factor",
+              "new-unit",
+              "new-keywords",
+              "new-pair",
+            ].forEach((id) => {
+              document.getElementById(id).value = "";
+            });
+            await loadInventory();
+          }
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+      }
+
+      // ─── OUTLETS ──────────────────────────────────────────────────────────────
+      async function saveOutlets() {
+        const raw = document.getElementById("outlets-textarea").value;
+        const list = raw
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        try {
+          const r = await fetch("/api/inventory/outlets", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ outlets: list }),
+          });
+          const d = await r.json();
+          showToast(
+            d.status === "ok" ? "✅ Outlet disimpan!" : "Error",
+            d.status === "ok" ? "success" : "error",
+          );
+        } catch (e) {
+          showToast("Error: " + e.message, "error");
+        }
+      }
+
+      // ─── HELPERS ──────────────────────────────────────────────────────────────
+      function esc(s) {
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;");
+      }
+
+      function scrollToAddForm() {
+        document
+          .getElementById("add-form")
+          .scrollIntoView({ behavior: "smooth" });
+        document.getElementById("new-name").focus();
+      }
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = `show ${type}`;
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => (t.className = ""), 4000);
+      }
+
+      init();
+    </script>
+  </body>
+</html>

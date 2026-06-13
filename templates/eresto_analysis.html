@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goks! eResto Sales Analysis</title>
+    <!-- Modern Typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Base Styles from original app & Custom Premium styles -->
+    <link rel="stylesheet" href="/static/css/eresto.css" />
+  </head>
+
+  <body>
+    <!-- Background Glow Blobs -->
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
+
+    <div class="app-container">
+      <!-- Sidebar Navigation -->
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <i class="fa-solid fa-chart-line-up brand-icon"></i>
+          <div class="brand-info">
+            <span class="brand-name">Goks!</span>
+            <span class="brand-tag">F&B Automation</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-item">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+            <span>Stock-In Gudang</span>
+          </a>
+          <a href="/settings" class="nav-item">
+            <i class="fa-solid fa-gears"></i>
+            <span>Konfigurasi SO</span>
+          </a>
+          <a href="/eresto" class="nav-item active">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>eResto Analysis</span>
+          </a>
+          <a href="/sinkronisasi" class="nav-item">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Sinkronisasi Penjualan</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <i class="fa-solid fa-circle-user profile-icon"></i>
+            <div>
+              <div class="profile-name">Outlet Manager</div>
+              <div class="profile-role">Administrator</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="app-main">
+        <!-- Header bar -->
+        <header class="main-header">
+          <div class="header-title">
+            <h1>eResto Excel Automation V1</h1>
+            <p class="header-subtitle">
+              Unggah order report eResto untuk data cleaning & daily sales
+              matrix summary otomatis
+            </p>
+          </div>
+          <div class="header-status">
+            <span class="status-indicator online"></span>
+            <span class="status-text">System Active</span>
+          </div>
+        </header>
+
+        <div class="content-grid">
+          <!-- Left Side: Upload & Processing Form -->
+          <div class="grid-col-8">
+            <!-- Step 1: Upload Box -->
+            <div class="card glass-card upload-card" id="uploadCard">
+              <div class="card-header">
+                <div class="card-header-icon bg-emerald-glow">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h3>1. Unggah Report eResto</h3>
+              </div>
+              <div class="card-body">
+                <div class="drag-drop-zone" id="dropZone">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept=".xlsx, .xls"
+                    style="display: none"
+                  />
+                  <i
+                    class="fa-solid fa-file-excel drop-icon text-emerald-gradient"
+                  ></i>
+                  <h4>Seret & Lepaskan file Excel order report eResto Anda</h4>
+                  <p class="drag-drop-sub">
+                    Atau klik untuk telusuri dari komputer
+                  </p>
+                  <span class="file-spec"
+                    >Mendukung format .xlsx, .xls (Maks. 50MB)</span
+                  >
+                </div>
+
+                <!-- File Active State -->
+                <div
+                  class="active-file-box"
+                  id="activeFileBox"
+                  style="display: none"
+                >
+                  <div class="file-icon-wrapper">
+                    <i class="fa-regular fa-file-excel"></i>
+                  </div>
+                  <div class="file-details">
+                    <div class="file-name" id="uploadedFileName">
+                      report_eresto.xlsx
+                    </div>
+                    <div class="file-size" id="uploadedFileSize">0 KB</div>
+                  </div>
+                  <button
+                    class="btn btn-icon btn-danger"
+                    id="removeFileBtn"
+                    title="Hapus file"
+                  >
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Cleaning Result Preview (Displays automatically on upload) -->
+            <div
+              class="card glass-card preview-card"
+              id="previewCard"
+              style="display: none"
+            >
+              <div class="card-header">
+                <div class="card-header-icon bg-blue-glow">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3>2. Preview Cleaning & Validasi Data</h3>
+              </div>
+              <div class="card-body">
+                <div class="stats-row">
+                  <div class="stat-box">
+                    <span class="stat-label">Baris Asli</span>
+                    <span class="stat-value text-blue" id="statRawRows">0</span>
+                  </div>
+                  <div class="stat-box">
+                    <span class="stat-label">Baris Bersih</span>
+                    <span class="stat-value text-emerald" id="statCleanRows"
+                      >0</span
+                    >
+                  </div>
+                  <div class="stat-box">
+                    <span class="stat-label">Daftar Menu Terjual</span>
+                    <span class="stat-value text-purple" id="statUniqueProds"
+                      >0</span
+                    >
+                  </div>
+                  <div class="stat-box">
+                    <span class="stat-label">Rentang Tanggal</span>
+                    <span class="stat-value text-yellow" id="statDateRange"
+                      >-</span
+                    >
+                  </div>
+                </div>
+
+                <div class="preview-table-container">
+                  <h5>
+                    Preview 15 Baris Pertama (Hanya kolom Order Date, Product,
+                    Paid Qty)
+                  </h5>
+                  <table class="preview-table">
+                    <thead>
+                      <tr>
+                        <th>Order Date (Column A)</th>
+                        <th>Product (Column P)</th>
+                        <th>Paid Qty (Column Q)</th>
+                      </tr>
+                    </thead>
+                    <tbody id="previewTableBody">
+                      <!-- Dynamic table rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Excel Matrix Settings & Processing -->
+            <div
+              class="card glass-card settings-card"
+              id="processCard"
+              style="display: none"
+            >
+              <div class="card-header">
+                <div class="card-header-icon bg-yellow-glow">
+                  <i class="fa-solid fa-gears"></i>
+                </div>
+                <h3>3. Konfigurasi Excel Output</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-12" style="width: 100%">
+                    <label for="selectOutlet">Nama Outlet</label>
+                    <select id="selectOutlet" class="form-control">
+                      <option value="">-- Pilih Outlet --</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-6">
+                    <label for="selectMonth">Bulan Analisa</label>
+                    <select id="selectMonth" class="form-control">
+                      <option value="1">Januari</option>
+                      <option value="2">Februari</option>
+                      <option value="3">Maret</option>
+                      <option value="4">April</option>
+                      <option value="5" selected>Mei</option>
+                      <option value="6">Juni</option>
+                      <option value="7">Juli</option>
+                      <option value="8">Agustus</option>
+                      <option value="9">September</option>
+                      <option value="10">Oktober</option>
+                      <option value="11">November</option>
+                      <option value="12">Desember</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="selectYear">Tahun Analisa</label>
+                    <select id="selectYear" class="form-control">
+                      <option value="2025">2025</option>
+                      <option value="2026" selected>2026</option>
+                      <option value="2027">2027</option>
+                      <option value="2028">2028</option>
+                      <option value="2029">2029</option>
+                      <option value="2030">2030</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="action-box">
+                  <button
+                    class="btn btn-primary btn-large btn-block"
+                    id="processBtn"
+                  >
+                    <i class="fa-solid fa-file-excel btn-icon"></i>
+                    <span>Proses & Generate Analisa Penjualan</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Output / Download Card -->
+            <div
+              class="card glass-card download-card animate-pulse"
+              id="downloadCard"
+              style="display: none"
+            >
+              <div class="card-body text-center">
+                <div class="success-icon-wrapper">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3>Excel Penjualan Selesai Digenerate!</h3>
+                <p class="download-desc">
+                  Formula SUMIFS otomatis, product mapping, dan hidden columns
+                  B:O sudah diaplikasikan dengan styling premium.
+                </p>
+
+                <div class="download-actions">
+                  <a
+                    href="#"
+                    class="btn btn-success btn-large"
+                    id="downloadLink"
+                  >
+                    <i class="fa-solid fa-cloud-arrow-down btn-icon"></i>
+                    <span>Download File Excel Final</span>
+                  </a>
+                  <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Proses File Baru</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side: Master Product Manager (Persistent) -->
+          <div class="grid-col-4">
+            <div class="card glass-card master-product-card">
+              <div class="card-header">
+                <div class="card-header-icon bg-purple-glow">
+                  <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h3>Master Product F&B</h3>
+              </div>
+              <div class="card-body">
+                <p class="master-desc">
+                  Daftar product tetap untuk tabel matrix daily sales (Column
+                  S). Urutan product di bawah ini akan konsisten pada file Excel
+                  final.
+                </p>
+
+                <!-- Add Product Input -->
+                <div class="add-product-form">
+                  <input
+                    type="text"
+                    id="newProdName"
+                    placeholder="Tambah product baru..."
+                    class="form-control"
+                  />
+                  <button class="btn btn-emerald" id="addProdBtn">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+
+                <!-- List of Master Products -->
+                <div class="master-list-container">
+                  <ul class="master-list" id="masterProductsList">
+                    <!-- Dynamic product list -->
+                  </ul>
+                </div>
+
+                <div class="master-actions">
+                  <button class="btn btn-secondary btn-block" id="saveOrderBtn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan Urutan & Data</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Alert System -->
+    <div class="alert-toast-container" id="toastContainer"></div>
+
+    <script src="/static/js/eresto.js"></script>
+  </body>
+</html>

@@ -1,0 +1,599 @@
+{
+  "catalog": [
+    {
+      "product": "Lemon Tea",
+      "category": "Minuman",
+      "price": 17.0
+    },
+    {
+      "product": "Lemon Tea Large",
+      "category": "Minuman",
+      "price": 123.0
+    },
+    {
+      "product": "Lychee Tea",
+      "category": "Minuman",
+      "price": 41.0
+    },
+    {
+      "product": "Lychee Tea Large",
+      "category": "Minuman",
+      "price": 120.0
+    },
+    {
+      "product": "Thai Tea",
+      "category": "Minuman",
+      "price": 20.0
+    },
+    {
+      "product": "Thai Tea Large",
+      "category": "Minuman",
+      "price": 30.0
+    },
+    {
+      "product": "Taro",
+      "category": "Minuman",
+      "price": 55.0
+    },
+    {
+      "product": "Taro Large",
+      "category": "Minuman",
+      "price": 27.0
+    },
+    {
+      "product": "Green Tea",
+      "category": "Minuman",
+      "price": 113.0
+    },
+    {
+      "product": "Green Tea Large",
+      "category": "Minuman",
+      "price": 530.0
+    },
+    {
+      "product": "Es Permen Karet",
+      "category": "Minuman",
+      "price": 504.0
+    },
+    {
+      "product": "Es Permen Karet Large",
+      "category": "Minuman",
+      "price": 120.0
+    },
+    {
+      "product": "Chocolate Hazelnut",
+      "category": "Minuman",
+      "price": 38.0
+    },
+    {
+      "product": "Chocolate Hazelnut Large",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Chocolate",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Chocolate Large",
+      "category": "Minuman",
+      "price": 30.0
+    },
+    {
+      "product": "Bubble Gum",
+      "category": "Minuman",
+      "price": 65.0
+    },
+    {
+      "product": "Bubble Gum Large",
+      "category": "Minuman",
+      "price": 65.0
+    },
+    {
+      "product": "Very Strawberry Sundae",
+      "category": "Ice Cream",
+      "price": 80.0
+    },
+    {
+      "product": "Strawberry Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Strawberry Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 75.0
+    },
+    {
+      "product": "Strawberry Cone",
+      "category": "Ice Cream",
+      "price": 70.0
+    },
+    {
+      "product": "Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 116.0
+    },
+    {
+      "product": "Mango Sundae",
+      "category": "Ice Cream",
+      "price": 70.0
+    },
+    {
+      "product": "Chocolate Sundae",
+      "category": "Ice Cream",
+      "price": 73.0
+    },
+    {
+      "product": "Lychee Sundae",
+      "category": "Ice Cream",
+      "price": 53.0
+    },
+    {
+      "product": "Kiwi Sundae",
+      "category": "Ice Cream",
+      "price": 70.0
+    },
+    {
+      "product": "Ice Cream Cone",
+      "category": "Ice Cream",
+      "price": 53.0
+    },
+    {
+      "product": "Green Tea Sundae",
+      "category": "Ice Cream",
+      "price": 70.0
+    },
+    {
+      "product": "Green Tea Cone",
+      "category": "Ice Cream",
+      "price": 94.0
+    },
+    {
+      "product": "Green Tea Chocolate Sundae",
+      "category": "Ice Cream",
+      "price": 47.0
+    },
+    {
+      "product": "Double Choco Sundae",
+      "category": "Ice Cream",
+      "price": 86.0
+    },
+    {
+      "product": "Choco Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 74.0
+    },
+    {
+      "product": "Choco Milo Sundae",
+      "category": "Ice Cream",
+      "price": 69.0
+    },
+    {
+      "product": "Choco Cone",
+      "category": "Ice Cream",
+      "price": 67.0
+    },
+    {
+      "product": "Boba Sundae",
+      "category": "Ice Cream",
+      "price": 72.0
+    },
+    {
+      "product": "Biscoff Sundae",
+      "category": "Ice Cream",
+      "price": 25.0
+    },
+    {
+      "product": "Red Velvet Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 4.0
+    },
+    {
+      "product": "Chocolate Peanut Sundae",
+      "category": "Ice Cream",
+      "price": 4.0
+    },
+    {
+      "product": "Choco Vanilla Cone",
+      "category": "Ice Cream",
+      "price": 69.0
+    },
+    {
+      "product": "Green Tea Vanilla Cone",
+      "category": "Ice Cream",
+      "price": 36.0
+    },
+    {
+      "product": "Coffee Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 48.0
+    },
+    {
+      "product": "Coffee Choco Sundae",
+      "category": "Ice Cream",
+      "price": 2.0
+    },
+    {
+      "product": "Coffee Cone",
+      "category": "Ice Cream",
+      "price": 2.0
+    },
+    {
+      "product": "Coffee Vanilla Cone",
+      "category": "Ice Cream",
+      "price": 2.0
+    },
+    {
+      "product": "Green Tea Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 176.0
+    },
+    {
+      "product": "Strawberry Vanilla Cone",
+      "category": "Ice Cream",
+      "price": 55.0
+    },
+    {
+      "product": "Vanilla Oreo",
+      "category": "Ice Cream",
+      "price": 52.0
+    },
+    {
+      "product": "Red Velvet Oreo",
+      "category": "Ice Cream",
+      "price": 60.0
+    },
+    {
+      "product": "Red Velvet",
+      "category": "Ice Cream",
+      "price": 57.0
+    },
+    {
+      "product": "Cotton Candy",
+      "category": "Ice Cream",
+      "price": 1.87
+    },
+    {
+      "product": "Biscoff Milk",
+      "category": "Ice Cream",
+      "price": 57.0
+    },
+    {
+      "product": "Mango Yakult",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Lychee Yakult",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Choco Ovaltine",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Choco Milo",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Kopi Susu Goks",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Kopi Rakyat",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Thai Tea Cheese",
+      "category": "Minuman",
+      "price": 18.0
+    },
+    {
+      "product": "Taro Cheese",
+      "category": "Minuman",
+      "price": 18.0
+    },
+    {
+      "product": "Ovaltine Cheese",
+      "category": "Minuman",
+      "price": 18.0
+    },
+    {
+      "product": "Green Tea Cheese",
+      "category": "Minuman",
+      "price": 18.0
+    },
+    {
+      "product": "Chocolate Cheese",
+      "category": "Minuman",
+      "price": 17.0
+    },
+    {
+      "product": "Brown Sugar Boba Milk Tea",
+      "category": "Minuman",
+      "price": 480.0
+    },
+    {
+      "product": "Brown Sugar Boba Milk",
+      "category": "Minuman",
+      "price": 602.0
+    },
+    {
+      "product": "Cream Cheese",
+      "category": "Topping",
+      "price": 64.0
+    },
+    {
+      "product": "Boba Topping",
+      "category": "Topping",
+      "price": 230.0
+    },
+    {
+      "product": "Oreo Crumbs",
+      "category": "Topping",
+      "price": 4.3
+    },
+    {
+      "product": "Vanilla Ice Cream",
+      "category": "Topping",
+      "price": 60.0
+    },
+    {
+      "product": "Rainbow Jelly",
+      "category": "Topping",
+      "price": 300.0
+    },
+    {
+      "product": "Coffee Jelly",
+      "category": "Topping",
+      "price": 117.0
+    },
+    {
+      "product": "Chocolate Sauce",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Biscoff Crumbs",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Peanut Topping",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Strawberry Jam",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Mango Jam",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Cup Take Away 12 OZ",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Cup Take Away 14 OZ",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Vanilla Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Chocolate Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Choco Vanilla Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Green Tea Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Green Tea Vanilla Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Strawberry Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Strawberry Vanilla Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Coffee Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Coffee Vanilla Paper Cup",
+      "category": "Bahan Baku Utama",
+      "price": 0.0
+    },
+    {
+      "product": "Free Topping Pudding Ice Cream Coffee",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Free Topping Pudding Ice Cream Mix Vanilla dan Coffee",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Free Topping Pudding Ice Cream Vanilla",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Vanilla Ice Cream",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Oreo Crumbs",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Boba Topping",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Peanut Topping",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Mango Jam",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Chocolate Sauce",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Free Topping Pudding Ice Cream Vanilla",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Strawberry Jam",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Topping: Biscoff Crumbs",
+      "category": "Topping",
+      "price": 0.0
+    },
+    {
+      "product": "Oreo Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Biscoff Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Milo Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Confetti Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Frooty Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Choco Chip Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Waffer Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Nutella Twist",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Chocolate Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Mango Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Biscoff Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Strawberry Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Choco Oreo Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Double Choco Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Gonuts Choco Biscoff Sundae",
+      "category": "Ice Cream",
+      "price": 0.0
+    },
+    {
+      "product": "Jasmin Tea",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "Vanilla Tea",
+      "category": "Minuman",
+      "price": 0.0
+    },
+    {
+      "product": "es teh goks!",
+      "category": "Minuman",
+      "price": 0.0
+    }
+  ]
+}
