@@ -27,14 +27,14 @@ SHEET_PASSWORD = "12345678"
 #   L(12),M(13)       → baris 2–95   (semua sheet)
 # O(15),P(16),Q(17)   → baris 2–120  (semua sheet, dengan border)
 # S(19),T(20),U(21)   → baris 2–19   (semua sheet)
-# W(23),X(24)         → baris 1–122  (semua sheet; 121-122 = summary)
+# W(23),X(24)         → baris 1–123  (semua sheet; 122-123 = summary)
 
 AB_ROW_START    = 1;  AB_ROW_END    = 95
 D_ROW_START     = 1;  D_ROW_END     = 95
 IJKLM_ROW_START = 2;  IJKLM_ROW_END = 95
 OPQ_ROW_START   = 1;  OPQ_ROW_END   = 120
 STU_ROW_START   = 1;  STU_ROW_END   = 19
-WX_ROW_START    = 1;  WX_ROW_END    = 122
+WX_ROW_START    = 1;  WX_ROW_END    = 123
 
 # Alias agar kompatibel dengan import di processor.py
 RELATIVE_ROW_START = IJKLM_ROW_START
@@ -45,8 +45,8 @@ J_FILL_ROW_START = IJKLM_ROW_START
 J_FILL_ROW_END   = IJKLM_ROW_END
 
 # Baris summary W/X
-WX_SUMMARY_START = 121   # W121 = "Selisih Bersih", X121 = SUM
-WX_DATA_END      = 120   # baris terakhir data produk (untuk range SUM)
+WX_SUMMARY_START = 122   # W122 = "Selisih Bersih", X122 = SUM
+WX_DATA_END      = 121   # baris terakhir data produk (untuk range SUM)
 
 
 
@@ -109,7 +109,7 @@ J_FORMULAS = {
     # Satuan : ml per cup (10ml)
     # Menu   : Boba Sundae, Brown Sugar Boba Milk Tea, Brown Sugar Boba Milk
 
-    9:  "=(Q12+Q13+Q60+Q6+Q7+Q59+Q62)*40",
+    9:  "=(Q6+Q7+Q12+Q13+Q59+Q60+Q62)*40",
     # Item   : Carnation (Susu Evaporasi)
     # Satuan : ml per cup (40ml)
     # Menu   : Es Permen Karet, Es Permen Karet L, Thai Tea Cheese,
@@ -127,7 +127,7 @@ J_FORMULAS = {
     #           Choco Hazelnut, Chocolate, Bubble Gum, Mango Yakult, Lychee Yakult,
     #           Kopi Susu Goks, Kopi Rakyat, Cup Take Away 14 OZ
 
-    12: "=Q3+Q5+Q7+Q9+Q11+Q13+Q15+Q17+Q19+Q49+Q50+Q51+Q52+Q53+Q56+Q57+Q60+Q61+Q62+Q63+Q64+Q65+Q66",
+    12: "=Q3+Q5+Q7+Q9+Q11+Q13+Q15+Q17+Q19+Q49+Q50+Q51+Q52+Q53+Q56+Q57+Q60+Q61+Q62+Q63+Q64+Q65+Q66+Q119+Q120+Q121",
     # Item   : Large Cup - 22 Oz
     # Logika : Semua menu minuman ukuran Large pakai cup 22 Oz
     # Menu   : Lemon Tea L, Lychee Tea L, Thai Tea L, Taro L, Green Tea L,
@@ -282,21 +282,21 @@ J_FORMULAS = {
     # +Q103  : Topping: Boba Topping — pelanggan yang tambah Boba secara terpisah di POS
     # [dari J_FORMULAS user: =(Q37+Q65+Q66+Q68)*40 → ditambah Q103 dari Excel]
 
-    43: "=(Q57+Q58+Q59+Q6+Q5+Q64+Q65)*30",
+    43: "=(Q57+Q59+Q6+Q7+Q64+Q65)*30+(Q58*20)",
     # Item   : Creamer Cair
     # Satuan : ml per cup (30ml)
     # Menu   : Choco Milo, Kopi Susu Goks, Kopi Rakyat, Thai Tea, Lychee Tea L,
     #           Choco Cheese, Brown Sugar Boba Milk Tea
 
-    44: "=Q119*200",
+    44: "=Q120*200",
     # Item   : biang vanilla
 
 
-    45: "=Q118*200",
+    45: "=Q119*200",
     # Item   : biang melati/jasmin
 
 
-    46: "=Q120*200",
+    46: "=Q121*200",
     # Item   : biang teh bendera
 
 
@@ -472,9 +472,9 @@ J_FORMULAS = {
     #           Choco Vanilla Cone, Green Tea Vanilla Cone, Coffee Cone,
     #           Coffee Vanilla Cone, Strawberry Vanilla Cone
 
-    67: "=Q20+Q21+Q22+Q24+Q25+Q26+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q89+Q90+Q91+Q92+Q93+Q94+Q95+Q96+Q97",
+    67: "=Q20+Q21+Q22+Q24+Q25+Q26+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78+Q89+Q90+Q91+Q92+Q93+Q94+Q95+Q96+Q97",
     # Item   : Sendok Ice Cream
-    # Logika : Semua menu Sundae + semua Paper Cup pakai sendok ice cream
+    # Logika : Semua menu Sundae + semua Paper Cup pakai sendok ice cream + cup 12 takeaway
     # Sundae : sama seperti Cup 12 Oz (tanpa Q78)
     # Paper  : Vanilla s/d Coffee Vanilla Paper Cup (Q89:Q97)
 
@@ -582,11 +582,11 @@ def apply_all(ws, lock_column_d=False):
       K(11),L(12),M(13) → kuning + lock + rumus relative, baris 2–95
       O(15),P(16),Q(17) → kuning + lock + border, baris 2–120
       S(19),T(20),U(21) → kuning + lock, baris 2–19
-      W(23),X(24)       → kuning + lock + border + rumus, baris 1–122
+      W(23),X(24)       → kuning + lock + border + rumus, baris 1–123
         - W/X baris 1        : header oranye
-        - W/X baris 2–120    : data produk (X = =W{r}*M{r})
-        - W121               : label "Selisih Bersih", X121 = =SUM(X2:X120)
-        - W122               : label "Kerugian Murni", X122 = =SUMIF(X2:X120,"<0")
+        - W/X baris 2–121    : data produk (X = =W{r}*M{r})
+        - W122               : label "Selisih Bersih", X122 = =SUM(X2:X121)
+        - W123               : label "Kerugian Murni", X123 = =SUMIF(X2:X121,"<0")
 
     Parameter:
         lock_column_d (bool): True untuk sheet 02-31, False untuk sheet 01.
@@ -665,13 +665,13 @@ def apply_all(ws, lock_column_d=False):
         _set_cell(ws, r, 24, fill=FORMULA_FILL, locked=True, border=CELL_BORDER,
                   value=f"=W{r}*M{r}")
 
-    # Baris 121: Selisih Bersih
+    # Baris 122: Selisih Bersih
     _set_cell(ws, WX_SUMMARY_START, 23, fill=FORMULA_FILL, locked=True,
               border=CELL_BORDER, value="Selisih Bersih")
     _set_cell(ws, WX_SUMMARY_START, 24, fill=FORMULA_FILL, locked=True,
               border=CELL_BORDER, value=f"=SUM(X2:X{WX_DATA_END})")
 
-    # Baris 122: Kerugian Murni
+    # Baris 123: Kerugian Murni
     _set_cell(ws, WX_SUMMARY_START + 1, 23, fill=FORMULA_FILL, locked=True,
               border=CELL_BORDER, value="Kerugian Murni")
     _set_cell(ws, WX_SUMMARY_START + 1, 24, fill=FORMULA_FILL, locked=True,
