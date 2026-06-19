@@ -223,6 +223,18 @@ def submit_to_excel():
         for item in items:
             try:
                 item_name = item.get('name', '')
+                
+                # --- FRUCTOSE MAPPING LOGIC ---
+                item_name_lower = item_name.lower()
+                if "fructose" in item_name_lower:
+                    if "15000" in item_name_lower or "10000" in item_name_lower or "5000" in item_name_lower:
+                        item_name = "Fructose (5000)"
+                    elif "2000" in item_name_lower:
+                        item_name = "Fructose (2000)"
+                    elif "1000" in item_name_lower:
+                        item_name = "Fructose (1000)"
+                # ------------------------------
+                
                 sheet_name = item.get('sheet', 'Bahan Lainnya')
                 masuk_keluar = item.get('masuk_keluar', 'Keluar')
                 qty = item.get('qty_excel', 0)

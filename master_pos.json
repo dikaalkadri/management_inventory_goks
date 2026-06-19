@@ -1,0 +1,484 @@
+{
+  "pos_items": [
+    {
+      "product": "Lemon Tea",
+      "category": "Tea Series"
+    },
+    {
+      "product": "Lemon Tea Large",
+      "category": "Tea Series"
+    },
+    {
+      "product": "Lychee Tea",
+      "category": "Tea Series"
+    },
+    {
+      "product": "Lychee Tea Large",
+      "category": "Tea Series"
+    },
+    {
+      "product": "Thai Tea",
+      "category": "Tea Series"
+    },
+    {
+      "product": "Thai Tea Large",
+      "category": "Tea Series"
+    },
+    {
+      "product": "Taro",
+      "category": "Original Series"
+    },
+    {
+      "product": "Taro Large",
+      "category": "Original Series"
+    },
+    {
+      "product": "Green Tea",
+      "category": "Original Series"
+    },
+    {
+      "product": "Green Tea Large",
+      "category": "Original Series"
+    },
+    {
+      "product": "Es Permen Karet",
+      "category": "Original Series"
+    },
+    {
+      "product": "Es Permen Karet Large",
+      "category": "Original Series"
+    },
+    {
+      "product": "Chocolate Hazelnut",
+      "category": "Original Series"
+    },
+    {
+      "product": "Chocolate Hazelnut Large",
+      "category": "Original Series"
+    },
+    {
+      "product": "Chocolate",
+      "category": "Original Series"
+    },
+    {
+      "product": "Chocolate Large",
+      "category": "Original Series"
+    },
+    {
+      "product": "Bubble Gum",
+      "category": "Original Series"
+    },
+    {
+      "product": "Bubble Gum Large",
+      "category": "Original Series"
+    },
+    {
+      "product": "Very Strawberry Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Strawberry Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Strawberry Oreo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Strawberry Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Oreo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Mango Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Chocolate Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Lychee Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Kiwi Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Ice Cream Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Green Tea Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Green Tea Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Green Tea Chocolate Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Double Choco Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Choco Oreo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Choco Milo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Choco Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Boba Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Biscoff Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Red Velvet Oreo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Chocolate Peanut Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Choco Vanilla Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Green Tea Vanilla Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Coffee Oreo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Coffee Choco Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Coffee Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Coffee Vanilla Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Green Tea Oreo Sundae",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Strawberry Vanilla Cone",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Vanilla Oreo",
+      "category": "Ice Cream Series"
+    },
+    {
+      "product": "Red Velvet Oreo",
+      "category": "Goks Series"
+    },
+    {
+      "product": "Red Velvet",
+      "category": "Goks Series"
+    },
+    {
+      "product": "Cotton Candy",
+      "category": "Goks Series"
+    },
+    {
+      "product": "Biscoff Milk",
+      "category": "Goks Series"
+    },
+    {
+      "product": "Mango Yakult",
+      "category": "Fruity Yakult Series"
+    },
+    {
+      "product": "Lychee Yakult",
+      "category": "Fruity Yakult Series"
+    },
+    {
+      "product": "Choco Ovaltine",
+      "category": "Energy Series"
+    },
+    {
+      "product": "Choco Milo",
+      "category": "Energy Series"
+    },
+    {
+      "product": "Kopi Susu Goks",
+      "category": "Coffee Series"
+    },
+    {
+      "product": "Kopi Rakyat",
+      "category": "Coffee Series"
+    },
+    {
+      "product": "Thai Tea Cheese",
+      "category": "Cheese Series"
+    },
+    {
+      "product": "Taro Cheese",
+      "category": "Cheese Series"
+    },
+    {
+      "product": "Ovaltine Cheese",
+      "category": "Cheese Series"
+    },
+    {
+      "product": "Green Tea Cheese",
+      "category": "Cheese Series"
+    },
+    {
+      "product": "Chocolate Cheese",
+      "category": "Cheese Series"
+    },
+    {
+      "product": "Brown Sugar Boba Milk Tea",
+      "category": "Boba Series"
+    },
+    {
+      "product": "Brown Sugar Boba Milk",
+      "category": "Boba Series"
+    },
+    {
+      "product": "Cream Cheese",
+      "category": "Topping"
+    },
+    {
+      "product": "Boba Topping",
+      "category": "Topping"
+    },
+    {
+      "product": "Oreo Crumbs",
+      "category": "Topping"
+    },
+    {
+      "product": "Vanilla Ice Cream",
+      "category": "Topping"
+    },
+    {
+      "product": "Rainbow Jelly",
+      "category": "Topping"
+    },
+    {
+      "product": "Coffee Jelly",
+      "category": "Topping"
+    },
+    {
+      "product": "Chocolate Sauce",
+      "category": "Topping"
+    },
+    {
+      "product": "Biscoff Crumbs",
+      "category": "Topping"
+    },
+    {
+      "product": "Peanut Topping",
+      "category": "Topping"
+    },
+    {
+      "product": "Strawberry Jam",
+      "category": "Topping"
+    },
+    {
+      "product": "Mango Jam",
+      "category": "Topping"
+    },
+    {
+      "product": "Cup Take Away 12 OZ",
+      "category": "Extra Cup"
+    },
+    {
+      "product": "Cup Take Away 14 OZ",
+      "category": "Extra Cup"
+    },
+    {
+      "product": "Gonuts",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Chocolate Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Oreo Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Mango Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Biscoff Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Strawberry Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Choco Oreo Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Double Choco Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Gonuts Choco Biscoff Sundae",
+      "category": "Gonuts Series"
+    },
+    {
+      "product": "Vanilla Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Chocolate Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Choco Vanilla Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Green Tea Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Green Tea Vanilla Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Strawberry Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Strawberry Vanilla Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Coffee Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Coffee Vanilla Paper Cup",
+      "category": "Cone Paper Cup"
+    },
+    {
+      "product": "Free Topping Pudding Ice Cream Coffee",
+      "category": "Topping"
+    },
+    {
+      "product": "Free Topping Pudding Ice Cream Mix Vanilla dan Coffee",
+      "category": "Topping"
+    },
+    {
+      "product": "Free Topping Pudding Ice Cream Vanilla",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Vanilla Ice Cream",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Oreo Crumbs",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Boba Topping",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Peanut Topping",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Mango Jam",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Chocolate Sauce",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Free Topping Pudding Ice Cream Vanilla",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Strawberry Jam",
+      "category": "Topping"
+    },
+    {
+      "product": "Topping: Biscoff Crumbs",
+      "category": "Topping"
+    },
+    {
+      "product": "Oreo Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Biscoff Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Milo Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Confetti Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Frooty Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Choco Chip Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Waffer Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Nutella Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Rainbow Twist",
+      "category": "Twist Series"
+    },
+    {
+      "product": "Jasmine Tea",
+      "category": "Original Tea"
+    },
+    {
+      "product": "Vanilla Tea",
+      "category": "Original Tea"
+    },
+    {
+      "product": "Es Teh Goks!",
+      "category": "Original Tea"
+    }
+  ]
+}

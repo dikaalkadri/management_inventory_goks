@@ -6,7 +6,7 @@ import os
 from flask import Blueprint, request, jsonify, render_template, send_from_directory, current_app
 from werkzeug.utils import secure_filename
 
-from services.catalog_service import load_master_catalog, save_master_catalog
+from services.catalog_service import load_pos, save_pos, load_materials, save_materials
 from modules.stockin.helpers import convert_to_xlsx_if_needed
 from modules.sinkronisasi.processor import proses_sinkronisasi_excel
 
@@ -16,56 +16,102 @@ sinkronisasi_bp = Blueprint('sinkronisasi', __name__, template_folder='../../tem
 def sinkronisasi_page():
     return render_template('sinkronisasi_penjualan.html')
 
-@sinkronisasi_bp.route('/api/catalog/list', methods=['GET'])
-def api_get_catalog():
-    return jsonify({"status": "ok", "catalog": load_master_catalog()})
+# --- POS ROUTES ---
+@sinkronisasi_bp.route('/api/pos/list', methods=['GET'])
+def api_get_pos():
+    return jsonify({"status": "ok", "items": load_pos()})
 
-@sinkronisasi_bp.route('/api/catalog/save-all', methods=['POST'])
-def api_save_catalog_all():
+@sinkronisasi_bp.route('/api/pos/save-all', methods=['POST'])
+def api_save_pos_all():
     data = request.json or {}
-    updated_catalog = data.get('catalog', [])
-    for item in updated_catalog:
+    updated_items = data.get('items', [])
+    for item in updated_items:
         if not item.get('product', '').strip() or not item.get('category', '').strip():
             return jsonify({"status": "error", "message": "Nama produk dan kategori tidak boleh kosong!"}), 400
+        
+    ok, msg = save_pos(updated_items)
+    if not ok:
+        return jsonify({"status": "error", "message": msg}), 500
+    return jsonify({"status": "ok", "message": "Menu POS berhasil disimpan."})
+
+@sinkronisasi_bp.route('/api/pos/add', methods=['POST'])
+def api_add_pos_item():
+    data = request.json or {}
+    product = data.get('product', '').strip()
+    category = data.get('category', '').strip()
+    
+    if not product or not category:
+        return jsonify({"status": "error", "message": "Nama produk dan kategori wajib diisi!"}), 400
+    items = load_pos()
+    if any(item['product'].lower() == product.lower() for item in items):
+        return jsonify({"status": "error", "message": "Produk sudah ada!"}), 400
+    
+    items.append({"product": product, "category": category})
+    save_pos(items)
+    return jsonify({"status": "ok", "message": "Menu POS ditambahkan!", "items": items})
+
+@sinkronisasi_bp.route('/api/pos/delete', methods=['POST'])
+def api_delete_pos_item():
+    data = request.json or {}
+    product_name = data.get('product', '').strip()
+    items = load_pos()
+    new_items = [item for item in items if item.get('product', '').lower() != product_name.lower()]
+    save_pos(new_items)
+    return jsonify({"status": "ok", "message": "Menu POS dihapus.", "items": new_items})
+
+
+# --- MATERIALS ROUTES ---
+@sinkronisasi_bp.route('/api/materials/list', methods=['GET'])
+def api_get_materials():
+    return jsonify({"status": "ok", "items": load_materials()})
+
+@sinkronisasi_bp.route('/api/materials/save-all', methods=['POST'])
+def api_save_materials_all():
+    data = request.json or {}
+    updated_items = data.get('items', [])
+    for item in updated_items:
+        if not item.get('name', '').strip() or not item.get('category', '').strip():
+            return jsonify({"status": "error", "message": "Nama bahan dan kategori tidak boleh kosong!"}), 400
         try:
             item['price'] = float(item.get('price', 0))
         except:
             item['price'] = 0.0
         
-    ok, msg = save_master_catalog(updated_catalog)
+    ok, msg = save_materials(updated_items)
     if not ok:
         return jsonify({"status": "error", "message": msg}), 500
-    return jsonify({"status": "ok", "message": "Perubahan katalog berhasil disimpan."})
+    return jsonify({"status": "ok", "message": "Bahan Baku berhasil disimpan."})
 
-@sinkronisasi_bp.route('/api/catalog/add', methods=['POST'])
-def api_add_catalog_item():
+@sinkronisasi_bp.route('/api/materials/add', methods=['POST'])
+def api_add_materials_item():
     data = request.json or {}
-    product = data.get('product', '').strip()
+    name = data.get('name', '').strip()
     category = data.get('category', '').strip()
     price = data.get('price', 0)
     
-    if not product or not category:
-        return jsonify({"status": "error", "message": "Nama produk dan kategori wajib diisi!"}), 400
-    catalog = load_master_catalog()
-    if any(item['product'].lower() == product.lower() for item in catalog):
-        return jsonify({"status": "error", "message": "Produk sudah ada!"}), 400
+    if not name or not category:
+        return jsonify({"status": "error", "message": "Nama bahan dan kategori wajib diisi!"}), 400
+    items = load_materials()
+    if any(item['name'].lower() == name.lower() for item in items):
+        return jsonify({"status": "error", "message": "Bahan sudah ada!"}), 400
     try:
         price = float(price)
     except:
         price = 0.0
     
-    catalog.append({"product": product, "category": category, "price": price})
-    save_master_catalog(catalog)
-    return jsonify({"status": "ok", "message": "Produk berhasil ditambahkan!", "catalog": catalog})
+    items.append({"name": name, "category": category, "price": price})
+    save_materials(items)
+    return jsonify({"status": "ok", "message": "Bahan ditambahkan!", "items": items})
 
-@sinkronisasi_bp.route('/api/catalog/delete', methods=['POST'])
-def api_delete_catalog_item():
+@sinkronisasi_bp.route('/api/materials/delete', methods=['POST'])
+def api_delete_materials_item():
     data = request.json or {}
-    product_name = data.get('product', '').strip()
-    catalog = load_master_catalog()
-    new_catalog = [item for item in catalog if item['product'].lower() != product_name.lower()]
-    save_master_catalog(new_catalog)
-    return jsonify({"status": "ok", "message": "Produk dihapus dari master katalog.", "catalog": new_catalog})
+    name = data.get('name', '').strip()
+    items = load_materials()
+    new_items = [item for item in items if item.get('name', '').lower() != name.lower()]
+    save_materials(new_items)
+    return jsonify({"status": "ok", "message": "Bahan dihapus.", "items": new_items})
+
 
 @sinkronisasi_bp.route('/api/sinkronisasi/proses', methods=['POST'])
 def proses_sinkronisasi():

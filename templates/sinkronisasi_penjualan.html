@@ -784,204 +784,97 @@
             </div>
           </div>
 
-          <div class="grid-col-5">
-            <div class="card glass-card master-catalog-card">
-              <div
-                class="card-header"
-                style="
-                  justify-content: space-between;
-                  display: flex;
-                  align-items: center;
-                  width: 100%;
-                "
-              >
-                <div style="display: flex; align-items: center; gap: 10px">
+                    <div class="grid-col-5">
+            <!-- CARD 1: MASTER POS -->
+            <div class="card glass-card master-pos-card" style="margin-bottom: 20px;">
+              <div class="card-header" style="justify-content: space-between; display: flex; align-items: center; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 10px;">
                   <div class="card-header-icon bg-purple-glow">
-                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                    <i class="fa-solid fa-list-ol"></i>
                   </div>
-                  <h3>Master Katalog & Harga</h3>
+                  <h3>Master Menu POS</h3>
                 </div>
-                <button
-                  class="btn btn-success"
-                  id="saveCatalogBtn"
-                  style="
-                    padding: 6px 14px;
-                    font-size: 0.78rem;
-                    border-radius: 8px;
-                    height: auto;
-                    width: auto;
-                    min-width: unset;
-                  "
-                >
-                  <i
-                    class="fa-solid fa-floppy-disk"
-                    style="margin-right: 4px"
-                  ></i>
-                  Simpan Perubahan
+                <button class="btn btn-success" id="savePosBtn" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px; height: auto; width: auto; min-width: unset;">
+                  <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan
                 </button>
               </div>
-              <div class="card-body" style="padding-top: 10px">
-                <div
-                  style="
-                    background: rgba(123, 44, 191, 0.05);
-                    border: 1px dashed rgba(167, 139, 250, 0.3);
-                    border-radius: 8px;
-                    padding: 12px;
-                    margin-bottom: 16px;
-                  "
-                >
-                  <span
-                    style="
-                      font-size: 0.76rem;
-                      font-weight: 700;
-                      color: #a78bfa;
-                      display: block;
-                      margin-bottom: 8px;
-                    "
-                    ><i class="fa-solid fa-plus-circle"></i> Tambah Produk Baru
-                    ke Katalog</span
-                  >
-                  <div style="display: flex; gap: 6px; flex-wrap: wrap">
-                    <input
-                      type="text"
-                      id="addProdName"
-                      placeholder="Nama Produk"
-                      class="catalog-input-text"
-                      style="
-                        flex: 2;
-                        min-width: 110px;
-                        height: 34px;
-                        background: rgba(0, 0, 0, 0.2) !important;
-                      "
-                    />
-                    <input
-                      type="text"
-                      id="addProdCat"
-                      placeholder="Kategori"
-                      class="catalog-input-text"
-                      style="
-                        flex: 1.5;
-                        min-width: 90px;
-                        height: 34px;
-                        background: rgba(0, 0, 0, 0.2) !important;
-                      "
-                    />
-                    <input
-                      type="number"
-                      id="addProdPrice"
-                      placeholder="Harga"
-                      class="catalog-input-text"
-                      style="
-                        flex: 1;
-                        min-width: 70px;
-                        height: 34px;
-                        background: rgba(0, 0, 0, 0.2) !important;
-                      "
-                    />
-                    <button
-                      class="btn btn-primary"
-                      id="addCatalogBtn"
-                      style="
-                        height: 34px;
-                        padding: 0 12px;
-                        font-size: 0.75rem;
-                        border-radius: 6px;
-                        width: auto;
-                        min-width: unset;
-                      "
-                    >
-                      <i class="fa-solid fa-plus"></i>
-                    </button>
+              <div class="card-body" style="padding-top: 10px;">
+                <div style="background: rgba(123, 44, 191, 0.05); border: 1px dashed rgba(167, 139, 250, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                  <span style="font-size: 0.76rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 8px;"><i class="fa-solid fa-plus-circle"></i> Tambah Menu POS</span>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <input type="text" id="addPosName" placeholder="Nama Menu" class="catalog-input-text" style="flex: 2; min-width: 110px; height: 34px; background: rgba(0,0,0,0.2) !important;">
+                    <input type="text" id="addPosCat" placeholder="Kategori" class="catalog-input-text" style="flex: 1.5; min-width: 90px; height: 34px; background: rgba(0,0,0,0.2) !important;">
+                    <button class="btn btn-primary" id="addPosBtn" style="height: 34px; padding: 0 12px; font-size: 0.75rem; border-radius: 6px; width: auto; min-width: unset;"><i class="fa-solid fa-plus"></i></button>
                   </div>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 12px">
-                  <div style="position: relative">
-                    <i
-                      class="fa-solid fa-magnifying-glass"
-                      style="
-                        position: absolute;
-                        left: 12px;
-                        top: 11px;
-                        color: #a3a3a3;
-                        font-size: 0.85rem;
-                      "
-                    ></i>
-                    <input
-                      type="text"
-                      id="searchCatalogInput"
-                      class="form-control"
-                      placeholder="Cari produk atau kategori..."
-                      style="
-                        padding-left: 36px;
-                        height: 36px;
-                        font-size: 0.82rem;
-                        border-radius: 8px;
-                        width: 100%;
-                        background: rgba(255, 255, 255, 0.05);
-                        color: #fff;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                      "
-                    />
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <div style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #a3a3a3; font-size: 0.85rem;"></i>
+                    <input type="text" id="searchPosInput" class="form-control" placeholder="Cari menu atau kategori..." style="padding-left: 36px; height: 36px; font-size: 0.82rem; border-radius: 8px; width: 100%; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1);">
                   </div>
                 </div>
 
-                <div
-                  class="catalog-scroll-container"
-                  style="
-                    max-height: 440px;
-                    overflow-y: auto;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 8px;
-                    background: rgba(20, 20, 25, 0.5);
-                  "
-                >
-                  <table
-                    style="
-                      width: 100%;
-                      margin: 0;
-                      font-size: 0.8rem;
-                      border-collapse: collapse;
-                    "
-                  >
-                    <thead
-                      style="
-                        background: rgba(123, 44, 191, 0.25);
-                        position: sticky;
-                        top: 0;
-                        z-index: 10;
-                      "
-                    >
+                <div class="catalog-scroll-container" style="max-height: 250px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(20, 20, 25, 0.5);">
+                  <table style="width: 100%; margin: 0; font-size: 0.8rem; border-collapse: collapse;">
+                    <thead style="background: rgba(123, 44, 191, 0.25); position: sticky; top: 0; z-index: 10;">
                       <tr class="catalog-table-header">
-                        <th style="text-align: left; padding-left: 12px">
-                          Nama Produk
-                        </th>
-                        <th style="text-align: left">Kategori</th>
-                        <th style="text-align: right; width: 100px">
-                          Harga (Rp)
-                        </th>
-                        <th style="text-align: center; width: 50px">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </th>
+                        <th style="text-align: left; padding-left: 12px;">Nama Menu</th>
+                        <th style="text-align: left;">Kategori</th>
+                        <th style="text-align: center; width: 50px;"><i class="fa-solid fa-trash-can"></i></th>
                       </tr>
                     </thead>
-                    <tbody id="catalogTableBody">
-                      <tr>
-                        <td
-                          colspan="4"
-                          style="
-                            text-align: center;
-                            padding: 20px;
-                            color: #b3b3b3;
-                          "
-                        >
-                          <i
-                            class="fa-solid fa-spinner fa-spin"
-                            style="margin-right: 6px"
-                          ></i>
-                          Memuat data katalog...
-                        </td>
+                    <tbody id="posTableBody">
+                      <tr><td colspan="3" style="text-align: center; padding: 20px; color: #b3b3b3;"><i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Memuat data...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2: MASTER MATERIALS -->
+            <div class="card glass-card master-materials-card">
+              <div class="card-header" style="justify-content: space-between; display: flex; align-items: center; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="card-header-icon bg-emerald-glow">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                  </div>
+                  <h3>Master Harga Bahan Baku</h3>
+                </div>
+                <button class="btn btn-success" id="saveMatBtn" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px; height: auto; width: auto; min-width: unset;">
+                  <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan
+                </button>
+              </div>
+              <div class="card-body" style="padding-top: 10px;">
+                <div style="background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(52, 211, 153, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                  <span style="font-size: 0.76rem; font-weight: 700; color: #34d399; display: block; margin-bottom: 8px;"><i class="fa-solid fa-plus-circle"></i> Tambah Bahan Baku</span>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <input type="text" id="addMatName" placeholder="Nama Bahan" class="catalog-input-text" style="flex: 2; min-width: 110px; height: 34px; background: rgba(0,0,0,0.2) !important;">
+                    <input type="text" id="addMatCat" placeholder="Kategori" class="catalog-input-text" style="flex: 1.5; min-width: 90px; height: 34px; background: rgba(0,0,0,0.2) !important;">
+                    <input type="number" id="addMatPrice" placeholder="Harga" class="catalog-input-text" style="flex: 1; min-width: 70px; height: 34px; background: rgba(0,0,0,0.2) !important;">
+                    <button class="btn btn-primary" id="addMatBtn" style="height: 34px; padding: 0 12px; font-size: 0.75rem; border-radius: 6px; width: auto; min-width: unset; background: #10b981; border-color: #10b981;"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <div style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #a3a3a3; font-size: 0.85rem;"></i>
+                    <input type="text" id="searchMatInput" class="form-control" placeholder="Cari bahan atau kategori..." style="padding-left: 36px; height: 36px; font-size: 0.82rem; border-radius: 8px; width: 100%; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  </div>
+                </div>
+
+                <div class="catalog-scroll-container" style="max-height: 250px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(20, 20, 25, 0.5);">
+                  <table style="width: 100%; margin: 0; font-size: 0.8rem; border-collapse: collapse;">
+                    <thead style="background: rgba(16, 185, 129, 0.2); position: sticky; top: 0; z-index: 10;">
+                      <tr class="catalog-table-header" style="border-bottom: 2px solid rgba(16, 185, 129, 0.3);">
+                        <th style="text-align: left; padding-left: 12px; color: #34d399 !important;">Nama Bahan</th>
+                        <th style="text-align: left; color: #34d399 !important;">Kategori</th>
+                        <th style="text-align: right; width: 100px; color: #34d399 !important;">Harga Modal</th>
+                        <th style="text-align: center; width: 50px; color: #34d399 !important;"><i class="fa-solid fa-trash-can"></i></th>
                       </tr>
+                    </thead>
+                    <tbody id="matTableBody">
+                      <tr><td colspan="4" style="text-align: center; padding: 20px; color: #b3b3b3;"><i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Memuat data...</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -989,7 +882,7 @@
             </div>
           </div>
         </div>
-      </main>
+</main>
     </div>
 
     <div class="alert-toast-container" id="toastContainer"></div>
@@ -1115,209 +1008,111 @@
         .getElementById("selectOutlet")
         .addEventListener("change", updateFilenamePreview);
 
-      // ── Load & Manage Live Editor Master Catalog (CRUD) ──
-      async function fetchMasterCatalog() {
-        const tbody = document.getElementById("catalogTableBody");
+            // ── MASTER POS ──
+      let posCache = [];
+      let matCache = [];
+
+      async function fetchPos() {
         try {
-          const res = await fetch("/api/catalog/list");
-          const data = await res.json();
-          if (data.status === "ok") {
-            masterCatalogCache = data.catalog || [];
-            renderCatalogTable(masterCatalogCache);
-          } else {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#ef4444; padding:15px;">Gagal mengambil data master</td></tr>`;
-          }
-        } catch (err) {
-          console.error("Gagal memuat katalog:", err);
-          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#ef4444; padding:15px;">Koneksi bermasalah</td></tr>`;
-        }
+          const res = await fetch("/api/pos/list"); const data = await res.json();
+          if (data.status === "ok") { posCache = data.items || []; renderPos(posCache); }
+        } catch (err) {}
       }
-
-      function renderCatalogTable(items) {
-        const tbody = document.getElementById("catalogTableBody");
-        if (!items || items.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#b3b3b3; padding:15px;">Produk tidak ditemukan</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = items
-          .map(
-            (item, index) => `
+      function renderPos(items) {
+        const tbody = document.getElementById("posTableBody");
+        if (!items || items.length === 0) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#b3b3b3; padding:15px;">Data kosong</td></tr>`; return; }
+        tbody.innerHTML = items.map((item, index) => `
           <tr class="catalog-row-item" data-index="${index}">
-            <td style="padding: 6px 8px; text-align: left;">
-              <input type="text" class="catalog-name-input catalog-input-text" value="${item.product}">
-            </td>
-            <td style="padding: 6px 4px; text-align: left;">
-              <input type="text" class="catalog-cat-input catalog-input-text" value="${item.category}" style="color: #c084fc !important; font-weight: 500;">
-            </td>
-            <td style="padding: 6px 4px; text-align: right;">
-              <input type="number" class="catalog-price-input catalog-input-text" value="${item.price || 0}" style="text-align: right; color: #34d399 !important; font-weight: 600;">
-            </td>
-            <td style="padding: 6px 4px; text-align: center;">
-              <button class="btn-delete-item" onclick="deleteCatalogRow('${item.product.replace(/'/g, "\\'")}')">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </td>
+            <td style="padding: 6px 8px; text-align: left;"><input type="text" class="pos-name-input catalog-input-text" value="${item.product}"></td>
+            <td style="padding: 6px 4px; text-align: left;"><input type="text" class="pos-cat-input catalog-input-text" value="${item.category}" style="color: #c084fc !important; font-weight: 500;"></td>
+            <td style="padding: 6px 4px; text-align: center;"><button class="btn-delete-item" onclick="deletePos('${item.product.replace(/'/g, "\'")}')"><i class="fa-solid fa-trash-can"></i></button></td>
           </tr>
-        `,
-          )
-          .join("");
+        `).join("");
       }
-
-      // Live Client-side Search / Filtering
-      document
-        .getElementById("searchCatalogInput")
-        .addEventListener("input", function (e) {
-          const searchVal = e.target.value.toLowerCase().trim();
-          const filtered = masterCatalogCache.filter(
-            (item) =>
-              item.product.toLowerCase().includes(searchVal) ||
-              item.category.toLowerCase().includes(searchVal),
-          );
-          renderCatalogTable(filtered);
-        });
-
-      // Quick Add Item Baru
-      document
-        .getElementById("addCatalogBtn")
-        .addEventListener("click", async () => {
-          const nameInput = document.getElementById("addProdName");
-          const catInput = document.getElementById("addProdCat");
-          const priceInput = document.getElementById("addProdPrice");
-
-          const product = nameInput.value.trim();
-          const category = catInput.value.trim();
-          const price = parseFloat(priceInput.value) || 0;
-
-          if (!product || !category) {
-            showToast("⚠️ Nama produk dan kategori wajib diisi!", "warning");
-            return;
-          }
-
-          try {
-            const response = await fetch("/api/catalog/add", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ product, category, price }),
-            });
-            const result = await response.json();
-
-            if (result.status === "ok") {
-              showToast(`✅ ${result.message}`, "success");
-              masterCatalogCache = result.catalog;
-              renderCatalogTable(masterCatalogCache);
-              nameInput.value = "";
-              catInput.value = "";
-              priceInput.value = "";
-              document.getElementById("searchCatalogInput").value = "";
-            } else {
-              showToast(`❌ ${result.message}`, "error");
-            }
-          } catch (err) {
-            showToast(
-              "❌ Terjadi kesalahan jaringan saat menambah produk",
-              "error",
-            );
-          }
-        });
-
-      // Hapus Item dari Katalog
-      async function deleteCatalogRow(productName) {
-        if (
-          !confirm(
-            `Apakah Anda yakin ingin menghapus '${productName}' dari master katalog?`,
-          )
-        )
-          return;
-
+      document.getElementById("searchPosInput").addEventListener("input", (e) => {
+        const v = e.target.value.toLowerCase().trim();
+        renderPos(posCache.filter(i => i.product.toLowerCase().includes(v) || i.category.toLowerCase().includes(v)));
+      });
+      document.getElementById("addPosBtn").addEventListener("click", async () => {
+        const p = document.getElementById("addPosName").value.trim(); const c = document.getElementById("addPosCat").value.trim();
+        if(!p || !c) return showToast("Nama & Kategori wajib diisi!", "warning");
         try {
-          const response = await fetch("/api/catalog/delete", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ product: productName }),
-          });
-          const result = await response.json();
-
-          if (result.status === "ok") {
-            showToast("✅ " + result.message, "success");
-            masterCatalogCache = result.catalog;
-            renderCatalogTable(masterCatalogCache);
-          } else {
-            showToast("❌ " + result.message, "error");
-          }
-        } catch (err) {
-          showToast("❌ Gagal menghapus item dari server", "error");
-        }
+          const res = await fetch("/api/pos/add", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({product:p, category:c}) });
+          const data = await res.json();
+          if(data.status==="ok") { showToast(data.message, "success"); fetchPos(); document.getElementById("addPosName").value=""; document.getElementById("addPosCat").value=""; }
+          else showToast(data.message, "error");
+        } catch(e) { showToast("Gagal menambah data", "error"); }
+      });
+      async function deletePos(p) {
+        if(!confirm(`Hapus Menu POS: ${p}?`)) return;
+        try {
+          const res = await fetch("/api/pos/delete", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({product:p}) });
+          const data = await res.json();
+          if(data.status==="ok") { showToast(data.message, "success"); fetchPos(); } else showToast(data.message, "error");
+        } catch(e) {}
       }
+      document.getElementById("savePosBtn").addEventListener("click", async () => {
+        const rows = document.querySelectorAll("#posTableBody tr.catalog-row-item");
+        const items = [];
+        rows.forEach(r => { items.push({ product: r.querySelector(".pos-name-input").value.trim(), category: r.querySelector(".pos-cat-input").value.trim() }); });
+        try {
+          const res = await fetch("/api/pos/save-all", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({items}) });
+          const data = await res.json();
+          if(data.status==="ok") { showToast(data.message, "success"); fetchPos(); } else showToast(data.message, "error");
+        } catch(e) { showToast("Gagal menyimpan", "error"); }
+      });
 
-      // Simpan Perubahan Massal (Inline Edit Text)
-      document
-        .getElementById("saveCatalogBtn")
-        .addEventListener("click", async () => {
-          const saveBtn = document.getElementById("saveCatalogBtn");
-          saveBtn.disabled = true;
-          saveBtn.innerHTML =
-            '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-
-          const rows = document.querySelectorAll("#catalogTableBody tr");
-          const payloadCatalog = [];
-          let hasError = false;
-
-          rows.forEach((row) => {
-            const nameInp = row.querySelector(".catalog-name-input");
-            const catInp = row.querySelector(".catalog-cat-input");
-            const priceInp = row.querySelector(".catalog-price-input");
-
-            if (nameInp && catInp && priceInp) {
-              const product = nameInp.value.trim();
-              const category = catInp.value.trim();
-              const price = parseFloat(priceInp.value) || 0;
-
-              if (!product || !category) {
-                hasError = true;
-                return;
-              }
-              payloadCatalog.push({ product, category, price });
-            }
-          });
-
-          if (hasError) {
-            showToast(
-              "⚠️ Nama produk atau kategori tidak boleh ada yang kosong!",
-              "warning",
-            );
-            saveBtn.disabled = false;
-            saveBtn.innerHTML =
-              '<i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan Perubahan';
-            return;
-          }
-
-          try {
-            const response = await fetch("/api/catalog/save-all", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ catalog: payloadCatalog }),
-            });
-            const result = await response.json();
-
-            if (result.status === "ok") {
-              showToast("✅ " + result.message, "success");
-              fetchMasterCatalog();
-            } else {
-              showToast("❌ " + (result.message || "Gagal menyimpan"), "error");
-            }
-          } catch (err) {
-            console.error(err);
-            showToast(
-              "❌ Terjadi kesalahan jaringan saat menyimpan perubahan",
-              "error",
-            );
-          } finally {
-            saveBtn.disabled = false;
-            saveBtn.innerHTML =
-              '<i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan Perubahan';
-          }
-        });
+      // ── MASTER MATERIALS ──
+      async function fetchMat() {
+        try {
+          const res = await fetch("/api/materials/list"); const data = await res.json();
+          if (data.status === "ok") { matCache = data.items || []; renderMat(matCache); }
+        } catch (err) {}
+      }
+      function renderMat(items) {
+        const tbody = document.getElementById("matTableBody");
+        if (!items || items.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#b3b3b3; padding:15px;">Data kosong</td></tr>`; return; }
+        tbody.innerHTML = items.map((item, index) => `
+          <tr class="catalog-row-item" data-index="${index}">
+            <td style="padding: 6px 8px; text-align: left;"><input type="text" class="mat-name-input catalog-input-text" value="${item.name}"></td>
+            <td style="padding: 6px 4px; text-align: left;"><input type="text" class="mat-cat-input catalog-input-text" value="${item.category}" style="color: #34d399 !important; font-weight: 500;"></td>
+            <td style="padding: 6px 4px; text-align: right;"><input type="number" class="mat-price-input catalog-input-text" value="${item.price || 0}" style="text-align: right; font-weight: 600;"></td>
+            <td style="padding: 6px 4px; text-align: center;"><button class="btn-delete-item" onclick="deleteMat('${item.name.replace(/'/g, "\'")}')"><i class="fa-solid fa-trash-can"></i></button></td>
+          </tr>
+        `).join("");
+      }
+      document.getElementById("searchMatInput").addEventListener("input", (e) => {
+        const v = e.target.value.toLowerCase().trim();
+        renderMat(matCache.filter(i => i.name.toLowerCase().includes(v) || i.category.toLowerCase().includes(v)));
+      });
+      document.getElementById("addMatBtn").addEventListener("click", async () => {
+        const n = document.getElementById("addMatName").value.trim(); const c = document.getElementById("addMatCat").value.trim(); const p = document.getElementById("addMatPrice").value;
+        if(!n || !c) return showToast("Nama & Kategori wajib diisi!", "warning");
+        try {
+          const res = await fetch("/api/materials/add", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({name:n, category:c, price:p}) });
+          const data = await res.json();
+          if(data.status==="ok") { showToast(data.message, "success"); fetchMat(); document.getElementById("addMatName").value=""; document.getElementById("addMatCat").value=""; document.getElementById("addMatPrice").value=""; }
+          else showToast(data.message, "error");
+        } catch(e) { showToast("Gagal menambah data", "error"); }
+      });
+      async function deleteMat(n) {
+        if(!confirm(`Hapus Bahan Baku: ${n}?`)) return;
+        try {
+          const res = await fetch("/api/materials/delete", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({name:n}) });
+          const data = await res.json();
+          if(data.status==="ok") { showToast(data.message, "success"); fetchMat(); } else showToast(data.message, "error");
+        } catch(e) {}
+      }
+      document.getElementById("saveMatBtn").addEventListener("click", async () => {
+        const rows = document.querySelectorAll("#matTableBody tr.catalog-row-item");
+        const items = [];
+        rows.forEach(r => { items.push({ name: r.querySelector(".mat-name-input").value.trim(), category: r.querySelector(".mat-cat-input").value.trim(), price: r.querySelector(".mat-price-input").value }); });
+        try {
+          const res = await fetch("/api/materials/save-all", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({items}) });
+          const data = await res.json();
+          if(data.status==="ok") { showToast(data.message, "success"); fetchMat(); } else showToast(data.message, "error");
+        } catch(e) { showToast("Gagal menyimpan", "error"); }
+      });
 
       // ── Process Button ──
       document
@@ -1446,7 +1241,8 @@
       });
 
       // Inisialisasi editor saat halaman siap
-      fetchMasterCatalog();
+      fetchPos();
+        fetchMat();
     </script>
   </body>
 </html>

@@ -13,7 +13,7 @@ from openpyxl.formatting.rule import CellIsRule
 from openpyxl.utils import get_column_letter
 from openpyxl.cell.cell import MergedCell
 
-from services.catalog_service import load_master_catalog
+from services.catalog_service import load_pos, load_materials
 from services.excel_style_helper import copy_row_properties
 from modules.stockin.formula_config import apply_all as apply_formulas_and_protect, RELATIVE_ROW_START, RELATIVE_ROW_END
 from modules.stockin.helpers import load_inventory, safe_save_workbook
@@ -34,10 +34,11 @@ def safe_write_cell(ws, row, col, value, number_format=None):
         pass
 
 def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output_folder):
-    catalog_list = load_master_catalog()
-    total_items = len(catalog_list)
+    pos_list = load_pos()
+    mat_list = load_materials()
+    total_items = max(len(pos_list), len(mat_list))
     if total_items == 0:
-        raise ValueError("Katalog produk kosong di master_catalog.json.")
+        raise ValueError("Data POS Menu dan Bahan Baku kosong.")
 
     # ── TAHAP 1: EKSTRAK DATA PENJUALAN SUMBER ──
     wb_sumber = openpyxl.load_workbook(sumber_path_xlsx, data_only=True)
@@ -165,19 +166,40 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
             ws_tujuan.delete_rows(target_last_data_row + 1, amount=rows_to_delete)
 
         # 5. Tulis Data per baris (Karena Kolom O sudah di-unmerge, akan 100% aman)
-        for idx, item in enumerate(catalog_list):
+        for idx in range(total_items):
             r = start_data_row + idx
-            p_name = item['product'].strip()
-            cat = item.get('category', '')
-            price = float(item.get('price', 0))
+            
+            # --- Tulis Data POS (Kolom O, P, Q) ---
+            if idx < len(pos_list):
+                item = pos_list[idx]
+                p_name = item.get('product', '').strip()
+                cat = item.get('category', '')
+                
+                safe_write_cell(ws_tujuan, r, 15, cat)            # Kolom O (Category POS)
+                safe_write_cell(ws_tujuan, r, 16, p_name)         # Kolom P (Product POS)
 
-            safe_write_cell(ws_tujuan, r, 15, cat)            # Kolom O (Category)
-            safe_write_cell(ws_tujuan, r, 16, p_name)         # Kolom P (Product)
-            safe_write_cell(ws_tujuan, r, 23, price, '#,##0') # Kolom W (Harga) — X & summary ditangani apply_all
+                p_key = clean_key(p_name)
+                sales_qty = sales_map.get((day_str, p_key), 0)
+                safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
+            else:
+                safe_write_cell(ws_tujuan, r, 15, "")
+                safe_write_cell(ws_tujuan, r, 16, "")
+                safe_write_cell(ws_tujuan, r, 17, "")
 
-            p_key = clean_key(p_name)
-            sales_qty = sales_map.get((day_str, p_key), 0)
-            safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
+            # --- Tulis Data Bahan Baku (Kolom A, B, W) ---
+            if idx < len(mat_list):
+                mat = mat_list[idx]
+                mat_name = mat.get('name', '').strip()
+                mat_cat = mat.get('category', '')
+                price = float(mat.get('price', 0))
+                
+                safe_write_cell(ws_tujuan, r, 1, mat_cat)         # Kolom A (Kategori Bahan)
+                safe_write_cell(ws_tujuan, r, 2, mat_name)        # Kolom B (Nama Bahan)
+                safe_write_cell(ws_tujuan, r, 23, price, '#,##0') # Kolom W (Harga Modal)
+            else:
+                safe_write_cell(ws_tujuan, r, 1, "")
+                safe_write_cell(ws_tujuan, r, 2, "")
+                safe_write_cell(ws_tujuan, r, 23, "")
 
         # 5b. Rumus Stock Awal kolom D dari Stok Akhir (kolom F) sheet sebelumnya
         #     Sheet "01" → input manual, kolom D tidak dikunci/kuning
@@ -194,13 +216,13 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
         # 5c. Terapkan semua kuning + lock + rumus + proteksi (satu pass)
         apply_formulas_and_protect(ws_tujuan, lock_column_d=not is_first_sheet)
 
-        # 6. RE-MERGE KOLOM KATEGORI BERDASARKAN SUSUNAN BARU
+        # 6. RE-MERGE KOLOM KATEGORI BERDASARKAN SUSUNAN BARU (Untuk POS Menu)
         current_cat = None
         start_cat_row = start_data_row
         
-        for idx, item in enumerate(catalog_list):
+        for idx in range(len(pos_list)):
             r = start_data_row + idx
-            cat = item.get('category', '').strip()
+            cat = pos_list[idx].get('category', '').strip()
             
             if current_cat is None:
                 current_cat = cat
@@ -209,15 +231,14 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
                 # Gabungkan baris kategori yang sama (jika lebih dari 1 baris)
                 if r - 1 > start_cat_row:
                     ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=r - 1, end_column=15)
-                    # Set text align menjadi center (tengah vertical & horizontal)
                     ws_tujuan.cell(row=start_cat_row, column=15).alignment = Alignment(horizontal='center', vertical='center')
                 
                 current_cat = cat
                 start_cat_row = r
         
         # Eksekusi merge untuk blok kategori paling akhir
-        if target_last_data_row > start_cat_row:
-            ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=target_last_data_row, end_column=15)
+        if len(pos_list) > 0 and (start_data_row + len(pos_list) - 1) > start_cat_row:
+            ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=start_data_row + len(pos_list) - 1, end_column=15)
             ws_tujuan.cell(row=start_cat_row, column=15).alignment = Alignment(horizontal='center', vertical='center')
 
         # 7. Conditional Formatting: semua sel < 0 di area data → background merah
@@ -312,10 +333,10 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
 
         if sheet_exists:
             # Rumus INDIRECT — ROW(A1) di baris rekap hari ke-1, ROW(A2) hari ke-2, dst
-            # Hasil di Excel: =INDIRECT("'"&TEXT(ROW(A1),"00")&"'!X122")
+            # Hasil di Excel: =INDIRECT("'"&TEXT(ROW(A1),"00")&"'!X123")
             a_ref = f"A{day}"
-            f_bersih = '=INDIRECT("\'"&TEXT(ROW(' + a_ref + '),"00")&"\'!X121")'
-            f_murni  = '=INDIRECT("\'"&TEXT(ROW(' + a_ref + '),"00")&"\'!X122")'
+            f_bersih = '=INDIRECT("\'"&TEXT(ROW(' + a_ref + '),"00")&"\'!X122")'
+            f_murni  = '=INDIRECT("\'"&TEXT(ROW(' + a_ref + '),"00")&"\'!X123")'
             data_cell(ws_rekap, row, 3, f_bersih, fmt=rp_fmt, even=even)
             data_cell(ws_rekap, row, 4, f_murni,  fmt=rp_fmt, even=even)
         else:
