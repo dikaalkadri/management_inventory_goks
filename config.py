@@ -7,7 +7,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 OUTPUT_FOLDER = os.path.join(BASE_DIR, 'output')
-MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50MB
+MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200MB
 
 # ─── eRESTO COLUMN MAPPING ──────────────────────────────────────────────────
 # Column indices (0-based) in the eResto order report export

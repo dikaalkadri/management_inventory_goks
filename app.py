@@ -5,6 +5,7 @@ from flask import Flask
 from modules.eresto.routes import eresto_bp
 from modules.stockin.routes import stockin_bp
 from modules.sinkronisasi.routes import sinkronisasi_bp
+from modules.mass_update.routes import mass_update_bp
 
 app = Flask(__name__)
 
@@ -12,10 +13,11 @@ app = Flask(__name__)
 app.register_blueprint(eresto_bp)
 app.register_blueprint(stockin_bp)
 app.register_blueprint(sinkronisasi_bp)
+app.register_blueprint(mass_update_bp)
 
 # Configurations
 app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
+app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 200MB
 
 # Ensure necessary directories exist
 os.makedirs('uploads', exist_ok=True)

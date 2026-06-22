@@ -1,0 +1,282 @@
+{
+    "2": {
+        "name": "Susu UHT",
+        "formula": "=((Q8+Q9+Q10+Q11+Q14+Q15+Q16+Q17+Q18+Q19+Q49+Q50+Q51+Q52+Q53+Q61+Q63+Q64)*130)+((Q56+Q57+Q65+Q58)*100)+(Q66*150)"
+    },
+    "3": {
+        "name": "Teh Bubuk Chatramue",
+        "formula": "=(U3/U2)*E40"
+    },
+    "4": {
+        "name": "Tapioca Pearl",
+        "formula": "=(U13/U12)*E42"
+    },
+    "5": {
+        "name": "Kopi Robusta Kerinci",
+        "formula": "=(U11/U10)*E38"
+    },
+    "6": {
+        "name": "Fructose Syrup",
+        "formula": "=(Q2+Q3+Q4+Q5+Q8+Q9+Q10+Q11+Q16+Q17+Q18+Q19+Q49+Q50+Q51+Q52+Q53+Q54+Q55+Q61+Q63+Q64+Q65+Q66+Q6+Q7+Q60+Q119+Q120+Q121)*40"
+    },
+    "8": {
+        "name": "Gula Aren Cair",
+        "formula": "=(Q37+Q65+Q66)*10+(Q58*25)"
+    },
+    "9": {
+        "name": "Carnation (Susu Evaporasi)",
+        "formula": "=(Q6+Q7+Q12+Q13+Q56+Q57+Q59+Q60+Q62)*40"
+    },
+    "10": {
+        "name": "Hazelnut Syrup",
+        "formula": "=(Q14+Q15)*20"
+    },
+    "11": {
+        "name": "Small Cup - 14 Oz",
+        "formula": "=Q2+Q4+Q6+Q8+Q10+Q12+Q14+Q16+Q18+Q54+Q55+Q58+Q59+Q79"
+    },
+    "12": {
+        "name": "Large Cup - 22 Oz",
+        "formula": "=Q3+Q5+Q7+Q9+Q11+Q13+Q15+Q17+Q19+Q49+Q50+Q51+Q52+Q53+Q56+Q57+Q60+Q61+Q62+Q63+Q64+Q65+Q66+Q119+Q120+Q121"
+    },
+    "13": {
+        "name": "Sedotan Besar",
+        "formula": "=Q49+Q50+Q53+65+66+(SUM(Q101:Q109))"
+    },
+    "14": {
+        "name": "Sedotan Kecil",
+        "formula": "=(SUM(Q2:Q19))+Q52+Q51+((SUM(Q54:Q66)))-(SUM(Q101:Q109))+Q19+Q20+Q21"
+    },
+    "17": {
+        "name": "Teh Bubuk Kayu Aro",
+        "formula": "=(U5/U4)*E39"
+    },
+    "18": {
+        "name": "Teh vanilla",
+        "formula": "=(U19/U18)*E44"
+    },
+    "19": {
+        "name": "Teh melati/jasmin",
+        "formula": "=(U19/U18)*E45"
+    },
+    "20": {
+        "name": "Teh bendera",
+        "formula": "=(U17/U16)*E39"
+    },
+    "22": {
+        "name": "Bubble Gum Powder",
+        "formula": "=(Q18+Q19)*30"
+    },
+    "23": {
+        "name": "Cotton Candy Powder",
+        "formula": "=Q52*30"
+    },
+    "24": {
+        "name": "Cream Cheese Powder",
+        "formula": "=(U9/U8)*E41"
+    },
+    "25": {
+        "name": "Es Permen Karet Powder",
+        "formula": "=(Q12+Q13)*30"
+    },
+    "26": {
+        "name": "Green Tea Powder",
+        "formula": "=(Q10+Q11+Q63)*30"
+    },
+    "27": {
+        "name": "Lemon Tea Powder",
+        "formula": "=(Q2+Q3)*30"
+    },
+    "28": {
+        "name": "Lychee Powder",
+        "formula": "=Q55*30"
+    },
+    "29": {
+        "name": "Lychee Tea Powder",
+        "formula": "=(Q4+Q5)*30"
+    },
+    "30": {
+        "name": "Mango Powder",
+        "formula": "=Q54*30"
+    },
+    "31": {
+        "name": "Milo Powder",
+        "formula": "=(Q35+Q57)*30"
+    },
+    "32": {
+        "name": "NDC Creamer Powder",
+        "formula": "=(U7/U6)*E43"
+    },
+    "33": {
+        "name": "Ovaltine Powder",
+        "formula": "=Q56*30"
+    },
+    "34": {
+        "name": "Red Velvet Powder",
+        "formula": "=Q51*30"
+    },
+    "35": {
+        "name": "Royal Chocolate Powder",
+        "formula": "=(Q14+Q15+Q16+Q17+Q64)*30"
+    },
+    "36": {
+        "name": "Taro Powder",
+        "formula": "=(Q8+Q9)*30"
+    },
+    "37": {
+        "name": "Vanilla Powder",
+        "formula": "=(Q49+Q50+Q53)*30"
+    },
+    "38": {
+        "name": "Cold Brew",
+        "formula": "=(Q58*100)+(Q59*120)"
+    },
+    "39": {
+        "name": "Biang Black Tea Kayu Aro",
+        "formula": "=Q65*100"
+    },
+    "40": {
+        "name": "Biang Thai Tea",
+        "formula": "=(Q7+Q6+Q60)*200"
+    },
+    "41": {
+        "name": "Cream Cheese",
+        "formula": "=(Q60+Q61+Q62+Q63+Q64+Q51+Q52+Q67)*30"
+    },
+    "42": {
+        "name": "Boba",
+        "formula": "=(Q37+Q65+Q66+Q68+Q103)*40"
+    },
+    "43": {
+        "name": "Creamer Cair",
+        "formula": "=(Q57+Q59+Q6+Q7+Q65+Q66)*30+(Q58*20)"
+    },
+    "44": {
+        "name": "biang vanilla",
+        "formula": "=Q120*200"
+    },
+    "45": {
+        "name": "biang melati/jasmin",
+        "formula": "=Q119*200"
+    },
+    "46": {
+        "name": "biang teh bendera",
+        "formula": "=Q121*200"
+    },
+    "47": {
+        "name": "Lotus / Biscoff Crumb",
+        "formula": "=((Q38+Q53+Q74+Q109)*30)+(Q88*15)"
+    },
+    "48": {
+        "name": "Oreo Crumbs",
+        "formula": "=((Q24+Q34+Q43+Q47+Q49+Q69+Q102)*30)+((Q82+Q86)*15)"
+    },
+    "49": {
+        "name": "Strawberry Jam",
+        "formula": "=((Q20+Q21+Q76+Q108)*30)+(Q85*15)"
+    },
+    "50": {
+        "name": "Mango Jam",
+        "formula": "=((Q25+Q77+Q105)*30)+(Q83*15)"
+    },
+    "51": {
+        "name": "Chocolate Topping / Chocolate Sauce",
+        "formula": "=((Q26+Q32+Q33+Q40+Q44+Q73+Q106)*30)+((Q81+Q87)*15)"
+    },
+    "52": {
+        "name": "Yakult",
+        "formula": "=Q54+Q55"
+    },
+    "53": {
+        "name": "Kacang Morin (Peanut)",
+        "formula": "=(Q40+Q75+Q104)*5"
+    },
+    "54": {
+        "name": "Meses",
+        "formula": "=Q13*225"
+    },
+    "55": {
+        "name": "Choco Chip",
+        "formula": "=Q115*22"
+    },
+    "56": {
+        "name": "Nutella",
+        "formula": "=Q117*22"
+    },
+    "57": {
+        "name": "Sereal",
+        "formula": "=Q114*6"
+    },
+    "58": {
+        "name": "Chaca Rainbow",
+        "formula": "=Q118*22"
+    },
+    "59": {
+        "name": "KitKat",
+        "formula": "=Q116*17"
+    },
+    "60": {
+        "name": "Softmix Vanilla",
+        "formula": "=(Q21*210)+(Q24*210)+(Q25*210)+(Q26*210)+(Q27*210)+(Q28*210)+(Q29*110)+(Q37*210)+(Q38*210)+(Q39*210)+(Q40*210)+(Q41*55)+(Q42*55)+(Q46*55)+(Q48*55)+(Q99*45)+(Q100*85)+(Q107*85)+((Q70+Q101)*100)+(200*(SUM(Q110:Q117)))"
+    },
+    "61": {
+        "name": "Softmix Mocca",
+        "formula": "=((Q43+Q44)*210)+(Q45*120)+(Q46*60)"
+    },
+    "62": {
+        "name": "Softmix Green Tea",
+        "formula": "=((Q30+Q32))*220+(Q31*120)+(Q42*60)"
+    },
+    "63": {
+        "name": "Softmix Strawberry",
+        "formula": "=(Q20+Q22)*210+(Q23*120)+(Q48*60)"
+    },
+    "64": {
+        "name": "Softmix Chocolate",
+        "formula": "=(Q33+Q34+Q35)*210+((Q41)*55)+((Q36+Q88+Q87+Q86)*110)"
+    },
+    "65": {
+        "name": "Cup 12 Oz",
+        "formula": "=Q20+Q21+Q22+Q24+Q25+Q26+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78"
+    },
+    "66": {
+        "name": "Cone",
+        "formula": "=Q23+Q29+Q31+Q36+Q41+Q42+Q45+Q46+Q48"
+    },
+    "67": {
+        "name": "Sendok Ice Cream",
+        "formula": "=Q20+Q21+Q22+Q24+Q25+Q26+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78+Q89+Q90+Q91+Q92+Q93+Q94+Q95+Q96+Q97"
+    },
+    "68": {
+        "name": "Cup 4 Oz",
+        "formula": "=SUM(Q89:Q97)"
+    },
+    "69": {
+        "name": "Donut Gula",
+        "formula": "=SUM(Q80:Q88)"
+    },
+    "70": {
+        "name": "Garpu Donut",
+        "formula": "=SUM(Q81:Q88)"
+    },
+    "71": {
+        "name": "Paper Tray",
+        "formula": "=SUM(Q81:Q88)"
+    },
+    "72": {
+        "name": "Pisau Donut",
+        "formula": "=SUM(Q81:Q88)"
+    },
+    "73": {
+        "name": "cup twist",
+        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117"
+    },
+    "74": {
+        "name": "tutup twist",
+        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117"
+    },
+    "75": {
+        "name": "sendok silky",
+        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117"
+    }
+}
