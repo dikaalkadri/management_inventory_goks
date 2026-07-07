@@ -13,7 +13,8 @@ MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200MB
 # Column indices (0-based) in the eResto order report export
 ERESTO_COL_ORDER_DATE = 0     # Column A
 ERESTO_COL_PRODUCT = 15       # Column P
-ERESTO_COL_PAID_QTY = 16      # Column Q
+ERESTO_COL_RAW_QTY = 21       # Column V (Quantity in raw eResto Excel)
+ERESTO_COL_CLEANED_QTY = 16   # Column Q (Target position in cleaned dataframe)
 
 # Columns to hide: B through O (1-based indices 2–15 for openpyxl)
 ERESTO_HIDE_COLS_START = 2    # Column B (1-based)

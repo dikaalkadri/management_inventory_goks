@@ -73,18 +73,16 @@
     },
     {
       "id": "fructose",
-      "name": "Fructose (5000)",
-      "display": "Fructose (5000)",
+      "name": "Fructose",
+      "display": "Fructose",
       "sheet": "Bahan Utama",
       "pdf_keywords": [
-        "fructose 5000",
-        "fructose 5.000",
         "fructose"
       ],
       "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
+      "pdf_unit_type": "gr",
       "excel_factor": 1,
-      "default_unit": "pcs"
+      "default_unit": "gr"
     },
     {
       "id": "gula_aren_bubuk",
@@ -189,7 +187,7 @@
       ],
       "pdf_unit_qty": 2440,
       "pdf_unit_type": "gr",
-      "excel_factor": 5,
+      "excel_factor": 1,
       "default_unit": "gr"
     },
     {
@@ -955,7 +953,7 @@
       "name": "Teh Poci Vanilla",
       "sheet": "Bahan Lainnya",
       "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
+      "pdf_unit_type": "gr",
       "excel_factor": 1,
       "default_unit": "pcs",
       "pdf_keywords": [
@@ -968,11 +966,12 @@
       "name": "Teh Poci Jasmin",
       "sheet": "Bahan Lainnya",
       "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
+      "pdf_unit_type": "gr",
       "excel_factor": 1,
       "default_unit": "pcs",
       "pdf_keywords": [
-        "teh poci jasmin"
+        "teh poci jasmin",
+        "teh poci jasmine"
       ],
       "id": "teh_poci_jasmin"
     },
@@ -990,60 +989,17 @@
       "id": "soft_mix_greentea"
     },
     {
-      "name": "Fructose (2000)",
-      "display": "Fructose (2000)",
-      "sheet": "Bahan Utama",
+      "name": "Teh Bendera",
+      "display": "Teh Bendera",
+      "sheet": "Bahan Lainnya",
       "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
+      "pdf_unit_type": "gr",
       "excel_factor": 1,
       "default_unit": "pcs",
       "pdf_keywords": [
-        "fructose 2000",
-        "fructose 2.000"
+        "Teh Bendera"
       ],
-      "id": "fructose_1"
-    },
-    {
-      "name": "Fructose (1000)",
-      "display": "Fructose (1000)",
-      "sheet": "Bahan Utama",
-      "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
-      "excel_factor": 1,
-      "default_unit": "pcs",
-      "pdf_keywords": [
-        "fructose 1000",
-        "fructose 1.000"
-      ],
-      "id": "fructose_2"
-    },
-    {
-      "name": "Fructose (10000)",
-      "display": "Fructose (10000)",
-      "sheet": "Bahan Utama",
-      "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
-      "excel_factor": 1,
-      "default_unit": "pcs",
-      "pdf_keywords": [
-        "fructose 10000",
-        "fructose 10.000"
-      ],
-      "id": "fructose_3"
-    },
-    {
-      "name": "Fructose (15000)",
-      "display": "Fructose (15000)",
-      "sheet": "Bahan Utama",
-      "pdf_unit_qty": 1,
-      "pdf_unit_type": "pcs",
-      "excel_factor": 1,
-      "default_unit": "pcs",
-      "pdf_keywords": [
-        "fructose 15000",
-        "fructose 15.000"
-      ],
-      "id": "fructose_4"
+      "id": "teh_bendera"
     }
   ],
   "outlets": [

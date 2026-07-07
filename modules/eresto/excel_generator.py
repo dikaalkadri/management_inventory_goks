@@ -108,7 +108,7 @@ def generate_excel(df, date_col, product_col, qty_col, master_products, month, y
     # - criteria2: T$1 (T$1, U$1, V$1, etc. depending on column)
     
     # openpyxl uses 1-based index
-    sum_range_letter = get_column_letter(config.ERESTO_COL_PAID_QTY + 1)   # Q
+    sum_range_letter = get_column_letter(config.ERESTO_COL_CLEANED_QTY + 1)   # Q
     criteria1_range_letter = get_column_letter(config.ERESTO_COL_PRODUCT + 1) # P
     criteria2_range_letter = get_column_letter(config.ERESTO_COL_ORDER_DATE + 1) # A
     product_col_letter = get_column_letter(config.ERESTO_SUMMARY_PRODUCT_COL) # S
@@ -205,7 +205,7 @@ def generate_excel(df, date_col, product_col, qty_col, master_products, month, y
     # Set Raw Data columns widths (A, P, Q)
     ws.column_dimensions[get_column_letter(config.ERESTO_COL_ORDER_DATE + 1)].width = 15
     ws.column_dimensions[get_column_letter(config.ERESTO_COL_PRODUCT + 1)].width = 25
-    ws.column_dimensions[get_column_letter(config.ERESTO_COL_PAID_QTY + 1)].width = 12
+    ws.column_dimensions[get_column_letter(config.ERESTO_COL_CLEANED_QTY + 1)].width = 12
     
     # Apply a blank empty visual separator for Column R
     sep_letter = get_column_letter(config.ERESTO_SUMMARY_PRODUCT_COL - 1)

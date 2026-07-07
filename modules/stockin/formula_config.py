@@ -29,7 +29,7 @@ SHEET_PASSWORD = "12345678"
 # S(19),T(20),U(21)   → baris 2–19   (semua sheet)
 # W(23),X(24)         → baris 1–123  (semua sheet; 122-123 = summary)
 
-AB_ROW_START    = 1;  AB_ROW_END    = 95
+A_ROW_START    = 1;  A_ROW_END    = 95
 D_ROW_START     = 1;  D_ROW_END     = 95
 IJKLM_ROW_START = 2;  IJKLM_ROW_END = 95
 OPQ_ROW_START   = 1;  OPQ_ROW_END   = 120
@@ -167,8 +167,8 @@ def apply_all(ws, lock_column_d=False):
                 cell.protection = Protection(locked=False)
 
     # ── STEP 2A: Kolom A (1) dan B (2) → baris 1–95, kuning + lock ───────────
-    for col in [1, 2]:
-        for r in range(AB_ROW_START, AB_ROW_END + 1):
+    for col in [1]:
+        for r in range(A_ROW_START, A_ROW_END + 1):
             _set_cell(ws, r, col, fill=FORMULA_FILL, locked=True)
 
     # ── STEP 2B: Kolom D (4) → baris 1–95, kuning + lock (sheet 02-31 saja) ──

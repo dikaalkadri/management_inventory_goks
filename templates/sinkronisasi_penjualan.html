@@ -164,6 +164,11 @@
         background: rgba(239, 68, 68, 0.1);
       }
 
+      .flash-highlight {
+        background-color: rgba(167, 139, 250, 0.4) !important;
+        color: white !important;
+      }
+
       .result-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -316,7 +321,10 @@
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             <span>Update Rumus Massal</span>
           </a>
-        </nav>
+                  <a href="/mass-hide" class="nav-item">
+            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
+          </a>
+</nav>
 
         <div class="sidebar-footer">
           <div class="user-profile">
@@ -353,362 +361,36 @@
                 </div>
                 <h3>1. Unggah File Excel</h3>
               </div>
-              <div class="card-body">
-                <div class="upload-pair">
-                  <div>
-                    <label
-                      style="
-                        font-size: 0.82rem;
-                        font-weight: 600;
-                        color: #b3b3b3;
-                        margin-bottom: 8px;
-                        display: block;
-                      "
+              <div class="card-body" id="pairsContainerBody">
+                <div id="pairsList">
+                  <!-- Dynamic pairs will be rendered here -->
+                </div>
+                <div style="margin-top: 16px; text-align: center;">
+                  <button id="addPairBtn" class="btn btn-secondary" style="background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); width: 100%; border-radius: 8px; padding: 12px; color: #fff; margin-bottom: 20px;">
+                    <i class="fa-solid fa-plus" style="margin-right: 8px;"></i> Tambah Outlet
+                  </button>
+                  
+                  <div class="action-box" style="margin-top: 10px;">
+                    <button
+                      class="btn btn-primary btn-large btn-block"
+                      id="processBtn"
                     >
-                      <i
-                        class="fa-solid fa-file-import"
-                        style="color: #a78bfa; margin-right: 6px"
-                      ></i
-                      >File Sumber (eResto Report)
-                      <span class="info-badge" style="margin-left: 6px"
-                        ><i class="fa-solid fa-circle-info"></i> Auto
-                        Extract</span
-                      >
-                    </label>
-                    <div class="upload-mini-zone" id="dropZoneSumber">
-                      <input type="file" id="fileSumber" accept=".xlsx,.xls" />
-                      <i
-                        class="fa-regular fa-file-excel drop-icon text-emerald-gradient"
-                      ></i>
-                      <h5>Seret atau klik untuk pilih</h5>
-                      <p>Format .xlsx / .xls</p>
-                    </div>
-                    <div
-                      class="file-attached"
-                      id="sumberAttached"
-                      style="display: none"
-                    >
-                      <i class="fa-solid fa-file-excel"></i>
-                      <span class="fa-name" id="sumberName"></span>
-                      <button class="fa-remove" id="removeSumber" title="Hapus">
-                        <i class="fa-solid fa-xmark"></i>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      style="
-                        font-size: 0.82rem;
-                        font-weight: 600;
-                        color: #b3b3b3;
-                        margin-bottom: 8px;
-                        display: block;
-                      "
-                    >
-                      <i
-                        class="fa-solid fa-file-export"
-                        style="color: #0ea5e9; margin-right: 6px"
-                      ></i
-                      >File Tujuan (SO Harian)
-                      <span
-                        class="info-badge"
-                        style="
-                          margin-left: 6px;
-                          background: rgba(14, 165, 233, 0.1);
-                          border-color: rgba(14, 165, 233, 0.3);
-                          color: #38bdf8;
-                        "
-                        ><i class="fa-solid fa-circle-info"></i> Sheet
-                        01-31</span
-                      >
-                    </label>
-                    <div class="upload-mini-zone" id="dropZoneTujuan">
-                      <input type="file" id="fileTujuan" accept=".xlsx,.xls" />
-                      <i
-                        class="fa-regular fa-file-excel drop-icon"
-                        style="color: #0ea5e9"
-                      ></i>
-                      <h5>Seret atau klik untuk pilih</h5>
-                      <p>Format .xlsx / .xls</p>
-                    </div>
-                    <div
-                      class="file-attached"
-                      id="tujuanAttached"
-                      style="display: none"
-                    >
-                      <i
-                        class="fa-solid fa-file-excel"
-                        style="color: #0ea5e9"
-                      ></i>
-                      <span class="fa-name" id="tujuanName"></span>
-                      <button class="fa-remove" id="removeTujuan" title="Hapus">
-                        <i class="fa-solid fa-xmark"></i>
-                      </button>
-                    </div>
+                      <i class="fa-solid fa-arrows-rotate btn-icon"></i>
+                      <span>Proses Sinkronisasi</span>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="card glass-card settings-card">
-              <div class="card-header">
-                <div class="card-header-icon bg-yellow-glow">
-                  <i class="fa-solid fa-store"></i>
+            <!-- Area Progress Bar -->
+            <div id="progressArea" class="card glass-card settings-card" style="display: none; margin-bottom: 20px;">
+              <div class="card-body text-center">
+                <h3 style="color: #fff; margin-bottom: 12px;">Sedang Memproses Sinkronisasi</h3>
+                <div style="width: 100%; background: rgba(255,255,255,0.1); border-radius: 10px; height: 16px; overflow: hidden; margin-bottom: 10px;">
+                  <div id="progressBarFill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.3s;"></div>
                 </div>
-                <h3>2. Pilih Outlet & Proses</h3>
-              </div>
-              <div class="card-body">
-                <div class="form-row">
-                  <div class="form-group col-12" style="width: 100%">
-                    <label for="selectOutlet" style="color: #ffffff"
-                      >Nama Outlet <span style="color: #ef4444">*</span></label
-                    >
-                    <select
-                      id="selectOutlet"
-                      class="form-control"
-                      style="
-                        background: rgba(255, 255, 255, 0.05);
-                        color: #fff;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                      "
-                    >
-                      <option value="" style="background: #ffffff">
-                        -- Pilih Outlet Terlebih Dahulu --
-                      </option>
-                      <option value="000. Gudang" style="background: #ffffff">
-                        000. Gudang
-                      </option>
-                      <option value="001. TC" style="background: #ffffff">
-                        001. TC
-                      </option>
-                      <option value="002. Ranah" style="background: #ffffff">
-                        002. Ranah
-                      </option>
-                      <option value="003. Kantor" style="background: #ffffff">
-                        003. Kantor
-                      </option>
-                      <option value="01. Taplau" style="background: #ffffff">
-                        01. Taplau
-                      </option>
-                      <option value="02. Air Tawar" style="background: #ffffff">
-                        02. Air Tawar
-                      </option>
-                      <option
-                        value="03. Gunung Pangilun"
-                        style="background: #ffffff"
-                      >
-                        03. Gunung Pangilun
-                      </option>
-                      <option value="04. Belibis" style="background: #ffffff">
-                        04. Belibis
-                      </option>
-                      <option value="05. Siteba" style="background: #ffffff">
-                        05. Siteba
-                      </option>
-                      <option
-                        value="06. Pasar Baru"
-                        style="background: #ffffff"
-                      >
-                        06. Pasar Baru
-                      </option>
-                      <option
-                        value="07. Tunggul Hitam"
-                        style="background: #ffffff"
-                      >
-                        07. Tunggul Hitam
-                      </option>
-                      <option value="08. Anduring" style="background: #ffffff">
-                        08. Anduring
-                      </option>
-                      <option value="09. Jati" style="background: #ffffff">
-                        09. Jati
-                      </option>
-                      <option value="10. Air Pacah" style="background: #ffffff">
-                        10. Air Pacah
-                      </option>
-                      <option
-                        value="11. Lubuk Begalung"
-                        style="background: #ffffff"
-                      >
-                        11. Lubuk Begalung
-                      </option>
-                      <option
-                        value="12. Balai Baru"
-                        style="background: #ffffff"
-                      >
-                        12. Balai Baru
-                      </option>
-                      <option
-                        value="13. Cendrawasih"
-                        style="background: #ffffff"
-                      >
-                        13. Cendrawasih
-                      </option>
-                      <option
-                        value="14. Seberang Padang"
-                        style="background: #ffffff"
-                      >
-                        14. Seberang Padang
-                      </option>
-                      <option
-                        value="15. Bandar Buat"
-                        style="background: #ffffff"
-                      >
-                        15. Bandar Buat
-                      </option>
-                      <option
-                        value="16. Air Dingin"
-                        style="background: #ffffff"
-                      >
-                        16. Air Dingin
-                      </option>
-                      <option value="17. Tabing" style="background: #ffffff">
-                        17. Tabing
-                      </option>
-                      <option value="18. Belimbing" style="background: #ffffff">
-                        18. Belimbing
-                      </option>
-                      <option value="19. Rawang" style="background: #ffffff">
-                        19. Rawang
-                      </option>
-                      <option
-                        value="20. Lubuk Buaya"
-                        style="background: #ffffff"
-                      >
-                        20. Lubuk Buaya
-                      </option>
-                      <option
-                        value="21. Parak Laweh"
-                        style="background: #ffffff"
-                      >
-                        21. Parak Laweh
-                      </option>
-                      <option
-                        value="22. Lubuk Lintah"
-                        style="background: #ffffff"
-                      >
-                        22. Lubuk Lintah
-                      </option>
-                      <option value="23. Kasang" style="background: #ffffff">
-                        23. Kasang
-                      </option>
-                      <option value="24. Bungus" style="background: #ffffff">
-                        24. Bungus
-                      </option>
-                      <option
-                        value="25. Lubuk Alung"
-                        style="background: #ffffff"
-                      >
-                        25. Lubuk Alung
-                      </option>
-                      <option
-                        value="26. Kurai Taji"
-                        style="background: #ffffff"
-                      >
-                        26. Kurai Taji
-                      </option>
-                      <option value="27. Lohong" style="background: #ffffff">
-                        27. Lohong
-                      </option>
-                      <option value="28. Manggung" style="background: #ffffff">
-                        28. Manggung
-                      </option>
-                      <option
-                        value="29. Pauh Kambar"
-                        style="background: #ffffff"
-                      >
-                        29. Pauh Kambar
-                      </option>
-                      <option value="30. Sicincin" style="background: #ffffff">
-                        30. Sicincin
-                      </option>
-                      <option
-                        value="31. Tanah Garam"
-                        style="background: #ffffff"
-                      >
-                        31. Tanah Garam
-                      </option>
-                      <option value="32. Selayo" style="background: #ffffff">
-                        32. Selayo
-                      </option>
-                      <option
-                        value="33. Gunung Talang"
-                        style="background: #ffffff"
-                      >
-                        33. Gunung Talang
-                      </option>
-                      <option
-                        value="34. Sungai Sarik"
-                        style="background: #ffffff"
-                      >
-                        34. Sungai Sarik
-                      </option>
-                      <option
-                        value="35. Simpang Rumbio"
-                        style="background: #ffffff"
-                      >
-                        35. Simpang Rumbio
-                      </option>
-                    </select>
-                    <small
-                      style="
-                        color: #888;
-                        font-size: 0.74rem;
-                        margin-top: 4px;
-                        display: block;
-                      "
-                    >
-                      <i
-                        class="fa-solid fa-triangle-exclamation"
-                        style="color: #f59e0b"
-                      ></i>
-                      Outlet wajib dipilih — digunakan untuk mencocokkan kode
-                      penamaan file otomatis
-                    </small>
-                  </div>
-                </div>
-
-                <div
-                  id="filenamePreview"
-                  style="
-                    display: none;
-                    background: rgba(123, 44, 191, 0.06);
-                    border: 1px solid rgba(123, 44, 191, 0.18);
-                    border-radius: 10px;
-                    padding: 10px 14px;
-                    margin-bottom: 16px;
-                  "
-                >
-                  <span
-                    style="
-                      font-size: 0.74rem;
-                      color: #b3b3b3;
-                      display: block;
-                      margin-bottom: 2px;
-                    "
-                    >Preview nama file output:</span
-                  >
-                  <span
-                    id="filenamePreviewText"
-                    style="
-                      font-size: 0.82rem;
-                      font-weight: 700;
-                      color: #a78bfa;
-                      font-family: monospace;
-                    "
-                  ></span>
-                </div>
-
-                <div class="action-box">
-                  <button
-                    class="btn btn-primary btn-large btn-block"
-                    id="processBtn"
-                  >
-                    <i class="fa-solid fa-arrows-rotate btn-icon"></i>
-                    <span>Proses Sinkronisasi</span>
-                  </button>
-                </div>
+                <p id="progressText" style="color: #b3b3b3; font-size: 0.85rem;">Mempersiapkan...</p>
               </div>
             </div>
 
@@ -893,8 +575,8 @@
 
     <script>
       // ── State ──
-      let fileSumberObj = null;
-      let fileTujuanObj = null;
+      let pairs = [];
+      let pairCounter = 0;
       let masterCatalogCache = [];
 
       // ── Toast Helper ──
@@ -917,100 +599,186 @@
         }, 4500);
       }
 
-      // ── Drag & Drop Setup ──
-      function setupDropZone(zoneId, inputId, attachedId, nameId, onFile) {
-        const zone = document.getElementById(zoneId);
-        const input = document.getElementById(inputId);
-        const attached = document.getElementById(attachedId);
-        const nameEl = document.getElementById(nameId);
+      function createPair() {
+        const id = ++pairCounter;
+        pairs.push({ id, fileSumber: null, fileTujuan: null });
+        renderPairs();
+      }
 
-        zone.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          zone.classList.add("drag-over");
-        });
-        zone.addEventListener("dragleave", () =>
-          zone.classList.remove("drag-over"),
-        );
-        zone.addEventListener("drop", (e) => {
-          e.preventDefault();
-          zone.classList.remove("drag-over");
-          const file = e.dataTransfer.files[0];
-          if (file) handleFile(file);
-        });
-        input.addEventListener("change", () => {
-          if (input.files[0]) handleFile(input.files[0]);
-        });
+      function removePair(id) {
+        pairs = pairs.filter(p => p.id !== id);
+        renderPairs();
+      }
 
-        function handleFile(file) {
-          if (!file.name.match(/\.(xlsx|xls)$/i)) {
-            showToast(
-              "Format file tidak didukung. Gunakan .xlsx atau .xls",
-              "error",
-            );
+      const outletsData = {{ outlets | tojson | safe }};
+      let outletOptionsHtml = '<option value="">-- Auto-Detect (Dari Nama File) --</option>';
+      if (outletsData && outletsData.length > 0) {
+          outletsData.forEach(o => {
+              outletOptionsHtml += `<option value="${o}" style="color: #000">${o}</option>`;
+          });
+      }
+
+      function renderPairs() {
+        const container = document.getElementById("pairsList");
+        container.innerHTML = "";
+        
+        if (pairs.length === 0) {
+            createPair(); // ensure at least one pair exists
             return;
+        }
+
+        pairs.forEach((pair, index) => {
+            const pairHtml = `
+                <div class="outlet-block" style="margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.2); overflow: hidden;">
+                    <!-- Header Outlet -->
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.95rem; color: #a78bfa; font-weight: bold;"><i class="fa-solid fa-store" style="margin-right: 8px;"></i>Outlet ${index + 1}</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select id="sel_outlet_${pair.id}" onchange="updateOutletSelection(${pair.id}, this.value)" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; transition: background-color 0.5s ease;">
+                                ${outletOptionsHtml.replace(`value="${pair.outletFallback || ''}"`, `value="${pair.outletFallback || ''}" selected`)}
+                            </select>
+                            ${pairs.length > 1 ? `<button onclick="removePair(${pair.id})" class="fa-remove" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem;" title="Hapus Outlet ini"><i class="fa-solid fa-xmark" style="margin-right: 5px;"></i>Hapus</button>` : '<span></span>'}
+                        </div>
+                    </div>
+                    <!-- Body Outlet -->
+                    <div style="display: flex; gap: 20px; padding: 18px;">
+                        <!-- Sumber -->
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.82rem; font-weight: 600; color: #b3b3b3; margin-bottom: 8px; display: block;">
+                                <i class="fa-solid fa-file-import" style="color: #a78bfa; margin-right: 6px"></i>File Sumber (eResto)
+                            </label>
+                            
+                            <div class="upload-mini-zone" id="dz_s_${pair.id}" style="${pair.fileSumber ? 'display:none;' : ''}">
+                                <input type="file" id="fi_s_${pair.id}" accept=".xlsx,.xls" onchange="handleFileSelect(this, ${pair.id}, 'sumber')" />
+                                <i class="fa-regular fa-file-excel drop-icon text-emerald-gradient"></i>
+                                <h5>Seret atau klik pilih</h5>
+                            </div>
+                            
+                            <div class="file-attached" id="at_s_${pair.id}" style="${pair.fileSumber ? 'display:flex;' : 'display:none;'}">
+                                <i class="fa-solid fa-file-excel"></i>
+                                <span class="fa-name" style="font-size: 0.75rem;">${pair.fileSumber ? pair.fileSumber.name : ''}</span>
+                                <button class="fa-remove" onclick="clearFile(${pair.id}, 'sumber')">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tujuan -->
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.82rem; font-weight: 600; color: #b3b3b3; margin-bottom: 8px; display: block;">
+                                <i class="fa-solid fa-file-export" style="color: #0ea5e9; margin-right: 6px"></i>File Tujuan (SO Harian)
+                            </label>
+                            
+                            <div class="upload-mini-zone" id="dz_t_${pair.id}" style="${pair.fileTujuan ? 'display:none;' : ''}">
+                                <input type="file" id="fi_t_${pair.id}" accept=".xlsx,.xls" onchange="handleFileSelect(this, ${pair.id}, 'tujuan')" />
+                                <i class="fa-regular fa-file-excel drop-icon" style="color: #0ea5e9"></i>
+                                <h5>Seret atau klik pilih</h5>
+                            </div>
+                            
+                            <div class="file-attached" id="at_t_${pair.id}" style="${pair.fileTujuan ? 'display:flex;' : 'display:none;'}">
+                                <i class="fa-solid fa-file-excel" style="color: #0ea5e9"></i>
+                                <span class="fa-name" style="font-size: 0.75rem;">${pair.fileTujuan ? pair.fileTujuan.name : ''}</span>
+                                <button class="fa-remove" onclick="clearFile(${pair.id}, 'tujuan')">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', pairHtml);
+            
+            // Re-bind drag and drop for this pair
+            bindDragDrop(pair.id, 'sumber');
+            bindDragDrop(pair.id, 'tujuan');
+        });
+      }
+
+      function bindDragDrop(id, type) {
+          const zoneId = type === 'sumber' ? `dz_s_${id}` : `dz_t_${id}`;
+          const zone = document.getElementById(zoneId);
+          if(!zone) return;
+          zone.addEventListener("dragover", (e) => { e.preventDefault(); zone.classList.add("drag-over"); });
+          zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+          zone.addEventListener("drop", (e) => {
+              e.preventDefault();
+              zone.classList.remove("drag-over");
+              if(e.dataTransfer.files[0]) {
+                  const input = document.getElementById(type === 'sumber' ? `fi_s_${id}` : `fi_t_${id}`);
+                  input.files = e.dataTransfer.files;
+                  handleFileSelect(input, id, type);
+              }
+          });
+      }
+
+      window.updateOutletSelection = function(id, value) {
+          const pair = pairs.find(p => p.id === id);
+          if (pair) pair.outletFallback = value;
+      };
+
+      function tryAutoDetectOutlet(id, filename) {
+          if (!outletsData || outletsData.length === 0) return;
+          const lowerName = filename.replace(/_/g, ' ').toLowerCase();
+          
+          let matchedOutlet = null;
+          for (let i = 0; i < outletsData.length; i++) {
+              const o = outletsData[i];
+              if (lowerName.includes(o.toLowerCase())) {
+                  matchedOutlet = o;
+                  break;
+              }
+              const oName = o.replace(/^\d+\.\s*/, '').toLowerCase();
+              if (oName && lowerName.includes(oName)) {
+                  matchedOutlet = o;
+                  break;
+              }
           }
-          onFile(file);
-          nameEl.textContent = file.name;
-          attached.style.display = "flex";
-          zone.style.display = "none";
-          updateFilenamePreview();
-        }
+          
+          if (matchedOutlet) {
+              const pair = pairs.find(p => p.id === id);
+              if (pair && !pair.outletFallback) {
+                  pair.outletFallback = matchedOutlet;
+                  const sel = document.getElementById(`sel_outlet_${id}`);
+                  if (sel) {
+                      sel.value = matchedOutlet;
+                      sel.classList.add("flash-highlight");
+                      setTimeout(() => sel.classList.remove("flash-highlight"), 1000);
+                  }
+              }
+          }
       }
 
-      setupDropZone(
-        "dropZoneSumber",
-        "fileSumber",
-        "sumberAttached",
-        "sumberName",
-        (f) => {
-          fileSumberObj = f;
-        },
-      );
-      setupDropZone(
-        "dropZoneTujuan",
-        "fileTujuan",
-        "tujuanAttached",
-        "tujuanName",
-        (f) => {
-          fileTujuanObj = f;
-        },
-      );
+      window.handleFileSelect = function(input, id, type) {
+          const file = input.files[0];
+          if (!file) return;
+          if (!file.name.match(/\.(xlsx|xls)$/i)) {
+              showToast("Format file tidak didukung. Gunakan .xlsx", "error");
+              return;
+          }
+          const pair = pairs.find(p => p.id === id);
+          if (pair) {
+              if (type === 'sumber') pair.fileSumber = file;
+              else pair.fileTujuan = file;
+              renderPairs();
+              tryAutoDetectOutlet(id, file.name);
+          }
+      };
 
-      // Remove buttons
-      document.getElementById("removeSumber").addEventListener("click", () => {
-        fileSumberObj = null;
-        document.getElementById("fileSumber").value = "";
-        document.getElementById("sumberAttached").style.display = "none";
-        document.getElementById("dropZoneSumber").style.display = "block";
-        updateFilenamePreview();
-      });
-      document.getElementById("removeTujuan").addEventListener("click", () => {
-        fileTujuanObj = null;
-        document.getElementById("fileTujuan").value = "";
-        document.getElementById("tujuanAttached").style.display = "none";
-        document.getElementById("dropZoneTujuan").style.display = "block";
-      });
+      window.clearFile = function(id, type) {
+          const pair = pairs.find(p => p.id === id);
+          if (pair) {
+              if (type === 'sumber') pair.fileSumber = null;
+              else pair.fileTujuan = null;
+              renderPairs();
+          }
+      };
 
-      // ── Filename Preview ──
-      function updateFilenamePreview() {
-        const outlet = document.getElementById("selectOutlet").value;
-        const preview = document.getElementById("filenamePreview");
-        const previewText = document.getElementById("filenamePreviewText");
-        if (outlet) {
-          const clean = outlet
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, "_")
-            .replace(/_+/g, "_")
-            .replace(/^_|_$/g, "");
-          previewText.textContent = `kerugian_${clean}_[bulan]_[tahun].xlsx`;
-          preview.style.display = "block";
-        } else {
-          preview.style.display = "none";
-        }
-      }
-      document
-        .getElementById("selectOutlet")
-        .addEventListener("change", updateFilenamePreview);
+      document.getElementById('addPairBtn').addEventListener('click', createPair);
+
+      // Initialize first pair
+      createPair();
+
+      // ── Filename Preview Removed ──
 
             // ── MASTER POS ──
       let posCache = [];
@@ -1122,124 +890,135 @@
       document
         .getElementById("processBtn")
         .addEventListener("click", async () => {
-          const outlet = document.getElementById("selectOutlet").value;
-          if (!outlet) {
-            showToast("⚠️ Pilih outlet terlebih dahulu!", "warning");
+          if (pairs.length === 0) {
+            showToast("⚠️ Tambahkan minimal 1 outlet!", "warning");
             return;
           }
-          if (!fileSumberObj) {
-            showToast(
-              "⚠️ Unggah File Sumber (eResto Report) terlebih dahulu!",
-              "warning",
-            );
-            return;
+
+          let isValid = true;
+          for (let i = 0; i < pairs.length; i++) {
+              if (!pairs[i].fileSumber || !pairs[i].fileTujuan) {
+                  isValid = false;
+                  break;
+              }
           }
-          if (!fileTujuanObj) {
-            showToast(
-              "⚠️ Unggah File Tujuan (SO Harian) terlebih dahulu!",
-              "warning",
-            );
+
+          if (!isValid) {
+            showToast("⚠️ Pastikan setiap outlet memiliki File Sumber dan File Tujuan!", "warning");
             return;
           }
 
           const btn = document.getElementById("processBtn");
           btn.disabled = true;
-          btn.innerHTML =
-            '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Memproses Sinkronisasi...</span>';
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Memproses...</span>';
 
-          const formData = new FormData();
-          formData.append("file_sumber", fileSumberObj);
-          formData.append("file_tujuan", fileTujuanObj);
-          formData.append("outlet", outlet);
+          const progressArea = document.getElementById("progressArea");
+          const progressBarFill = document.getElementById("progressBarFill");
+          const progressText = document.getElementById("progressText");
+          const downloadCard = document.getElementById("downloadCard");
+          const sheetTags = document.getElementById("sheetTags");
+          const downloadLinksContainer = document.createElement("div");
 
-          showToast(
-            "⏳ Sedang memproses integrasi sel & rumus. Mohon tunggu hingga 5 menit.",
-            "info",
-          );
+          progressArea.style.display = "block";
+          downloadCard.style.display = "none";
+          sheetTags.innerHTML = "";
+          
+          let oldLinks = document.getElementById("multiDownloadLinks");
+          if(oldLinks) oldLinks.remove();
 
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => {
-            controller.abort();
-          }, 300000);
+          let successCount = 0;
+          let totalUpdatedSheets = 0;
+          let downloadUrls = [];
 
-          try {
-            const response = await fetch("/api/sinkronisasi/proses", {
-              method: "POST",
-              body: formData,
-              signal: controller.signal,
-            });
-            clearTimeout(timeoutId);
-            const data = await response.json();
+          for (let i = 0; i < pairs.length; i++) {
+              const pair = pairs[i];
+              const progressPercentage = Math.round((i / pairs.length) * 100);
+              progressBarFill.style.width = `${progressPercentage}%`;
+              progressText.textContent = `Memproses Outlet ${i + 1} dari ${pairs.length}...`;
 
-            if (data.status === "ok") {
-              document.getElementById("downloadCard").style.display = "block";
-              document.getElementById("successMessage").textContent =
-                data.message || "Sinkronisasi berhasil!";
-              document.getElementById("statSheetUpdated").textContent =
-                data.updated_sheets_count || 0;
-              document.getElementById("statFileName").textContent =
-                data.filename || "-";
-              document.getElementById("downloadLink").href = data.download_url;
-
-              const sheetTags = document.getElementById("sheetTags");
-              sheetTags.innerHTML = "";
-              if (data.updated_sheets_count) {
-                for (let d = 1; d <= data.updated_sheets_count; d++) {
-                  const tag = document.createElement("span");
-                  tag.className = "sheet-tag";
-                  tag.textContent = `Sheet ${d.toString().padStart(2, "0")}`;
-                  sheetTags.appendChild(tag);
-                }
+              const formData = new FormData();
+              formData.append("file_sumber", pair.fileSumber);
+              formData.append("file_tujuan", pair.fileTujuan);
+              
+              const selOutlet = document.getElementById(`sel_outlet_${pair.id}`);
+              if (selOutlet && selOutlet.value) {
+                  formData.append("outlet", selOutlet.value);
               }
 
-              const a = document.createElement("a");
-              a.href = data.download_url;
-              a.click();
+              try {
+                  const response = await fetch("/api/sinkronisasi/proses", {
+                      method: "POST",
+                      body: formData,
+                  });
+                  const data = await response.json();
 
-              showToast(
-                "✅ " + (data.message || "Sinkronisasi berhasil!"),
-                "success",
-              );
-              document
-                .getElementById("downloadCard")
-                .scrollIntoView({ behavior: "smooth", block: "start" });
-            } else {
-              showToast(
-                data.message || "Terjadi kesalahan saat memproses file.",
-                "error",
-              );
-            }
-          } catch (err) {
-            clearTimeout(timeoutId);
-            if (err.name === "AbortError") {
-              showToast(
-                "⏱️ Request timeout (90 detik). File terlalu besar atau server sibuk.",
-                "error",
-              );
-            } else {
-              showToast("Gagal menghubungi server: " + err.message, "error");
-            }
-            console.error(err);
-          } finally {
-            btn.disabled = false;
-            btn.innerHTML =
-              '<i class="fa-solid fa-arrows-rotate btn-icon"></i><span>Proses Sinkronisasi</span>';
+                  if (data.status === "ok") {
+                      successCount++;
+                      totalUpdatedSheets += data.updated_sheets_count || 0;
+                      downloadUrls.push({ url: data.download_url, name: data.filename });
+                      
+                      // Auto-download langsung untuk file ini
+                      const a = document.createElement("a");
+                      a.href = data.download_url;
+                      a.download = data.filename || "";
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                  } else {
+                      showToast(`Outlet ${i + 1} gagal: ${data.message}`, "error");
+                  }
+              } catch (err) {
+                  showToast(`Outlet ${i + 1} gagal terhubung ke server.`, "error");
+                  console.error(err);
+              }
+          }
+
+          progressBarFill.style.width = "100%";
+          progressText.textContent = `Selesai! ${successCount} dari ${pairs.length} outlet berhasil.`;
+          
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-arrows-rotate btn-icon"></i><span>Proses Sinkronisasi</span>';
+
+          if (successCount > 0) {
+              downloadCard.style.display = "block";
+              document.getElementById("successMessage").textContent = `Berhasil mensinkronisasi ${successCount} outlet.`;
+              document.getElementById("statSheetUpdated").textContent = totalUpdatedSheets;
+              document.getElementById("statFileName").textContent = `(${successCount} File)`;
+              
+              document.getElementById("downloadLink").style.display = "none";
+
+              downloadLinksContainer.id = "multiDownloadLinks";
+              downloadLinksContainer.style.display = "flex";
+              downloadLinksContainer.style.flexDirection = "column";
+              downloadLinksContainer.style.gap = "10px";
+              downloadLinksContainer.style.marginBottom = "20px";
+
+              downloadUrls.forEach((file, idx) => {
+                  const btnHTML = `<a href="${file.url}" class="btn btn-success" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; width: 100%; text-align: left; padding: 10px; text-decoration: none; display: flex; align-items: center; border-radius: 8px;">
+                      <i class="fa-solid fa-cloud-arrow-down" style="margin-right: 8px; font-size: 1.2rem;"></i> <span>Download Hasil Outlet ${idx + 1}</span>
+                  </a>`;
+                  downloadLinksContainer.insertAdjacentHTML("beforeend", btnHTML);
+              });
+              
+              const actionsContainer = document.querySelector(".download-actions");
+              actionsContainer.parentNode.insertBefore(downloadLinksContainer, actionsContainer);
+
+              showToast(`✅ Sinkronisasi Selesai!`, "success");
+              downloadCard.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         });
 
       // ── Reset Button ──
       document.getElementById("resetBtn").addEventListener("click", () => {
-        fileSumberObj = null;
-        fileTujuanObj = null;
-        document.getElementById("fileSumber").value = "";
-        document.getElementById("fileTujuan").value = "";
-        document.getElementById("sumberAttached").style.display = "none";
-        document.getElementById("tujuanAttached").style.display = "none";
-        document.getElementById("dropZoneSumber").style.display = "block";
-        document.getElementById("dropZoneTujuan").style.display = "block";
+        pairs = [];
+        createPair(); // resets to 1 empty pair
+        
         document.getElementById("downloadCard").style.display = "none";
-        document.getElementById("selectOutlet").value = "";
-        document.getElementById("filenamePreview").style.display = "none";
+        document.getElementById("progressArea").style.display = "none";
+        
+        let oldLinks = document.getElementById("multiDownloadLinks");
+        if(oldLinks) oldLinks.remove();
+
         showToast("Form direset. Siap proses file baru.", "info");
         window.scrollTo({ top: 0, behavior: "smooth" });
       });

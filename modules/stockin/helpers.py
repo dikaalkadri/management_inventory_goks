@@ -164,7 +164,7 @@ def check_duplicate(ws, col_header_row, tanggal_str, masuk_keluar, keterangan, s
         cell_tgl = ws.cell(row=r, column=start_col)
         if cell_tgl.value is None:
             break
-        if str(cell_tgl.value) != tanggal_str:
+        if parse_date_to_ymd(cell_tgl.value) != parse_date_to_ymd(tanggal_str):
             continue
         if masuk_keluar == "Masuk" and ws.cell(row=r, column=start_col + 1).value in (None, ""):
             continue
@@ -187,11 +187,34 @@ def _write_stock_awal_row(ws, start_col, stock_row, stok_awal):
     ws.cell(row=stock_row, column=start_col + 3).value = float(stok_awal)
     ws.cell(row=stock_row, column=start_col + 4).value = "STOCK GUDANG AWAL"
 
+def parse_date_to_ymd(date_val):
+    if not date_val: return ""
+    date_str = str(date_val).strip()
+    try:
+        if len(date_str) >= 10:
+            if date_str[2] == '-' and date_str[5] == '-':
+                return datetime.strptime(date_str[:10], "%d-%m-%Y").strftime("%Y-%m-%d")
+            elif date_str[4] == '-' and date_str[7] == '-':
+                return date_str[:10]
+    except:
+        pass
+    return date_str
+
+def format_date_to_dmy(date_val):
+    if not date_val: return ""
+    date_str = str(date_val).strip()
+    try:
+        if len(date_str) >= 10 and date_str[4] == '-' and date_str[7] == '-':
+            return datetime.strptime(date_str[:10], "%Y-%m-%d").strftime("%d-%m-%Y")
+    except:
+        pass
+    return date_str
+
 def recalculate_item_stock(ws, start_col, stock_row=5):
     # 1. Kumpulkan semua data transaksi dari baris 5 ke bawah
     transactions = []
     for r in range(stock_row, ws.max_row + 2):
-        tanggal = ws.cell(row=r, column=start_col).value
+        tanggal = parse_date_to_ymd(ws.cell(row=r, column=start_col).value)
         masuk   = ws.cell(row=r, column=start_col + 1).value
         keluar  = ws.cell(row=r, column=start_col + 2).value
         sisa    = ws.cell(row=r, column=start_col + 3).value
@@ -245,7 +268,7 @@ def recalculate_item_stock(ws, start_col, stock_row=5):
     for t in transactions:
         is_stock_awal = str(t['ket'] or "").strip().upper() == "STOCK GUDANG AWAL"
         
-        ws.cell(row=current_row, column=start_col).value = t['tanggal']
+        ws.cell(row=current_row, column=start_col).value = format_date_to_dmy(t['tanggal'])
         ws.cell(row=current_row, column=start_col + 1).value = t['masuk']
         ws.cell(row=current_row, column=start_col + 2).value = t['keluar']
         ws.cell(row=current_row, column=start_col + 4).value = t['ket']

@@ -85,7 +85,10 @@
           <a href="/mass-update" class="nav-item active">
             <i class="fa-solid fa-wand-magic-sparkles"></i><span>Update Rumus Massal</span>
           </a>
-        </nav>
+                  <a href="/mass-hide" class="nav-item">
+            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
+          </a>
+</nav>
         <div class="sidebar-footer">
           <div class="user-profile">
             <i class="fa-solid fa-circle-user profile-icon"></i>
@@ -177,7 +180,8 @@
           </div>
 
           <div class="grid-col-5">
-            <div class="card glass-card">
+            <!-- Card Konfigurasi Rumus -->
+            <div class="card glass-card" style="margin-bottom: 20px;">
               <div class="card-header" style="justify-content: space-between; display: flex; align-items: center; width: 100%;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <div class="card-header-icon bg-yellow-glow">
@@ -186,7 +190,7 @@
                   <h3>Konfigurasi Rumus (Kolom J)</h3>
                 </div>
                 <button class="btn btn-success" id="saveFormulasBtn" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px;">
-                  <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan Permanen
+                  <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan
                 </button>
               </div>
               <div class="card-body" style="padding-top: 10px;">
@@ -196,7 +200,7 @@
                     <input type="text" id="searchFormula" class="form-control" placeholder="Cari nama bahan baku..." style="padding-left: 36px; height: 36px; font-size: 0.82rem; border-radius: 8px; width: 100%; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1);">
                   </div>
                 </div>
-                <div class="catalog-scroll-container" style="max-height: 500px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(20, 20, 25, 0.5);">
+                <div class="catalog-scroll-container" style="max-height: 250px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(20, 20, 25, 0.5);">
                   <table style="width: 100%; margin: 0; font-size: 0.8rem; border-collapse: collapse; table-layout: fixed;">
                     <thead style="background: rgba(234, 179, 8, 0.15); position: sticky; top: 0; z-index: 10;">
                       <tr class="catalog-table-header" style="border-bottom: 2px solid rgba(234, 179, 8, 0.3);">
@@ -206,6 +210,43 @@
                       </tr>
                     </thead>
                     <tbody id="formulasTableBody">
+                      <tr><td colspan="3" style="text-align: center; padding: 20px; color: #b3b3b3;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Konfigurasi Harga -->
+            <div class="card glass-card">
+              <div class="card-header" style="justify-content: space-between; display: flex; align-items: center; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="card-header-icon bg-emerald-glow">
+                    <i class="fa-solid fa-tags"></i>
+                  </div>
+                  <h3>Master Harga (Kolom W)</h3>
+                </div>
+                <button class="btn btn-success" id="savePricesBtn" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px; background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #34d399;">
+                  <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan
+                </button>
+              </div>
+              <div class="card-body" style="padding-top: 10px;">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <div style="position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #a3a3a3; font-size: 0.85rem;"></i>
+                    <input type="text" id="searchPrice" class="form-control" placeholder="Cari nama bahan baku..." style="padding-left: 36px; height: 36px; font-size: 0.82rem; border-radius: 8px; width: 100%; background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  </div>
+                </div>
+                <div class="catalog-scroll-container" style="max-height: 250px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(20, 20, 25, 0.5);">
+                  <table style="width: 100%; margin: 0; font-size: 0.8rem; border-collapse: collapse; table-layout: fixed;">
+                    <thead style="background: rgba(16, 185, 129, 0.15); position: sticky; top: 0; z-index: 10;">
+                      <tr class="catalog-table-header" style="border-bottom: 2px solid rgba(16, 185, 129, 0.3);">
+                        <th style="text-align: center; width: 50px; color: #34d399 !important;">Baris</th>
+                        <th style="text-align: left; width: 45%; color: #34d399 !important;">Nama Bahan</th>
+                        <th style="text-align: left; color: #34d399 !important;">Harga (Rp)</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pricesTableBody">
                       <tr><td colspan="3" style="text-align: center; padding: 20px; color: #b3b3b3;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data...</td></tr>
                     </tbody>
                   </table>
@@ -284,14 +325,28 @@
         });
       }
 
-      // Fetch Formulas
+      // Fetch Formulas and Materials
+      let matCache = [];
+
+      async function fetchMat() {
+        try {
+          const res = await fetch("/api/materials/list");
+          const data = await res.json();
+          if (data.status === "ok") {
+            matCache = data.items || [];
+          }
+        } catch (err) {}
+      }
+
       async function fetchFormulas() {
+        await fetchMat(); // Pastikan master materials sudah diambil
         try {
           const res = await fetch("/api/mass-update/formulas");
           const data = await res.json();
           if (data.status === "ok") {
             formulasData = data.formulas;
             renderFormulas(formulasData);
+            renderPrices(formulasData);
           }
         } catch (e) {
           showToast("Gagal mengambil data rumus", "error");
@@ -308,11 +363,37 @@
         tbody.innerHTML = keys.map(k => `
           <tr class="catalog-row-item" data-row="${k}">
             <td style="padding: 8px; text-align: center; color: #a3a3a3; font-weight: 600;">${k}</td>
-            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-name" value="${dataObj[k].name}"></td>
+            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-name" value="${dataObj[k].name}" onchange="syncName('${k}', this.value)"></td>
             <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-val" value="${dataObj[k].formula.replace(/"/g, '&quot;')}"></td>
           </tr>
         `).join("");
       }
+
+      function renderPrices(dataObj) {
+        const tbody = document.getElementById("pricesTableBody");
+        const keys = Object.keys(dataObj).sort((a,b) => parseInt(a) - parseInt(b));
+        if (keys.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px;">Data kosong</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = keys.map(k => {
+            const name = dataObj[k].name;
+            const mat = matCache.find(m => m.name.toLowerCase() === name.toLowerCase()) || { price: 0 };
+            return `
+              <tr class="catalog-row-item price-row" data-row="${k}">
+                <td style="padding: 8px; text-align: center; color: #a3a3a3; font-weight: 600;">${k}</td>
+                <td style="padding: 8px; color: #fff; font-size: 0.82rem;" class="price-name-disp" id="price_name_${k}">${name}</td>
+                <td style="padding: 8px;"><input type="number" class="catalog-input-text price-val" value="${mat.price || 0}" style="text-align: right;"></td>
+              </tr>
+            `;
+        }).join("");
+      }
+
+      // Sync name changes to the price table view
+      window.syncName = function(k, val) {
+          const el = document.getElementById(`price_name_${k}`);
+          if (el) el.textContent = val;
+      };
 
       document.getElementById("searchFormula").addEventListener("input", (e) => {
         const v = e.target.value.toLowerCase().trim();
@@ -323,6 +404,17 @@
           }
         }
         renderFormulas(filtered);
+      });
+
+      document.getElementById("searchPrice").addEventListener("input", (e) => {
+        const v = e.target.value.toLowerCase().trim();
+        const filtered = {};
+        for (const [k, obj] of Object.entries(formulasData)) {
+          if (obj.name.toLowerCase().includes(v)) {
+            filtered[k] = obj;
+          }
+        }
+        renderPrices(filtered);
       });
 
       document.getElementById("saveFormulasBtn").addEventListener("click", async () => {
@@ -348,6 +440,45 @@
           else showToast(data.message, "error");
         } catch (e) {
           showToast("Gagal menyimpan rumus", "error");
+        }
+      });
+
+      document.getElementById("savePricesBtn").addEventListener("click", async () => {
+        const rows = document.querySelectorAll("#pricesTableBody tr.price-row");
+        const itemsToSave = [];
+        
+        // Buat salinan matCache untuk diupdate
+        let updatedMatCache = [...matCache];
+        
+        rows.forEach(r => {
+          const k = r.getAttribute("data-row");
+          const name = r.querySelector(".price-name-disp").textContent.trim();
+          const price = parseFloat(r.querySelector(".price-val").value) || 0;
+          
+          let existing = updatedMatCache.find(m => m.name.toLowerCase() === name.toLowerCase());
+          if (existing) {
+              existing.price = price;
+          } else {
+              // Jika belum ada di master, buat entri baru
+              updatedMatCache.push({ name: name, category: "Bahan Baku", price: price });
+          }
+        });
+        
+        try {
+          const res = await fetch("/api/materials/save-all", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ items: updatedMatCache })
+          });
+          const data = await res.json();
+          if (data.status === "ok") {
+              showToast("Harga berhasil diperbarui di Master Data", "success");
+              matCache = updatedMatCache;
+          } else {
+              showToast(data.message, "error");
+          }
+        } catch (e) {
+          showToast("Gagal menyimpan harga", "error");
         }
       });
 

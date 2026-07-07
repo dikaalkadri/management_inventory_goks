@@ -33,7 +33,7 @@ def safe_write_cell(ws, row, col, value, number_format=None):
     except:
         pass
 
-def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output_folder):
+def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder, outlet=None):
     pos_list = load_pos()
     mat_list = load_materials()
     total_items = max(len(pos_list), len(mat_list))
@@ -100,6 +100,7 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
             continue
 
         ws_tujuan = wb_tujuan[sheet_name]
+        ws_tujuan.freeze_panes = 'C2'
 
         # Update header tanggal di kolom Q (17) row 1 sesuai tanggal sheet
         try:
@@ -201,6 +202,18 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
                 safe_write_cell(ws_tujuan, r, 2, "")
                 safe_write_cell(ws_tujuan, r, 23, "")
 
+        # 5a. Berikan warna ZigZag (Zebra) pada baris data sebelum rumus diterapkan
+        COLOR_EVEN_BG = "F5F7FA" # Warna biru-abu sangat muda dan soft
+        COLOR_ODD_BG  = "FFFFFF"
+        for row_idx in range(start_data_row, target_last_data_row + 1):
+            is_even = (row_idx - start_data_row) % 2 == 0
+            fill_color = COLOR_EVEN_BG if is_even else COLOR_ODD_BG
+            pattern = PatternFill("solid", fgColor=fill_color)
+            for col_idx in range(1, 14): # Kolom A (1) sampai M (13) saja
+                cell = ws_tujuan.cell(row=row_idx, column=col_idx)
+                if not isinstance(cell, MergedCell):
+                    cell.fill = pattern
+
         # 5b. Rumus Stock Awal kolom D dari Stok Akhir (kolom F) sheet sebelumnya
         #     Sheet "01" → input manual, kolom D tidak dikunci/kuning
         #     Sheet "02"-"31" → D{r} = ='{prev}'!F{r}
@@ -237,9 +250,36 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
                 start_cat_row = r
         
         # Eksekusi merge untuk blok kategori paling akhir
-        if len(pos_list) > 0 and (start_data_row + len(pos_list) - 1) > start_cat_row:
-            ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=start_data_row + len(pos_list) - 1, end_column=15)
-            ws_tujuan.cell(row=start_cat_row, column=15).alignment = Alignment(horizontal='center', vertical='center')
+        if len(pos_list) > 0:
+            last_r = start_data_row + len(pos_list) - 1
+            if last_r > start_cat_row:
+                ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=last_r, end_column=15)
+                ws_tujuan.cell(row=start_cat_row, column=15).alignment = Alignment(horizontal='center', vertical='center')
+            
+        # 6b. BERI GARIS TEBAL BAWAH UNTUK KATEGORI BAHAN BAKU (Kolom A sampai M)
+        thick_side = Side(style='medium', color='000000')
+        current_mat_cat = None
+
+        for idx in range(len(mat_list)):
+            r = start_data_row + idx
+            mat_cat = mat_list[idx].get('category', '').strip()
+            
+            if current_mat_cat is None:
+                current_mat_cat = mat_cat
+            elif current_mat_cat != mat_cat:
+                # Beri garis tebal bawah untuk kategori sebelumnya (Kolom A sampai M)
+                for col_idx in range(1, 14):
+                    cell = ws_tujuan.cell(row=r - 1, column=col_idx)
+                    cell.border = Border(left=cell.border.left, right=cell.border.right, top=cell.border.top, bottom=thick_side)
+                
+                current_mat_cat = mat_cat
+        
+        # Garis tebal untuk kategori bahan baku terakhir
+        if len(mat_list) > 0:
+            last_mat_r = start_data_row + len(mat_list) - 1
+            for col_idx in range(1, 14):
+                cell = ws_tujuan.cell(row=last_mat_r, column=col_idx)
+                cell.border = Border(left=cell.border.left, right=cell.border.right, top=cell.border.top, bottom=thick_side)
 
         # 7. Conditional Formatting: semua sel < 0 di area data → background merah
         red_fill = PatternFill(start_color="FFCCCC", end_color="FFCCCC", fill_type="solid")
@@ -376,16 +416,37 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, outlet, output
     # Freeze header
     ws_rekap.freeze_panes = "A3"
 
-    # Penamaan Output File
+    # Penamaan Output File: Otomatis berdasarkan nama file
+    sumber_filename = os.path.basename(sumber_path_xlsx) if sumber_path_xlsx else "unknown"
+    full_outlet_string = "unknown"
     try:
+        # load_inventory sudah di-import di awal file
         inv = load_inventory()
         outlets_list = inv.get("outlets", [])
-        full_outlet_string = next((o for o in outlets_list if outlet.lower() in o.lower()), outlet)
-    except:
-        full_outlet_string = outlet
+        
+        tujuan_check = tujuan_filename.replace('_', ' ').lower()
+        sumber_check = sumber_filename.replace('_', ' ').lower()
+        
+        # Prioritaskan outlet dari parameter jika ada (dari dropdown fallback)
+        if outlet and outlet.strip():
+            full_outlet_string = outlet.strip()
+        else:
+            for o in outlets_list:
+                o_lower = o.lower()
+                if o_lower in tujuan_check or o_lower in sumber_check:
+                    full_outlet_string = o
+                    break
+                # Fallback: cari namanya saja tanpa nomor (misal "taplau")
+                o_name = re.sub(r'^\d+\.\s*', '', o).lower()
+                if o_name and (o_name in tujuan_check or o_name in sumber_check):
+                    full_outlet_string = o
+                    break
+    except Exception as e:
+        print(f"[DEBUG SINKRONISASI] Error saat deteksi nama outlet: {e}")
 
     clean_outlet_name = re.sub(r'[^a-z0-9]', '_', full_outlet_string.lower()).strip('_')
     output_filename = f"kerugian_{clean_outlet_name}_{bulan_str}_{tahun_str}.xlsx"
+    
     output_filepath = os.path.join(output_folder, output_filename)
 
     ok, msg = safe_save_workbook(wb_tujuan, output_filepath)

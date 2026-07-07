@@ -6,29 +6,16 @@ import openpyxl
 
 from modules.stockin.helpers import convert_to_xlsx_if_needed
 
-def _safe_write(ws, row, col, value):
-    cell = ws.cell(row=row, column=col)
-    if type(cell).__name__ == 'MergedCell':
-        for merged_range in ws.merged_cells.ranges:
-            if (merged_range.min_row <= row <= merged_range.max_row and
-                    merged_range.min_col <= col <= merged_range.max_col):
-                cell = ws.cell(row=merged_range.min_row, column=merged_range.min_col)
-                break
-    try:
-        cell.value = value
-    except:
-        pass
-
-def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progress_tracker=None):
+def proses_mass_hide(file_paths, output_folder, job_id=None, progress_tracker=None):
     """
-    Memproses daftar file Excel, mengubah rumus di Kolom J sesuai data 'formulas',
+    Memproses daftar file Excel, menyembunyikan kolom O sampai X pada sheet harian (01-31),
     dan mengemas hasilnya ke dalam file ZIP.
     """
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
         
     timestamp = datetime.datetime.now().strftime("%Y%md_%H%M%S")
-    zip_filename = f"MassUpdate_Rumus_{timestamp}.zip"
+    zip_filename = f"MassHide_{timestamp}.zip"
     zip_path = os.path.join(output_folder, zip_filename)
     
     success_count = 0
@@ -38,8 +25,8 @@ def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progres
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for fpath in file_paths:
             basename = os.path.basename(fpath)
-            # Hilangkan prefix 'mu_' yang kita tambahkan di route
-            clean_basename = basename[3:] if basename.startswith("mu_") else basename
+            # Hilangkan prefix 'mh_' yang mungkin kita tambahkan di route
+            clean_basename = basename[3:] if basename.startswith("mh_") else basename
             
             try:
                 # Convert ke .xlsx jika perlu
@@ -54,29 +41,13 @@ def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progres
                     # Proses hanya sheet harian (01, 02, ..., 31)
                     if re.match(r"^\d{2}$", sheet_name.strip()):
                         ws = wb[sheet_name]
-                        # Buka proteksi sheet sementara jika diperlukan (Openpyxl terkadang bisa menulis cell yang di-lock, 
-                        # tapi amannya disable dulu)
+                        # Buka proteksi sheet sementara jika diperlukan
                         ws.protection.sheet = False
                         
-                        from services.catalog_service import load_materials
-                        mat_list = load_materials()
-                        mat_dict = {m.get('name', '').strip().lower(): m.get('price', 0) for m in mat_list}
+                        # Hide kolom O sampai X
+                        for col_letter in ['O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X']:
+                            ws.column_dimensions[col_letter].hidden = True
                         
-                        for row_str, item in formulas.items():
-                            try:
-                                row_idx = int(row_str)
-                                formula_val = item.get("formula", "")
-                                mat_name = item.get("name", "").strip().lower()
-                                
-                                if formula_val:
-                                    _safe_write(ws, row_idx, 10, formula_val) # Kolom J
-                                    
-                                if mat_name and mat_name in mat_dict:
-                                    price_val = mat_dict[mat_name]
-                                    _safe_write(ws, row_idx, 23, price_val) # Kolom W
-                            except ValueError:
-                                continue
-                                
                         # Kembalikan proteksi
                         ws.protection.sheet = True
                         ws.protection.password = "12345678"

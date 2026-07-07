@@ -14,7 +14,10 @@ sinkronisasi_bp = Blueprint('sinkronisasi', __name__, template_folder='../../tem
 
 @sinkronisasi_bp.route('/sinkronisasi')
 def sinkronisasi_page():
-    return render_template('sinkronisasi_penjualan.html')
+    from modules.stockin.helpers import load_inventory
+    inv = load_inventory()
+    outlets_list = inv.get("outlets", [])
+    return render_template('sinkronisasi_penjualan.html', outlets=outlets_list)
 
 # --- POS ROUTES ---
 @sinkronisasi_bp.route('/api/pos/list', methods=['GET'])
@@ -28,11 +31,8 @@ def api_save_pos_all():
     for item in updated_items:
         if not item.get('product', '').strip() or not item.get('category', '').strip():
             return jsonify({"status": "error", "message": "Nama produk dan kategori tidak boleh kosong!"}), 400
-        
-    ok, msg = save_pos(updated_items)
-    if not ok:
-        return jsonify({"status": "error", "message": msg}), 500
-    return jsonify({"status": "ok", "message": "Menu POS berhasil disimpan."})
+    save_pos(updated_items)
+    return jsonify({"status": "ok", "message": "Semua POS berhasil disimpan!"})
 
 @sinkronisasi_bp.route('/api/pos/add', methods=['POST'])
 def api_add_pos_item():
@@ -41,23 +41,25 @@ def api_add_pos_item():
     category = data.get('category', '').strip()
     
     if not product or not category:
-        return jsonify({"status": "error", "message": "Nama produk dan kategori wajib diisi!"}), 400
+        return jsonify({"status": "error", "message": "Nama produk dan kategori harus diisi!"}), 400
+        
     items = load_pos()
-    if any(item['product'].lower() == product.lower() for item in items):
-        return jsonify({"status": "error", "message": "Produk sudah ada!"}), 400
-    
+    for item in items:
+        if item.get('product', '').lower() == product.lower():
+            return jsonify({"status": "error", "message": f"Produk '{product}' sudah ada!"}), 400
+            
     items.append({"product": product, "category": category})
     save_pos(items)
-    return jsonify({"status": "ok", "message": "Menu POS ditambahkan!", "items": items})
+    return jsonify({"status": "ok", "message": "POS ditambahkan!", "items": items})
 
 @sinkronisasi_bp.route('/api/pos/delete', methods=['POST'])
 def api_delete_pos_item():
     data = request.json or {}
-    product_name = data.get('product', '').strip()
+    product = data.get('product', '').strip()
     items = load_pos()
-    new_items = [item for item in items if item.get('product', '').lower() != product_name.lower()]
+    new_items = [item for item in items if item.get('product', '').lower() != product.lower()]
     save_pos(new_items)
-    return jsonify({"status": "ok", "message": "Menu POS dihapus.", "items": new_items})
+    return jsonify({"status": "ok", "message": "POS dihapus.", "items": new_items})
 
 
 # --- MATERIALS ROUTES ---
@@ -72,15 +74,13 @@ def api_save_materials_all():
     for item in updated_items:
         if not item.get('name', '').strip() or not item.get('category', '').strip():
             return jsonify({"status": "error", "message": "Nama bahan dan kategori tidak boleh kosong!"}), 400
+        # Convert price string to float safely
         try:
             item['price'] = float(item.get('price', 0))
-        except:
+        except (ValueError, TypeError):
             item['price'] = 0.0
-        
-    ok, msg = save_materials(updated_items)
-    if not ok:
-        return jsonify({"status": "error", "message": msg}), 500
-    return jsonify({"status": "ok", "message": "Bahan Baku berhasil disimpan."})
+    save_materials(updated_items)
+    return jsonify({"status": "ok", "message": "Semua bahan baku berhasil disimpan!"})
 
 @sinkronisasi_bp.route('/api/materials/add', methods=['POST'])
 def api_add_materials_item():
@@ -122,8 +122,7 @@ def proses_sinkronisasi():
     file_tujuan = request.files['file_tujuan']
     outlet = request.form.get('outlet', '').strip()
     
-    if not outlet:
-        return jsonify({"status": "error", "message": "Warning: Outlet wajib dipilih!"}), 400
+    # Outlet parameter is optional now since filename is based on uploaded file
         
     from config import UPLOAD_FOLDER, OUTPUT_FOLDER
     sumber_filename = secure_filename(file_sumber.filename)

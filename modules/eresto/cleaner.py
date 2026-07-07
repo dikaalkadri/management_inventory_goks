@@ -2,13 +2,13 @@
 Data Cleaning Pipeline for eResto Order Report.
 
 Reads the raw eResto Excel export and produces a cleaned DataFrame
-with only the essential columns: Order Date, Product, Paid Qty.
+with only the essential columns: Order Date, Product, Quantity.
 
 Key operations:
-- Extract columns A (Order Date), P (Product), Q (Paid Qty)
+- Extract columns A (Order Date), P (Product), Q (Quantity)
 - Strip time from Order Date (keep date only)
 - Handle multiple date formats
-- Convert Paid Qty to numeric
+- Convert Quantity to numeric
 - Remove null/empty rows
 """
 import pandas as pd
@@ -38,11 +38,11 @@ def load_raw_data(filepath: str) -> pd.DataFrame:
 
 
 def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
-    """Identify key columns (Order Date, Product, Paid Qty) by name,
+    """Identify key columns (Order Date, Product, Quantity) by name,
     and reorder the DataFrame so that:
     - Order Date is in Column A (index 0)
     - Product is in Column P (index 15)
-    - Paid Qty is in Column Q (index 16)
+    - Quantity is in Column Q (index 16)
     All other columns are preserved in Columns B through O and Column R onwards.
     """
     col_names = df.columns.tolist()
@@ -50,7 +50,7 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
     # Find columns by name (case-insensitive matching)
     order_date_col = None
     product_col = None
-    paid_qty_col = None
+    qty_col = None
 
     for col in col_names:
         col_lower = str(col).strip().lower()
@@ -58,8 +58,8 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
             order_date_col = col
         elif col_lower in ['product', 'produk', 'nama produk', 'nama barang']:
             product_col = col
-        elif col_lower in ['paid qty', 'paid quantity', 'jumlah bayar', 'qty bayar']:
-            paid_qty_col = col
+        elif col_lower in ['quantity', 'qty']:
+            qty_col = col
 
     # Fallback to positional indices if not found by name
     if not order_date_col:
@@ -67,18 +67,18 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
     if not product_col:
         idx = min(config.ERESTO_COL_PRODUCT, len(col_names) - 1)
         product_col = col_names[idx]
-    if not paid_qty_col:
-        idx = min(config.ERESTO_COL_PAID_QTY, len(col_names) - 1)
-        paid_qty_col = col_names[idx]
+    if not qty_col:
+        idx = min(config.ERESTO_COL_RAW_QTY, len(col_names) - 1)
+        qty_col = col_names[idx]
 
-    # Rearrange the columns to put Order Date at index 0, Product at index 15, and Paid Qty at index 16
-    other_cols = [c for c in col_names if c not in (order_date_col, product_col, paid_qty_col)]
+    # Rearrange the columns to put Order Date at index 0, Product at index 15, and Quantity at index 16
+    other_cols = [c for c in col_names if c not in (order_date_col, product_col, qty_col)]
 
     # Pad other_cols if there are fewer than 14 columns
     while len(other_cols) < 14:
         other_cols.append(f"_empty_col_{len(other_cols)}")
 
-    new_col_order = [order_date_col] + other_cols[:14] + [product_col, paid_qty_col] + other_cols[14:]
+    new_col_order = [order_date_col] + other_cols[:14] + [product_col, qty_col] + other_cols[14:]
 
     # Create missing columns if we padded empty ones
     df_reordered = df.copy()
@@ -88,7 +88,7 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
 
     df_reordered = df_reordered[new_col_order]
 
-    return df_reordered, order_date_col, product_col, paid_qty_col
+    return df_reordered, order_date_col, product_col, qty_col
 
 
 def parse_order_dates(df: pd.DataFrame, date_col: str) -> pd.DataFrame:
@@ -136,8 +136,8 @@ def parse_order_dates(df: pd.DataFrame, date_col: str) -> pd.DataFrame:
     return df
 
 
-def clean_paid_qty(df: pd.DataFrame, qty_col: str) -> pd.DataFrame:
-    """Convert Paid Qty column to numeric, handling errors gracefully.
+def clean_qty(df: pd.DataFrame, qty_col: str) -> pd.DataFrame:
+    """Convert Quantity column to numeric, handling errors gracefully.
 
     Args:
         df: DataFrame with the quantity column.
@@ -156,7 +156,7 @@ def remove_empty_rows(
     product_col: str,
     qty_col: str
 ) -> pd.DataFrame:
-    """Remove rows where Product is empty or Paid Qty is 0/null.
+    """Remove rows where Product is empty or Quantity is 0/null.
 
     Args:
         df: DataFrame to clean.
@@ -183,7 +183,7 @@ def clean_data(filepath: str) -> dict:
 
     Pipeline:
     1. Load raw Excel
-    2. Extract key columns (Order Date, Product, Paid Qty)
+    2. Extract key columns (Order Date, Product, Quantity)
     3. Parse dates (strip time)
     4. Clean quantity (numeric conversion)
     5. Remove empty/invalid rows
@@ -197,7 +197,7 @@ def clean_data(filepath: str) -> dict:
         - 'df': Cleaned DataFrame (all original columns preserved)
         - 'date_col': Name of the Order Date column
         - 'product_col': Name of the Product column
-        - 'qty_col': Name of the Paid Qty column
+        - 'qty_col': Name of the Quantity column
         - 'total_rows_raw': Total rows before cleaning
         - 'total_rows_clean': Total rows after cleaning
         - 'unique_products': List of unique products found
@@ -216,7 +216,7 @@ def clean_data(filepath: str) -> dict:
     df = parse_order_dates(df, date_col)
 
     # Step 4: Clean quantities
-    df = clean_paid_qty(df, qty_col)
+    df = clean_qty(df, qty_col)
 
     # Step 5: Remove empty rows
     df = remove_empty_rows(df, product_col, qty_col)

@@ -3,57 +3,57 @@
     {
       "name": "Susu UHT",
       "category": "Bahan Baku Utama",
-      "price": 17.0
+      "price": 19.0
     },
     {
       "name": "Teh Bubuk Chatramue",
       "category": "Bahan Baku Utama",
-      "price": 123.0
+      "price": 150.0
     },
     {
       "name": "Tapioca Pearl",
       "category": "Bahan Baku Utama",
-      "price": 41.0
+      "price": 52.0
     },
     {
       "name": "Kopi Robusta Kerinci",
       "category": "Bahan Baku Utama",
-      "price": 120.0
+      "price": 139.0
     },
     {
       "name": "Fructose Syrup",
       "category": "Bahan Baku Utama",
-      "price": 20.0
+      "price": 21.0
     },
     {
       "name": "Gula Aren Bubuk",
       "category": "Bahan Baku Utama",
-      "price": 30.0
+      "price": 35.0
     },
     {
       "name": "Gula Aren Cair",
       "category": "Bahan Baku Utama",
-      "price": 55.0
+      "price": 41.0
     },
     {
       "name": "Carnation",
       "category": "Bahan Baku Utama",
-      "price": 27.0
+      "price": 31.0
     },
     {
       "name": "Hazelnut Syrup",
       "category": "Bahan Baku Utama",
-      "price": 113.0
+      "price": 112.0
     },
     {
       "name": "Small Cup - 14 Oz",
       "category": "Bahan Baku Utama",
-      "price": 530.0
+      "price": 685.0
     },
     {
       "name": "Large Cup - 22 Oz",
       "category": "Bahan Baku Utama",
-      "price": 504.0
+      "price": 685.0
     },
     {
       "name": "Sedotan Besar",
@@ -103,7 +103,7 @@
     {
       "name": "Bubble Gum Powder",
       "category": "Powder",
-      "price": 75.0
+      "price": 71.0
     },
     {
       "name": "Cotton Candy Powder",
@@ -118,47 +118,47 @@
     {
       "name": "Es Permen Karet Powder",
       "category": "Powder",
-      "price": 70.0
+      "price": 66.0
     },
     {
       "name": "Green Tea Powder",
       "category": "Powder",
-      "price": 73.0
+      "price": 74.0
     },
     {
       "name": "Lemon Tea Powder",
       "category": "Powder",
-      "price": 53.0
+      "price": 55.0
     },
     {
       "name": "Lychee Powder",
       "category": "Powder",
-      "price": 70.0
+      "price": 72.0
     },
     {
       "name": "Lychee Tea Powder",
       "category": "Powder",
-      "price": 53.0
+      "price": 55.0
     },
     {
       "name": "Mango Powder",
       "category": "Powder",
-      "price": 70.0
+      "price": 73.0
     },
     {
       "name": "Milo Powder",
       "category": "Powder",
-      "price": 94.0
+      "price": 110.0
     },
     {
       "name": "NDC Creamer Powder",
       "category": "Powder",
-      "price": 47.0
+      "price": 43.0
     },
     {
       "name": "Ovaltine Powder",
       "category": "Powder",
-      "price": 86.0
+      "price": 89.0
     },
     {
       "name": "Red Velvet Powder",
@@ -168,22 +168,22 @@
     {
       "name": "Royal Chocolate Powder",
       "category": "Powder",
-      "price": 69.0
+      "price": 116.0
     },
     {
       "name": "Taro Powder",
       "category": "Powder",
-      "price": 67.0
+      "price": 74.0
     },
     {
       "name": "Vanilla Powder",
       "category": "Powder",
-      "price": 72.0
+      "price": 71.0
     },
     {
       "name": "Cold Brew",
       "category": "Bahan Setengah Jadi",
-      "price": 25.0
+      "price": 29.0
     },
     {
       "name": "Biang Black Tea Kayu Aro",
@@ -203,57 +203,57 @@
     {
       "name": "Boba",
       "category": "Bahan Setengah Jadi",
-      "price": 36.0
+      "price": 44.0
     },
     {
       "name": "Creamer Cair",
       "category": "Bahan Setengah Jadi",
-      "price": 48.0
+      "price": 44.0
     },
     {
       "name": "Biang teh vanilla",
       "category": "Bahan Setengah Jadi",
-      "price": 30.0
+      "price": 2.0
     },
     {
       "name": "Biang teh melati",
       "category": "Bahan Setengah Jadi",
-      "price": 30.0
+      "price": 2.0
     },
     {
       "name": "Biang teh bendera",
       "category": "Bahan Setengah Jadi",
-      "price": 30.0
+      "price": 2.0
     },
     {
       "name": "Lotus Crumb",
       "category": "Topping",
-      "price": 176.0
+      "price": 200.0
     },
     {
       "name": "Oreo Crumbs",
       "category": "Topping",
-      "price": 55.0
+      "price": 64.0
     },
     {
       "name": "Strawberry Jam",
       "category": "Topping",
-      "price": 52.0
+      "price": 61.0
     },
     {
       "name": "Manggo Jam",
       "category": "Topping",
-      "price": 60.0
+      "price": 73.0
     },
     {
       "name": "Chocolate Topping",
       "category": "Topping",
-      "price": 57.0
+      "price": 52.0
     },
     {
       "name": "Yakult",
       "category": "Topping",
-      "price": 1870.0
+      "price": 1990.0
     },
     {
       "name": "Kacang Morin",
@@ -263,42 +263,42 @@
     {
       "name": "Meses",
       "category": "Topping",
-      "price": 0.0
+      "price": 57.0
     },
     {
       "name": "Choco Chip",
       "category": "Topping",
-      "price": 0.0
+      "price": 78.0
     },
     {
       "name": "Nutella",
       "category": "Topping",
-      "price": 0.0
+      "price": 213.0
     },
     {
       "name": "Sereal",
       "category": "Topping",
-      "price": 0.0
+      "price": 160.0
     },
     {
       "name": "Chaca Rainbow",
       "category": "Topping",
-      "price": 0.0
+      "price": 51.0
     },
     {
       "name": "Kitkat",
       "category": "Topping",
-      "price": 0.0
+      "price": 260.0
     },
     {
       "name": "Softmix Vanilla",
       "category": "Ice Cream",
-      "price": 18.0
+      "price": 17.0
     },
     {
       "name": "Softmix Mocca",
       "category": "Ice Cream",
-      "price": 18.0
+      "price": 17.0
     },
     {
       "name": "Softmix Green Tea",
@@ -318,17 +318,17 @@
     {
       "name": "Cup 12 Oz",
       "category": "Ice Cream",
-      "price": 480.0
+      "price": 675.0
     },
     {
       "name": "Cone",
       "category": "Ice Cream",
-      "price": 602.0
+      "price": 595.0
     },
     {
       "name": "Sendok Ice Cream",
       "category": "Ice Cream",
-      "price": 64.0
+      "price": 66.0
     },
     {
       "name": "Cup 4 Oz",
@@ -343,7 +343,7 @@
     {
       "name": "Garpu Donut",
       "category": "Ice Cream",
-      "price": 60.0
+      "price": 117.0
     },
     {
       "name": "Paper Tray",
@@ -353,12 +353,12 @@
     {
       "name": "Pisau Donut",
       "category": "Ice Cream",
-      "price": 117.0
+      "price": 120.0
     },
     {
       "name": "Cup Twist",
       "category": "Ice Cream",
-      "price": 0.0
+      "price": 1030.0
     },
     {
       "name": "Tutup Twist",
@@ -368,7 +368,7 @@
     {
       "name": "Sendok Silky Pudding",
       "category": "Pudding",
-      "price": 0.0
+      "price": 400.0
     },
     {
       "name": "Paper Bag",

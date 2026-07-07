@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goks! Format Laporan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/static/css/eresto.css" />
+
+    <style>
+      .content-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 24px !important;
+        width: 100% !important;
+        align-items: flex-start !important;
+      }
+      .grid-col-center { flex: 0 0 60% !important; max-width: 60% !important; display: flex !important; flex-direction: column !important; gap: 20px !important; margin: 0 auto; }
+      @media (max-width: 1100px) {
+        .grid-col-center { flex: 0 0 100% !important; max-width: 100% !important; }
+      }
+
+      .upload-zone {
+        border: 2px dashed rgba(123, 44, 191, 0.35);
+        border-radius: 14px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        background: rgba(123, 44, 191, 0.03);
+        position: relative;
+      }
+      .upload-zone:hover, .upload-zone.drag-over { border-color: #7b2cbf; background: rgba(123, 44, 191, 0.08); }
+      .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+      .upload-zone .drop-icon { font-size: 3rem; margin-bottom: 15px; display: block; color: #a78bfa; }
+      
+      .file-list { margin-top: 15px; max-height: 250px; overflow-y: auto; text-align: left; }
+      .file-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1); }
+      .file-item i { color: #10b981; margin-right: 12px; font-size: 1.1rem; }
+      .file-item span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    </style>
+  </head>
+
+  <body>
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
+
+    <div class="app-container">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <i class="fa-solid fa-chart-line-up brand-icon"></i>
+          <div class="brand-info">
+            <span class="brand-name">Goks!</span>
+            <span class="brand-tag">F&B Automation</span>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-item">
+            <i class="fa-solid fa-truck-ramp-box"></i><span>Stock-In Gudang</span>
+          </a>
+          <a href="/settings" class="nav-item">
+            <i class="fa-solid fa-gears"></i><span>Konfigurasi SO</span>
+          </a>
+          <a href="/eresto" class="nav-item">
+            <i class="fa-solid fa-file-excel"></i><span>eResto Analysis</span>
+          </a>
+          <a href="/sinkronisasi" class="nav-item">
+            <i class="fa-solid fa-arrows-rotate"></i><span>Sinkronisasi Penjualan</span>
+          </a>
+          <a href="/mass-update" class="nav-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i><span>Update Rumus Massal</span>
+          </a>
+          <a href="/mass-hide" class="nav-item active">
+            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <i class="fa-solid fa-circle-user profile-icon"></i>
+            <div><div class="profile-name">Outlet Manager</div><div class="profile-role">Administrator</div></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="app-main">
+        <header class="main-header">
+          <div class="header-title">
+            <h1>Format Laporan (Hide Kolom O-X)</h1>
+            <p class="header-subtitle">
+              Sembunyikan kolom O sampai X pada sheet harian secara massal untuk file Excel outlet.
+            </p>
+          </div>
+          <div class="header-status">
+            <span class="status-indicator online"></span><span class="status-text">System Active</span>
+          </div>
+        </header>
+
+        <div class="content-grid">
+          <div class="grid-col-center">
+            <div class="card glass-card upload-card" id="uploadCard">
+              <div class="card-header" style="justify-content: center; text-align: center;">
+                <div class="card-header-icon bg-purple-glow">
+                  <i class="fa-solid fa-eye-slash"></i>
+                </div>
+                <h3>Unggah File Excel</h3>
+              </div>
+              <div class="card-body">
+                <div class="upload-zone" id="dropZoneMulti">
+                  <input type="file" id="fileMulti" accept=".xlsx,.xls" multiple />
+                  <i class="fa-solid fa-file-circle-plus drop-icon"></i>
+                  <h4 style="color: white; margin-bottom: 8px;">Seret file atau klik di sini</h4>
+                  <p style="color: #b3b3b3; font-size: 0.9rem;">Pilih beberapa file Excel sekaligus untuk diformat</p>
+                </div>
+                <div class="file-list" id="fileListContainer" style="display: none;">
+                  <!-- list of files will be generated here -->
+                </div>
+                <div class="action-box" style="margin-top: 30px;">
+                  <button class="btn btn-primary btn-large btn-block" id="processBtn" style="font-size: 1.1rem; padding: 15px;">
+                    <i class="fa-solid fa-wand-magic-sparkles btn-icon"></i>
+                    <span>Mulai Format Laporan</span>
+                  </button>
+                </div>
+                
+                <div id="progressContainer" style="display: none; margin-top: 25px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 12px; color: #b3b3b3; font-weight: 600;">
+                    <span><i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: #a78bfa;"></i>Sedang memproses file...</span>
+                    <span id="progressText">0 / 0</span>
+                  </div>
+                  <div style="width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; position: relative;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #7b2cbf, #a78bfa); transition: width 0.3s ease-in-out;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card glass-card download-card animate-pulse" id="downloadCard" style="display: none">
+              <div class="card-body text-center">
+                <div class="success-icon-wrapper" style="font-size: 4rem; color: #34d399; margin-bottom: 20px;">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2 style="margin-bottom: 15px;">Proses Selesai!</h2>
+                <p class="download-desc" id="successMessage" style="color: #b3b3b3; margin-bottom: 25px;">Kolom O sampai X berhasil disembunyikan pada semua file.</p>
+                <div class="result-stats" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 30px;">
+                  <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 15px 30px; border-radius: 12px;">
+                    <span id="statSuccess" style="font-size: 2rem; font-weight: bold; color: #34d399; display: block;">0</span>
+                    <span style="font-size: 0.85rem; color: #b3b3b3;">Berhasil</span>
+                  </div>
+                  <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 15px 30px; border-radius: 12px;">
+                    <span id="statFail" style="font-size: 2rem; font-weight: bold; color: #f87171; display: block;">0</span>
+                    <span style="font-size: 0.85rem; color: #b3b3b3;">Gagal</span>
+                  </div>
+                </div>
+                <div id="errorContainer" style="text-align: left; font-size: 0.85rem; color: #f87171; max-height: 150px; overflow-y: auto; margin-bottom: 20px; background: rgba(239, 68, 68, 0.05); padding: 10px; border-radius: 8px;"></div>
+                <div class="download-actions" style="display: flex; justify-content: center; gap: 15px;">
+                  <a href="#" class="btn btn-success btn-large" id="downloadLink" style="padding: 12px 25px; font-size: 1.05rem;">
+                    <i class="fa-solid fa-cloud-arrow-down btn-icon"></i>
+                    <span>Download Hasil (.zip)</span>
+                  </a>
+                  <button class="btn btn-secondary" id="resetBtn" onclick="location.reload()" style="padding: 12px 20px;">
+                    <i class="fa-solid fa-rotate-left"></i> Mulai Ulang
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="alert-toast-container" id="toastContainer"></div>
+
+    <script>
+      let uploadedFiles = [];
+
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        const icons = { success: "fa-circle-check", error: "fa-circle-xmark", warning: "fa-triangle-exclamation", info: "fa-circle-info" };
+        toast.className = `alert-toast alert-${type}`;
+        toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateX(100%)";
+          setTimeout(() => toast.remove(), 300);
+        }, 4500);
+      }
+
+      // Drag and drop logic
+      const dropZone = document.getElementById("dropZoneMulti");
+      const fileInput = document.getElementById("fileMulti");
+      const fileListContainer = document.getElementById("fileListContainer");
+
+      dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+      dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault(); dropZone.classList.remove("drag-over");
+        handleFiles(e.dataTransfer.files);
+      });
+      fileInput.addEventListener("change", () => handleFiles(fileInput.files));
+
+      function handleFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].name.match(/\.(xlsx|xls)$/i)) {
+            uploadedFiles.push(files[i]);
+          }
+        }
+        renderFileList();
+      }
+
+      function removeFile(index) {
+        uploadedFiles.splice(index, 1);
+        renderFileList();
+      }
+
+      function renderFileList() {
+        fileListContainer.innerHTML = "";
+        if (uploadedFiles.length === 0) {
+          fileListContainer.style.display = "none";
+          return;
+        }
+        fileListContainer.style.display = "block";
+        uploadedFiles.forEach((f, idx) => {
+          const div = document.createElement("div");
+          div.className = "file-item";
+          div.innerHTML = `<div style="display: flex; align-items: center; overflow: hidden;"><i class="fa-solid fa-file-excel"></i><span>${f.name}</span></div>
+                           <button onclick="removeFile(${idx})" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0 5px;"><i class="fa-solid fa-xmark" style="margin:0"></i></button>`;
+          fileListContainer.appendChild(div);
+        });
+      }
+
+      document.getElementById("processBtn").addEventListener("click", async () => {
+        if (uploadedFiles.length === 0) {
+          showToast("Unggah minimal 1 file Excel", "warning");
+          return;
+        }
+        
+        const btn = document.getElementById("processBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Memproses ' + uploadedFiles.length + ' File...</span>';
+        
+        const jobId = "job_" + Date.now();
+        const formData = new FormData();
+        formData.append("job_id", jobId);
+        uploadedFiles.forEach(f => formData.append("files[]", f));
+        
+        document.getElementById("progressContainer").style.display = "block";
+        document.getElementById("progressBar").style.width = "0%";
+        document.getElementById("progressText").textContent = "0 / " + uploadedFiles.length;
+        
+        const progressInterval = setInterval(async () => {
+          try {
+            const r = await fetch("/api/mass-hide/progress/" + jobId);
+            const d = await r.json();
+            if (d.total > 0) {
+              const pct = Math.min(100, Math.round((d.current / d.total) * 100));
+              document.getElementById("progressBar").style.width = pct + "%";
+              document.getElementById("progressText").textContent = d.current + " / " + d.total;
+            }
+          } catch(err) {}
+        }, 1000);
+        
+        showToast("⏳ Sedang memproses format laporan...", "info");
+        
+        try {
+          const res = await fetch("/api/mass-hide/process", {
+            method: "POST",
+            body: formData
+          });
+          const data = await res.json();
+          
+          clearInterval(progressInterval);
+          document.getElementById("progressBar").style.width = "100%";
+          document.getElementById("progressText").textContent = uploadedFiles.length + " / " + uploadedFiles.length;
+          
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Format Laporan</span>';
+          
+          if (data.status === "ok") {
+            setTimeout(() => {
+                document.getElementById("downloadCard").style.display = "block";
+                document.getElementById("uploadCard").style.display = "none";
+                document.getElementById("statSuccess").textContent = data.success_count;
+                document.getElementById("statFail").textContent = data.fail_count;
+                
+                const errDiv = document.getElementById("errorContainer");
+                if (data.errors && data.errors.length > 0) {
+                  errDiv.innerHTML = data.errors.map(e => `<div><i class="fa-solid fa-circle-exclamation"></i> ${e}</div>`).join("");
+                  errDiv.style.display = "block";
+                } else {
+                  errDiv.innerHTML = "";
+                  errDiv.style.display = "none";
+                }
+                
+                document.getElementById("downloadLink").href = data.download_url;
+                showToast("Proses format selesai!", "success");
+                
+                // Auto download
+                const a = document.createElement("a");
+                a.href = data.download_url;
+                a.click();
+            }, 800);
+          } else {
+            showToast(data.message, "error");
+            document.getElementById("progressContainer").style.display = "none";
+          }
+        } catch (e) {
+          clearInterval(progressInterval);
+          showToast("Terjadi kesalahan sistem", "error");
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Format Laporan</span>';
+          document.getElementById("progressContainer").style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

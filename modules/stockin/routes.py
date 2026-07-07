@@ -360,7 +360,7 @@ def upload_pdf():
                 "DESEMBER": "12", "DES": "12", "DEC": "12", "DECEMBER": "12"
             }
             if month_str in MONTHS:
-                tanggal = f"{year}-{MONTHS[month_str]}-{day}"
+                tanggal = f"{day}-{MONTHS[month_str]}-{year}"
                 outlet = rest_fn.replace('_', ' ')
         
         for line in lines:
@@ -414,6 +414,17 @@ def upload_pdf():
                                 qty_raw = maybe_qty
                     except:
                         pass
+                
+                # Logic khusus untuk SKM berdasarkan kelipatan berat
+                if item['id'].startswith('skm_'):
+                    if qty_raw % 2440 == 0 and qty_raw > 0:
+                        skm_2440_item = next((i for i in items_config if i['id'] == 'skm_2440'), None)
+                        if skm_2440_item:
+                            item = skm_2440_item
+                    elif qty_raw % 2000 == 0 and qty_raw > 0:
+                        skm_2000_item = next((i for i in items_config if i['id'] == 'skm_2000'), None)
+                        if skm_2000_item:
+                            item = skm_2000_item
                         
                 pdf_unit_qty = item.get('pdf_unit_qty', 1)
                 excel_factor = item.get('excel_factor', 1)
