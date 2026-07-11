@@ -11,24 +11,28 @@ from openpyxl.utils import get_column_letter
 from xls2xlsx import XLS2XLSX
 import openpyxl
 from datetime import datetime, timedelta
+import config
 
 def load_inventory():
-    with open('inventory.json', 'r', encoding='utf-8') as f:
+    path = os.path.join(config.BASE_DIR, 'data', 'inventory.json')
+    with open(path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def save_inventory(data):
-    with open('inventory.json', 'w', encoding='utf-8') as f:
+    path = os.path.join(config.BASE_DIR, 'data', 'inventory.json')
+    with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def load_app_config():
-    cfg_path = 'app_config.json'
+    cfg_path = os.path.join(config.BASE_DIR, 'data', 'app_config.json')
     if not os.path.exists(cfg_path):
         return {"excel_filename": "", "excel_folder": "", "stok_awal": {}}
     with open(cfg_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def save_app_config(data):
-    with open('app_config.json', 'w', encoding='utf-8') as f:
+    path = os.path.join(config.BASE_DIR, 'data', 'app_config.json')
+    with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def convert_to_xlsx_if_needed(filepath):

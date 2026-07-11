@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goks! eResto Mass Analysis</title>
+    <meta name="description" content="Upload satu file eResto gabungan semua outlet, proses otomatis, dan download ZIP berisi analisa penjualan per outlet." />
+    <!-- Modern Typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Shared eResto styles + Mass-specific overrides -->
+    <link rel="stylesheet" href="/static/css/eresto.css" />
+    <style>
+      /* ── Mass Analysis overrides ───────────────────────── */
+      .outlet-table-wrap {
+        max-height: 340px;
+        overflow-y: auto;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.08);
+        margin-top: 14px;
+      }
+      .outlet-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .outlet-table thead th {
+        position: sticky;
+        top: 0;
+        background: rgba(90, 24, 154, 0.85);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 14px;
+        text-align: left;
+        font-family: 'Outfit', sans-serif;
+        backdrop-filter: blur(6px);
+        z-index: 1;
+      }
+      .outlet-table tbody tr {
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        transition: background 0.15s;
+      }
+      .outlet-table tbody tr:hover {
+        background: rgba(255,255,255,0.04);
+      }
+      .outlet-table tbody td {
+        padding: 9px 14px;
+        color: rgba(255,255,255,0.82);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .outlet-table tbody td:first-child {
+        color: #e0aaff;
+        font-weight: 500;
+      }
+      .outlet-badge {
+        display: inline-block;
+        background: rgba(123,44,191,0.3);
+        color: #e0aaff;
+        border: 1px solid rgba(224,170,255,0.25);
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .skipped-list {
+        margin-top: 10px;
+        padding: 12px 16px;
+        background: rgba(255,100,100,0.08);
+        border: 1px solid rgba(255,100,100,0.2);
+        border-radius: 10px;
+        color: rgba(255,160,160,0.9);
+        font-size: 13px;
+      }
+      .skipped-list strong {
+        color: #ff9999;
+      }
+      .result-meta-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .result-meta-box {
+        flex: 1;
+        min-width: 120px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 14px 16px;
+        text-align: center;
+      }
+      .result-meta-box .meta-val {
+        font-size: 26px;
+        font-weight: 700;
+        color: #e0aaff;
+        font-family: 'Outfit', sans-serif;
+        display: block;
+      }
+      .result-meta-box .meta-lbl {
+        font-size: 12px;
+        color: rgba(255,255,255,0.5);
+        margin-top: 2px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .processed-list {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 12px;
+      }
+      .processed-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: rgba(255,255,255,0.8);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .processed-item i { color: #4ade80; font-size: 12px; }
+      .processed-item:nth-child(even) { background: rgba(255,255,255,0.025); }
+
+      /* ZIP download card accent */
+      .download-card.zip-card .success-icon-wrapper i {
+        color: #fbbf24;
+      }
+      .download-card.zip-card h3 { color: #fbbf24; }
+      .btn-zip {
+        background: linear-gradient(135deg, #d97706, #f59e0b);
+        color: #fff;
+        border: none;
+      }
+      .btn-zip:hover {
+        background: linear-gradient(135deg, #b45309, #d97706);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(217,119,6,0.4);
+      }
+      .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(251,191,36,0.12);
+        border: 1px solid rgba(251,191,36,0.2);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 13px;
+        color: rgba(251,191,36,0.9);
+        margin-bottom: 14px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Background Glow Blobs -->
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
+
+    <div class="app-container">
+      <!-- Sidebar Navigation -->
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <i class="fa-solid fa-chart-line-up brand-icon"></i>
+          <div class="brand-info">
+            <span class="brand-name">Goks!</span>
+            <span class="brand-tag">F&B Automation</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-item">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+            <span>Stock-In Gudang</span>
+          </a>
+          <a href="/settings" class="nav-item">
+            <i class="fa-solid fa-gears"></i>
+            <span>Konfigurasi SO</span>
+          </a>
+          <a href="/eresto" class="nav-item">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>eResto Analysis</span>
+          </a>
+          <a href="/eresto-mass" class="nav-item active">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>eResto Mass Analysis</span>
+          </a>
+          <a href="/sinkronisasi" class="nav-item">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Sinkronisasi Penjualan</span>
+          </a>
+          <a href="/mass-sinkronisasi" class="nav-item">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Mass Sinkronisasi</span>
+          </a>
+          <a href="/mass-update" class="nav-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Update Rumus Massal</span>
+          </a>
+          <a href="/mass-hide" class="nav-item">
+            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <i class="fa-solid fa-circle-user profile-icon"></i>
+            <div>
+              <div class="profile-name">Outlet Manager</div>
+              <div class="profile-role">Administrator</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="app-main">
+        <!-- Header bar -->
+        <header class="main-header">
+          <div class="header-title">
+            <h1>eResto Mass Analysis</h1>
+            <p class="header-subtitle">
+              Upload satu file gabungan semua outlet — sistem akan otomatis memisahkan & generate Excel per outlet dalam satu ZIP
+            </p>
+          </div>
+          <div class="header-status">
+            <span class="status-indicator online"></span>
+            <span class="status-text">System Active</span>
+          </div>
+        </header>
+
+        <div class="content-grid">
+          <!-- Left Side: Upload & Processing -->
+          <div class="grid-col-8">
+
+            <!-- Step 1: Upload Box -->
+            <div class="card glass-card upload-card" id="uploadCard">
+              <div class="card-header">
+                <div class="card-header-icon bg-emerald-glow">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h3>1. Unggah File eResto Gabungan</h3>
+              </div>
+              <div class="card-body">
+                <div class="info-badge">
+                  <i class="fa-solid fa-circle-info"></i>
+                  File harus mengandung kolom <strong>Outlet</strong> (kolom D) untuk pemisahan otomatis per outlet
+                </div>
+
+                <div class="drag-drop-zone" id="dropZone">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept=".xlsx, .xls"
+                    style="display: none"
+                  />
+                  <i class="fa-solid fa-file-excel drop-icon text-emerald-gradient"></i>
+                  <h4>Seret &amp; Lepaskan file Excel eResto gabungan</h4>
+                  <p class="drag-drop-sub">Atau klik untuk telusuri dari komputer</p>
+                  <span class="file-spec">Mendukung format .xlsx, .xls (Maks. 200MB)</span>
+                </div>
+
+                <!-- File Active State -->
+                <div class="active-file-box" id="activeFileBox" style="display: none">
+                  <div class="file-icon-wrapper">
+                    <i class="fa-regular fa-file-excel"></i>
+                  </div>
+                  <div class="file-details">
+                    <div class="file-name" id="uploadedFileName">file.xlsx</div>
+                    <div class="file-size" id="uploadedFileSize">0 KB</div>
+                  </div>
+                  <button class="btn btn-icon btn-danger" id="removeFileBtn" title="Hapus file">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Preview per Outlet -->
+            <div class="card glass-card preview-card" id="previewCard" style="display: none">
+              <div class="card-header">
+                <div class="card-header-icon bg-blue-glow">
+                  <i class="fa-solid fa-magnifying-glass-chart"></i>
+                </div>
+                <h3>2. Preview Outlet Terdeteksi</h3>
+              </div>
+              <div class="card-body">
+                <div class="stats-row">
+                  <div class="stat-box">
+                    <span class="stat-label">Baris Asli</span>
+                    <span class="stat-value text-blue" id="statRawRows">0</span>
+                  </div>
+                  <div class="stat-box">
+                    <span class="stat-label">Baris Bersih</span>
+                    <span class="stat-value text-emerald" id="statCleanRows">0</span>
+                  </div>
+                  <div class="stat-box">
+                    <span class="stat-label">Outlet Terdeteksi</span>
+                    <span class="stat-value text-purple" id="statOutletCount">0</span>
+                  </div>
+                  <div class="stat-box">
+                    <span class="stat-label">Rentang Tanggal</span>
+                    <span class="stat-value text-yellow" id="statDateRange">-</span>
+                  </div>
+                </div>
+
+                <h5 style="margin-top:16px; margin-bottom:4px; color: rgba(255,255,255,0.7); font-size:13px;">
+                  Daftar Outlet dalam File <span class="outlet-badge" id="outletCountBadge">0 Outlet</span>
+                </h5>
+                <div class="outlet-table-wrap">
+                  <table class="outlet-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nama Outlet</th>
+                        <th>Jumlah Baris</th>
+                        <th>Rentang Tanggal</th>
+                      </tr>
+                    </thead>
+                    <tbody id="outletTableBody">
+                      <!-- Dynamic outlet rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Process Confirmation -->
+            <div class="card glass-card settings-card" id="processCard" style="display: none">
+              <div class="card-header">
+                <div class="card-header-icon bg-yellow-glow">
+                  <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3>3. Proses &amp; Generate ZIP</h3>
+              </div>
+              <div class="card-body">
+                <p style="color: rgba(255,255,255,0.65); font-size:14px; margin-bottom: 18px; line-height: 1.6;">
+                  Sistem akan otomatis memisahkan data per outlet, generate file Excel analisa penjualan
+                  untuk setiap outlet (identik dengan eResto Analysis), dan mengemas semua file dalam satu <strong style="color:#fbbf24">ZIP</strong>.
+                  Nama file setiap outlet akan menggunakan rentang tanggal dari datanya masing-masing.
+                </p>
+
+                <div class="action-box">
+                  <button class="btn btn-primary btn-large btn-block" id="processBtn">
+                    <i class="fa-solid fa-layer-group btn-icon"></i>
+                    <span>Proses Semua Outlet &amp; Generate ZIP</span>
+                  </button>
+                </div>
+
+                <!-- Progress indicator -->
+                <div id="progressBox" style="display: none; margin-top: 16px; text-align: center;">
+                  <div style="margin-bottom: 10px;">
+                    <i class="fa-solid fa-spinner fa-spin" style="color: #7b2cbf; font-size: 24px;"></i>
+                  </div>
+                  <p style="color: rgba(255,255,255,0.6); font-size: 13px;" id="progressText">
+                    Sedang memproses outlet... Harap tunggu
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4: Download ZIP Result -->
+            <div class="card glass-card download-card zip-card" id="downloadCard" style="display: none">
+              <div class="card-body text-center">
+                <div class="success-icon-wrapper">
+                  <i class="fa-solid fa-file-zipper"></i>
+                </div>
+                <h3>ZIP Analisa Penjualan Siap!</h3>
+                <p class="download-desc" id="downloadDesc">
+                  Semua file Excel per outlet telah berhasil digenerate dan dikemas dalam satu ZIP.
+                </p>
+
+                <div class="result-meta-row" id="resultMetaRow">
+                  <!-- Filled dynamically -->
+                </div>
+
+                <!-- Processed outlets list -->
+                <div id="processedListWrap" style="text-align: left; margin-bottom: 16px;">
+                  <p style="font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">File dalam ZIP:</p>
+                  <div class="processed-list" id="processedList"></div>
+                </div>
+
+                <!-- Skipped outlets (if any) -->
+                <div class="skipped-list" id="skippedListWrap" style="display: none;">
+                  <strong><i class="fa-solid fa-triangle-exclamation"></i> Outlet dilewati:</strong>
+                  <div id="skippedList"></div>
+                </div>
+
+                <div class="download-actions" style="margin-top: 20px;">
+                  <a href="#" class="btn btn-zip btn-large" id="downloadLink">
+                    <i class="fa-solid fa-cloud-arrow-down btn-icon"></i>
+                    <span>Download ZIP</span>
+                  </a>
+                  <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Proses File Baru</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Side: Info Panel -->
+          <div class="grid-col-4">
+            <div class="card glass-card master-product-card">
+              <div class="card-header">
+                <div class="card-header-icon bg-purple-glow">
+                  <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <h3>Panduan Penggunaan</h3>
+              </div>
+              <div class="card-body">
+                <p class="master-desc" style="margin-bottom: 18px;">
+                  Fitur ini memproses file eResto penjualan <strong>gabungan seluruh outlet</strong> sekaligus,
+                  dan menghasilkan file Excel analisa per outlet dalam satu klik.
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="min-width: 28px; height: 28px; background: rgba(90,24,154,0.5); border-radius: 50%; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#e0aaff; flex-shrink:0;">1</div>
+                    <div>
+                      <p style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); margin:0 0 3px;">Format File</p>
+                      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">File harus berformat .xlsx/.xls dengan kolom <strong style="color:#e0aaff">Outlet</strong> di kolom D, sama seperti export eResto biasa namun dengan filter "All Outlet"</p>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="min-width: 28px; height: 28px; background: rgba(90,24,154,0.5); border-radius: 50%; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#e0aaff; flex-shrink:0;">2</div>
+                    <div>
+                      <p style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); margin:0 0 3px;">Deteksi Otomatis</p>
+                      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">Sistem mendeteksi outlet, rentang tanggal, dan bulan secara otomatis dari data — tidak perlu input manual</p>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="min-width: 28px; height: 28px; background: rgba(90,24,154,0.5); border-radius: 50%; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#e0aaff; flex-shrink:0;">3</div>
+                    <div>
+                      <p style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); margin:0 0 3px;">Output ZIP</p>
+                      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">Download satu file ZIP berisi seluruh Excel per outlet. Format nama: <code style="color:#fbbf24; font-size:11px;">29. Pauh Kambar_01-30-juni-26_tahap1.xlsx</code></p>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="min-width: 28px; height: 28px; background: rgba(90,24,154,0.5); border-radius: 50%; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#e0aaff; flex-shrink:0;">4</div>
+                    <div>
+                      <p style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); margin:0 0 3px;">Master Product</p>
+                      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">Menggunakan master product list yang sama dari menu <a href="/eresto" style="color:#c77dff;">eResto Analysis</a></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 12px 14px; background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.15); border-radius: 10px;">
+                  <p style="font-size:12px; color:rgba(251,191,36,0.8); margin:0; line-height:1.6;">
+                    <i class="fa-solid fa-lightbulb" style="margin-right:6px;"></i>
+                    Outlet yang tidak terdaftar di sistem tetap akan diproses, namun tanpa nomor urut di nama file.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Alert System -->
+    <div class="alert-toast-container" id="toastContainer"></div>
+
+    <script src="/static/js/eresto_mass.js"></script>
+  </body>
+</html>

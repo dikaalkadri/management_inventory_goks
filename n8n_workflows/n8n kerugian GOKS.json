@@ -1,0 +1,492 @@
+{
+  "name": "Mass Sinkronisasi GOKS",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "fdbe91aa-1db2-4418-8328-339379c96748",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1b2c3d4-0001-0001-0001-000000000001",
+              "name": "bulan_no",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "a1b2c3d4-0001-0001-0001-000000000002",
+              "name": "tahun",
+              "value": "2026",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d954eafc-cf1f-480d-a9b4-f9044b8937fe",
+      "name": "Input Form (Bulan & Tahun)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        300
+      ],
+      "notes": "Ganti bulan_no (1-12) dan tahun sebelum run"
+    },
+    {
+      "parameters": {
+        "jsCode": "const bulan_names = ['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];\n\nconst bulan_no = parseInt($json.bulan_no);\nconst tahun = String($json.tahun || '2026');\n\nif (!bulan_no || bulan_no < 1 || bulan_no > 12) {\n  throw new Error('Bulan tidak valid: ' + bulan_no + '. Set bulan_no = 1..12 di node Input Form.');\n}\n\nconst no = String(bulan_no).padStart(2, '0');\nconst nama = bulan_names[bulan_no - 1];\n\nreturn [{\n  json: {\n    query: `${no}. ${nama} ${tahun}`,\n    bulan_str: nama.toLowerCase(),\n    bulan_no_str: no,\n    bulan_nama: nama,\n    tahun_str: tahun\n  }\n}];"
+      },
+      "id": "ae22fbc6-c6e2-4669-b238-7eb3197ee1f9",
+      "name": "Build Search Query",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// OUTLET FOLDER LIST - Daftar 35 Folder ID 'Stok Opname > 2026 NEW'\n// ============================================================\n// CARA UPDATE ID:\n// 1. Buka Google Drive > masuk ke folder outlet yg mau diubah\n// 2. Masuk ke: [Nama Outlet] > Stok Opname > 2026 NEW\n// 3. Buka folder 2026 NEW tersebut di browser.\n// 4. Copy ID dari URL (bagian setelah 'folders/').\n// Contoh: https://drive.google.com/drive/folders/1abc123... -> ID-nya: 1abc123...\n// 4. Ganti folderId di baris yang sesuai di bawah ini\n// ============================================================\nconst query = $('Build Search Query').first().json.query;\nconst bulan_no_str = $('Build Search Query').first().json.bulan_no_str;\nconst bulan_nama = $('Build Search Query').first().json.bulan_nama;\nconst tahun_str = $('Build Search Query').first().json.tahun_str;\n\nconst outlets = [\n  // Outlet 01 - Taplau\n  // URL: https://drive.google.com/drive/folders/1tX-wNlreCOFd_0EcGz1tbK4AgCwgm-3j\n  { no: '01', name: 'Taplau',         folderId: '1tX-wNlreCOFd_0EcGz1tbK4AgCwgm-3j' },\n\n  // Outlet 02 - Air Tawar\n  // URL: https://drive.google.com/drive/folders/173iiOUVbtvchV13jCtRNC5vUzSYU2sBV\n  { no: '02', name: 'Air Tawar',       folderId: '173iiOUVbtvchV13jCtRNC5vUzSYU2sBV' },\n\n  // Outlet 03 - Gunung Pangilun\n  // URL: https://drive.google.com/drive/folders/1cWFY_Um5V-vXaE5NJPNRxcaB2CQ0EYwG\n  { no: '03', name: 'Gunung Pangilun', folderId: '11h7uOJnOja6XPCy7lumLtgHtcMqXetlw' },\n\n  // Outlet 04 - Belibis\n  // URL: https://drive.google.com/drive/folders/1qmqXjI3NoWSv72vkj8MACiREVBxtEudF\n  { no: '04', name: 'Belibis',         folderId: '1wPeQgonsXTsfVJ8q6ZspyWInNP9KlmcF' },\n\n  // Outlet 05 - Siteba\n  // URL: https://drive.google.com/drive/folders/15GZOuhTdyMxwDj2IE78y62rYLj3WYmTo\n  { no: '05', name: 'Siteba',          folderId: '1yREvoR3a6ztvGglLGyYjNfnoBZdRW-h7' },\n\n  // Outlet 06 - Pasar Baru\n  // URL: https://drive.google.com/drive/folders/1-UcC_lwcb4lg6_McUxY2A1UrbeZkafRE\n  { no: '06', name: 'Pasar Baru',      folderId: '1YjZU9ouFuF_yL5qXmgkPVu7pj3jWyK7F' },\n\n  // Outlet 07 - Tunggul Hitam\n  // URL: https://drive.google.com/drive/folders/12-8zolThRLMLIs7A4UZ85ywIwnLUlvwp\n  { no: '07', name: 'Tunggul Hitam',   folderId: '1u5WpfYgjowI9rNqTQDKUidcpTaERMbKH' },\n\n  // Outlet 08 - Anduring\n  // URL: https://drive.google.com/drive/folders/1jssjG50obrWnksLAo-QcyxUGQIMEFjuy\n  { no: '08', name: 'Anduring',        folderId: '1XmLT0mcp_yvCjz4Fue9QnKRR9quGf7EO' },\n\n  // Outlet 09 - Jati\n  // URL: https://drive.google.com/drive/folders/1yVQ1GzkmIxBbaqs3R7u89zRjyGhtb02W\n  { no: '09', name: 'Jati',            folderId: '1EK0FKZONr1JaBTnLzf_ZihPrHMxSNgfn' },\n\n  // Outlet 10 - Air Pacah\n  // URL: https://drive.google.com/drive/folders/1aax4DCrR1UCu5sMoCCv2B8SfVyuWJECd\n  { no: '10', name: 'Air Pacah',       folderId: '1qrQoLTts6LHueafD2lfQEp0AjFcSwGQP' },\n\n  // Outlet 11 - Lubuk Begalung\n  // URL: https://drive.google.com/drive/folders/1DCaYoxyiexWxdwm9KBmrWR0PyFQ6SoTO\n  { no: '11', name: 'Lubuk Begalung',  folderId: '1tBsKg06dLuoy6JmtHcbqDknVj-4_Dfzy' },\n\n  // Outlet 12 - Balai Baru\n  // URL: https://drive.google.com/drive/folders/1gCjjCO2HWIyjalgxjXwJRpLjYxm_w4NW\n  { no: '12', name: 'Balai Baru',      folderId: '1iPDc3YItsVnnN9VyTxiscXfUTdzVyknt' },\n\n  // Outlet 13 - Cendrawasih\n  // URL: https://drive.google.com/drive/folders/1NvimoyPM0MqGf3etcO0OLI9DkcEYw09Q\n  { no: '13', name: 'Cendrawasih',     folderId: '1pIwVymmsRyZSKsq2YqqSAhJ4f25s0s62' },\n\n  // Outlet 14 - Seberang Padang\n  // URL: https://drive.google.com/drive/folders/1se0O3bZX1Wa4eLEm_hwNRLpu11zI7rM0\n  { no: '14', name: 'Seberang Padang', folderId: '1cbu2w26NzMtpRHCfu5__CKP3kZ_5dFe1' },\n\n  // Outlet 15 - Bandar Buat\n  // URL: https://drive.google.com/drive/folders/12QQtk2MkzFLHvmasaUEe1kh5L1uP_fn8\n  { no: '15', name: 'Bandar Buat',     folderId: '19IH3MJiDf8f3D1pUNoIwjO-JeW7pO-GP' },\n\n  // Outlet 16 - Air Dingin\n  // URL: https://drive.google.com/drive/folders/1pmkR0MTafN4CFZOY_nGiK2hZFY8vtmn6\n  { no: '16', name: 'Air Dingin',      folderId: '14ElAuXdxZSqPTI-ZkSg4HRsvjLewSMwZ' },\n\n  // Outlet 17 - Tabing\n  // URL: https://drive.google.com/drive/folders/1GV1pqUPac1F4wkpezvc7RiAa2IvttdyJ\n  { no: '17', name: 'Tabing',          folderId: '1rXwO8b18YSKQcFt3d4sJq01Xw6v8pekw' },\n\n  // Outlet 18 - Belimbing\n  // URL: https://drive.google.com/drive/folders/1zSQQfeM7_v_0phrjuxRNS2BrzYcgl-H5\n  { no: '18', name: 'Belimbing',       folderId: '1_uP2K_nKhLmgmYxuOIeu3PoniOXdW8Wv' },\n\n  // Outlet 19 - Rawang\n  // URL: https://drive.google.com/drive/folders/1HD1Hijf5GQ1IL8s-X-5IT5AsIspaoFs5\n  { no: '19', name: 'Rawang',          folderId: '1C-Vg1fmNUw3W4s-OsGasGSl6XCLtwzUH' },\n\n  // Outlet 20 - Lubuk Buaya\n  // URL: https://drive.google.com/drive/folders/1uDzue_p737irVDhxd4z2NE86sq53A1ze\n  { no: '20', name: 'Lubuk Buaya',     folderId: '1-LDYTk7f7bc3zAqFcJT7j1cMxDfqCXkx' },\n\n  // Outlet 21 - Parak Laweh\n  // URL: https://drive.google.com/drive/folders/1crisMZNG9xq8h37O0_QmLQ4CqDBtmIDS\n  { no: '21', name: 'Parak Laweh',     folderId: '1N22NxsK5El-YCBHvp7IW8CgvdbL90vGl' },\n\n  // Outlet 22 - Lubuk Lintah\n  // URL: https://drive.google.com/drive/folders/1uA2FB21eNS_lccKP0MwjoDBddg5tBO5T\n  { no: '22', name: 'Lubuk Lintah',    folderId: '1-kGfgg9qtGT_0gbN20GNAjNAhs-HDHTy' },\n\n  // Outlet 23 - Kasang\n  // URL: https://drive.google.com/drive/folders/1_5QzndgZeJvJmSjqpNgEb1sHQrKChGtM\n  { no: '23', name: 'Kasang',          folderId: '1AlusELaUI0X1-wQpKMCA412bpPMmkM_G' },\n\n  // Outlet 24 - Bungus\n  // URL: https://drive.google.com/drive/folders/1Q4Rakw0uFcu95MEzvqgISTCqJcgEZ7kJ\n  { no: '24', name: 'Bungus',          folderId: '1zeHjWeIujmCa3Yy2BWSd5CNxBBur7MhW' },\n\n  // Outlet 25 - Lubuk Alung\n  // URL: https://drive.google.com/drive/folders/1JtUN5GVFKaqlj2H5LMG7FnpWr_0Egsc3\n  { no: '25', name: 'Lubuk Alung',     folderId: '1RUuX5nGamTTeb9y0kAryTRo0JPKTN5lJ' },\n\n  // Outlet 26 - Kurai Taji\n  // URL: https://drive.google.com/drive/folders/1oS-E_gudB10DLY_qD6D0uaRgpPX4MKKs\n  { no: '26', name: 'Kurai Taji',      folderId: '1rV5aTJ_y7QdCpBD6JWCMSiM7w3AHo3Jt' },\n\n  // Outlet 27 - Lohong\n  // URL: https://drive.google.com/drive/folders/1nBjSE4IWAhZM8U6TjoeEw3FMKzmZ2k2B\n  { no: '27', name: 'Lohong',          folderId: '1kBHIVlRWR306nGLeR24U1JJqESC7Yz0J' },\n\n  // Outlet 28 - Manggung\n  // URL: https://drive.google.com/drive/folders/11kNeSTKOpI7lx3dLGGc1m-0YSz-wZ1xw\n  { no: '28', name: 'Manggung',        folderId: '1-cKyprfQXHkjT8q9hUwsfHbEcUOj-vmE' },\n\n  // Outlet 29 - Pauh Kambar\n  // URL: https://drive.google.com/drive/folders/14cop4cauv_bdlEcOMrzfJyMFxNcPy1Kn\n  { no: '29', name: 'Pauh Kambar',     folderId: '1yMicVjrJoj_SfDjc4l07fsBWrxju4aOa' },\n\n  // Outlet 30 - Sicincin\n  // URL: https://drive.google.com/drive/folders/12GLibIW4l9RL6j8yQ8ccP1RlXqgKNjua\n  { no: '30', name: 'Sicincin',        folderId: '1cgNLjcinmjPaXfAeVDq6zxTlfbdmarEw' },\n\n  // Outlet 31 - Tanah Garam\n  // URL: https://drive.google.com/drive/folders/12PIm-pmBqONDGHEivwNzl6kGJ8weF3HK\n  { no: '31', name: 'Tanah Garam',     folderId: '1ARo6wM79h-9ZkGPERwlRIoggPgx7nQSZ' },\n\n  // Outlet 32 - Selayo\n  // URL: https://drive.google.com/drive/folders/1Oq7a-1RjmJU5kqdbZsXz5VF3ADfAfL9M\n  { no: '32', name: 'Selayo',          folderId: '1DdDzCqVyRKSqfAl2o1SwdC87q2fVVXez' },\n\n  // Outlet 33 - Gunung Talang\n  // URL: https://drive.google.com/drive/folders/1F7qotc20LVwkf6SFn4SAzyZfWjN5IT2V\n  { no: '33', name: 'Gunung Talang',   folderId: '1OJW3ez6B-eHoETfWYEn5iuS_rb6LfApU' },\n\n  // Outlet 34 - Sungai Sariak\n  // URL: https://drive.google.com/drive/folders/10x-XTFYohpaRoOii-jHJ6RDBM7MIxLTB\n  { no: '34', name: 'Sungai Sariak',   folderId: '1hNI-2M8NSt_pVX4zDBXCp5RUPpHaOXVc' },\n\n  // Outlet 35 - Simpang Rumbio\n  // URL: https://drive.google.com/drive/folders/16ckG9-YmCeJ9IjLDQXiF40NvUav9I8hq\n  { no: '35', name: 'Simpang Rumbio',  folderId: '1yuoz-lMADfMn7lxZKxp7e2IOZxXR4_5Q' }\n];\n\nreturn outlets.map(o => ({\n  json: {\n    outlet_no: o.no,\n    outlet_name: o.name,\n    folder_id: o.folderId,\n    // Nama lengkap file SO yang dicari (misal: '07. JULI 2026 01. TAPLAU')\n    // Google Drive akan mencari file dengan nama ini secara TEPAT di dalam folder\n    full_name: `${bulan_no_str}. ${bulan_nama} ${tahun_str} ${o.no}. ${o.name.toUpperCase()}`\n  }\n}));"
+      },
+      "id": "aa11bb22-cc33-dd44-ee55-ff6677889900",
+      "name": "Outlet Folder List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ],
+      "notes": "35 folder ID 'Stok Opname > 2026 NEW' per outlet.\nOutput: 35 items.\n\n[INFO PENTING]\nID yang diambil adalah ID dari folder '2026 NEW' itu sendiri. Buka folder 2026 NEW di browser, lalu copy ID dari URL (setelah folders/)."
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "resource": "fileFolder",
+        "returnAll": false,
+        "limit": 5,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ $json.folder_id }}"
+          }
+        },
+        "options": {
+          "queryString": "=name contains '{{ $('Build Search Query').first().json.query }}' and mimeType = 'application/vnd.google-apps.spreadsheet'",
+          "orderBy": "modifiedTime desc",
+          "includeItemsFromAllDrives": true,
+          "supportsAllDrives": true
+        }
+      },
+      "id": "971b2392-027d-435d-a809-99eca11244d1",
+      "name": "Google Drive Search",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0NjoC28u6Mzdkc9E",
+          "name": "Google Drive account"
+        }
+      },
+      "notes": "Mencari langsung di folder '2026 NEW' masing-masing outlet.\nDijalankan 35x (sekali per outlet)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filter SO Files: ambil 1 file terbaru per outlet\nconst items = $input.all();\nconst query = $('Build Search Query').first().json.query.toLowerCase();\n\n// Daftar outlet dari inventory\nconst outletNames = [\n  'taplau','air tawar','gunung pangilun','belibis','siteba',\n  'pasar baru','tunggul hitam','anduring','jati','air pacah',\n  'lubuk begalung','balai baru','cendrawasih','seberang padang','bandar buat',\n  'air dingin','tabing','belimbing','rawang','lubuk buaya',\n  'parak laweh','lubuk lintah','kasang','bungus','lubuk alung',\n  'kurai taji','lohong','manggung','pauh kambar','sicincin',\n  'tanah garam','selayo','gunung talang','sungai sariak','simpang rumbio'\n];\n\nconst outletMap = {};\n\nfor (const item of items) {\n  const name = (item.json.name || '').trim().toLowerCase();\n  \n  // 1. Harus mengandung bulan+tahun (misal '07. juli 2026')\n  if (!name.includes(query)) continue;\n  \n  // 2. Tentukan nomor outlet\n  let matchedOutlet = null;\n  for (let i = 0; i < outletNames.length; i++) {\n    if (name.includes(outletNames[i])) {\n      matchedOutlet = String(i + 1).padStart(2, '0');\n      break;\n    }\n  }\n  \n  // Jika tidak cocok nama, coba cari angka outlet-nya (fallback)\n  if (!matchedOutlet) {\n    const nums = name.match(/\\b\\d{1,2}\\b/g);\n    if (nums) {\n      matchedOutlet = nums[nums.length - 1].padStart(2, '0');\n    }\n  }\n  \n  if (!matchedOutlet) continue;\n  \n  // 3. Simpan hanya 1 file terbaru (karena Google Drive Search sudah mengurutkan modifiedTime desc)\n  if (!outletMap[matchedOutlet]) {\n    outletMap[matchedOutlet] = item;\n  }\n}\n\nconst filtered = Object.values(outletMap);\nconsole.log(`Filter: ${items.length} total \u2192 ${filtered.length} outlet SO files (1 per outlet)`);\nreturn filtered;"
+      },
+      "id": "f1234567-890a-bcde-f123-456789abcdef",
+      "name": "Filter SO Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        300
+      ],
+      "notes": "Ambil 1 file per folder outlet yang cocok bulan+tahun."
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": "={{ $json.id }}",
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "sheetsToFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            }
+          }
+        }
+      },
+      "id": "fcc1ff2d-e118-41e6-be93-aad89baa6f08",
+      "name": "Download Sheet (Export as xlsx)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0NjoC28u6Mzdkc9E",
+          "name": "Google Drive account"
+        }
+      },
+      "notes": "n8n otomatis run node ini untuk setiap file (35x)\nTidak perlu Loop node!"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Kumpulkan semua binary xlsx dari Download Sheet (35 items) jadi 1 item\nconst items = $input.all();\nconst mergedBinary = {};\nconst keys = [];\nlet count = 0;\n\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  if (!item.binary) continue;\n  for (const key of Object.keys(item.binary)) {\n    const b = item.binary[key];\n    // Pastikan nama file adalah nama asli dari Google Drive (agar ada nomor outlet-nya)\n    let namaFile = item.json.name || b.fileName || `so_file_${i}`;\n    if (!namaFile.toLowerCase().endsWith('.xlsx')) namaFile += '.xlsx';\n    b.fileName = namaFile;\n    \n    const safeKey = `f${String(i).padStart(2,'0')}`;\n    mergedBinary[safeKey] = b;\n    keys.push(safeKey);\n    count++;\n  }\n}\n\nif (count === 0) throw new Error('Tidak ada binary! Pastikan Download Sheet berhasil.');\n\nconsole.log(`Collected ${count} files \u00e2\u2020\u2019 keys: ${keys.join(',')}`);\n\nreturn [{\n  json: {\n    so_file_count: count,\n    binary_keys: keys.join(',')\n  },\n  binary: mergedBinary\n}];"
+      },
+      "id": "6163f89b-7fe4-401e-bd0f-2d686eda46c5",
+      "name": "Collect all binaries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        300
+      ],
+      "notes": "Gabungkan 35 binary xlsx jadi 1 item untuk Compress\nPastikan nama file terjaga."
+    },
+    {
+      "parameters": {
+        "operation": "compress",
+        "binaryPropertyName": "={{ $json.binary_keys }}",
+        "outputFormat": "zip",
+        "fileName": "so_bundle",
+        "outputBinaryPropertyName": "so_zip"
+      },
+      "id": "f8b62561-9016-4557-89c8-c3e45c9d9cca",
+      "name": "Compress to ZIP",
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        300
+      ],
+      "notes": "Compress semua SO xlsx \u00e2\u2020\u2019 so_bundle.zip\nbinaryPropertyName dari $json.binary_keys"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/dikaa/.n8n-files/*.xls*",
+        "options": {}
+      },
+      "id": "708c489a-0f82-4a82-8eb7-e55fd389d3d6",
+      "name": "Read eResto Raw XLSX",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        900,
+        520
+      ],
+      "notes": "Baca Raw file eResto (Laporan Penjualan Item*.xls / xlsx)"
+    },
+    {
+      "parameters": {
+        "mode": "append"
+      },
+      "id": "a1234567-890b-cdef-a123-456789abcde0",
+      "name": "Merge ZIP Files",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2220,
+        300
+      ],
+      "notes": "Gabungkan:\nInput 0: SO ZIP (dari Compress)\nInput 1: eResto Raw XLSX (dari Local)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Siapkan kedua binary (SO zip + eResto raw xlsx) untuk dikirim ke Flask\nconst items = $input.all();\n\nlet so_zip_binary = null;\nlet eresto_raw_binary = null;\n\nfor (const item of items) {\n  if (!item.binary) continue;\n  for (const key of Object.keys(item.binary)) {\n    const b = item.binary[key];\n    const fname = (b.fileName || key || '').toLowerCase();\n    if (key === 'so_zip' || fname.includes('so_bundle')) {\n      so_zip_binary = { ...b, fileName: 'so_bundle.zip', mimeType: 'application/zip' };\n    } else if (fname.endsWith('.xlsx') || fname.endsWith('.xls') || fname.includes('laporan')) {\n      const ext = fname.endsWith('.xlsx') ? '.xlsx' : '.xls';\n      eresto_raw_binary = { ...b, fileName: `eresto_raw${ext}` };\n    }\n  }\n}\n\nif (!so_zip_binary) throw new Error('SO ZIP tidak ditemukan! Cek Compress to ZIP node.');\nif (!eresto_raw_binary) throw new Error('eResto Raw XLSX/XLS tidak ditemukan! Cek file di folder.');\n\nconst buildQuery = $('Build Search Query').first().json;\n\nreturn [{\n  json: {\n    bulan: buildQuery.bulan_str,\n    tahun: buildQuery.tahun_str,\n    bulan_nama: buildQuery.bulan_nama,\n    so_file_count: items[0] ? (items[0].json.so_file_count || '?') : '?'\n  },\n  binary: {\n    eresto_raw: eresto_raw_binary,\n    so_zip: so_zip_binary\n  }\n}];"
+      },
+      "id": "b2345678-901c-def0-b234-567890abcdef",
+      "name": "Prepare POST Binaries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2440,
+        300
+      ],
+      "notes": "Gabungkan so_zip + eresto_raw \u00e2\u2020\u2019 siap POST ke Flask"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://192.168.1.12:5000/api/mass-sinkronisasi/proses",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "eresto_raw",
+              "inputDataFieldName": "eresto_raw"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "so_zip",
+              "inputDataFieldName": "so_zip"
+            },
+            {
+              "parameterType": "formData",
+              "name": "bulan",
+              "value": "={{ $json.bulan }}"
+            },
+            {
+              "parameterType": "formData",
+              "name": "tahun",
+              "value": "={{ $json.tahun }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 3600000
+        }
+      },
+      "id": "891d213f-73d2-4fcc-b883-998166b9a4f3",
+      "name": "POST to Flask API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://192.168.1.12:5000{{ $json.download_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "hasil_zip"
+            }
+          }
+        }
+      },
+      "id": "4473ad62-c7a5-4365-859f-6824a6a4964e",
+      "name": "Download Hasil ZIP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "1165910197",
+        "binaryData": true,
+        "binaryPropertyName": "hasil_zip",
+        "additionalFields": {
+          "caption": "={{ '\u00e2\u0153\u2026 Mass Sinkronisasi Selesai!\\n\u00f0\u0178\u201c\u2026 Periode: ' + $('Prepare POST Binaries').item.json.bulan_nama + ' ' + $('Prepare POST Binaries').item.json.tahun + '\\n\u00f0\u0178\u008f\u00aa Outlet diproses: ' + $('Prepare POST Binaries').item.json.so_file_count + '\\n\u00f0\u0178\u201c\u00a6 File kerugian terlampir.' }}"
+        }
+      },
+      "id": "c022f330-f3b9-4d76-bc5a-b51dd0b6a59e",
+      "name": "Telegram Bot (Notifikasi)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        3100,
+        300
+      ],
+      "webhookId": "e82759f1-bb9f-4813-aa85-f11cc43f0839",
+      "credentials": {
+        "telegramApi": {
+          "id": "1LDHNGVTclkQuzLl",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Input Form (Bulan & Tahun)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Form (Bulan & Tahun)": {
+      "main": [
+        [
+          {
+            "node": "Build Search Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Search Query": {
+      "main": [
+        [
+          {
+            "node": "Outlet Folder List",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read eResto Raw XLSX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Outlet Folder List": {
+      "main": [
+        [
+          {
+            "node": "Google Drive Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Search": {
+      "main": [
+        [
+          {
+            "node": "Filter SO Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter SO Files": {
+      "main": [
+        [
+          {
+            "node": "Download Sheet (Export as xlsx)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Sheet (Export as xlsx)": {
+      "main": [
+        [
+          {
+            "node": "Collect all binaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect all binaries": {
+      "main": [
+        [
+          {
+            "node": "Compress to ZIP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compress to ZIP": {
+      "main": [
+        [
+          {
+            "node": "Merge ZIP Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read eResto Raw XLSX": {
+      "main": [
+        [
+          {
+            "node": "Merge ZIP Files",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge ZIP Files": {
+      "main": [
+        [
+          {
+            "node": "Prepare POST Binaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare POST Binaries": {
+      "main": [
+        [
+          {
+            "node": "POST to Flask API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST to Flask API": {
+      "main": [
+        [
+          {
+            "node": "Download Hasil ZIP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Hasil ZIP": {
+      "main": [
+        [
+          {
+            "node": "Telegram Bot (Notifikasi)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c6f8693a-aa91-4266-b938-fc491144ff92",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "00ac8d5497d64b4751a2c120af633c2aef325b1ffb8f2dfd1f2c68068b2a56c2"
+  },
+  "nodeGroups": [],
+  "id": "5I6izTz3ZrUONOBn",
+  "tags": []
+}

@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goks! Mass Sinkronisasi</title>
+    <meta name="description" content="Upload ZIP eResto dan ZIP SO Drive, proses sinkronisasi kerugian semua outlet sekaligus secara otomatis." />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/static/css/eresto.css" />
+    <style>
+      /* ── Mass Sinkronisasi specific styles ────────────────────── */
+
+      /* Accent colour override: teal/cyan theme untuk membedakan dari menu lain */
+      :root {
+        --sinko-accent: #06b6d4;
+        --sinko-accent-dim: rgba(6, 182, 212, 0.15);
+        --sinko-accent-border: rgba(6, 182, 212, 0.3);
+        --sinko-glow: rgba(6, 182, 212, 0.25);
+        --sinko-dark: #0e7490;
+        --warning-color: #f59e0b;
+        --error-color: #f87171;
+        --success-color: #4ade80;
+      }
+
+      /* Upload zone */
+      .upload-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+      @media (max-width: 700px) { .upload-grid { grid-template-columns: 1fr; } }
+
+      .upload-zone {
+        border: 2px dashed var(--sinko-accent-border);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: var(--sinko-accent-dim);
+        position: relative;
+        overflow: hidden;
+      }
+      .upload-zone:hover, .upload-zone.drag-over {
+        border-color: var(--sinko-accent);
+        background: rgba(6, 182, 212, 0.22);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px var(--sinko-glow);
+      }
+      .upload-zone.has-file {
+        border-color: var(--success-color);
+        background: rgba(74, 222, 128, 0.08);
+      }
+      .upload-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .upload-icon {
+        font-size: 32px;
+        color: var(--sinko-accent);
+        margin-bottom: 10px;
+        display: block;
+        transition: transform 0.2s;
+      }
+      .upload-zone:hover .upload-icon { transform: scale(1.1); }
+      .upload-zone.has-file .upload-icon { color: var(--success-color); }
+      .upload-label {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: rgba(255,255,255,0.9);
+        display: block;
+        margin-bottom: 4px;
+      }
+      .upload-hint {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        color: rgba(255,255,255,0.45);
+      }
+      .upload-filename {
+        display: none;
+        margin-top: 10px;
+        font-size: 12px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        color: var(--success-color);
+        background: rgba(74, 222, 128, 0.1);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        border-radius: 8px;
+        padding: 6px 10px;
+        word-break: break-all;
+      }
+      .upload-zone.has-file .upload-filename { display: block; }
+
+      /* Bulan/tahun row */
+      .params-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+      }
+      .param-group {
+        flex: 1;
+        min-width: 140px;
+      }
+      .param-label {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .param-select, .param-input {
+        width: 100%;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        -webkit-appearance: none;
+      }
+      .param-select:focus, .param-input:focus {
+        border-color: var(--sinko-accent);
+        box-shadow: 0 0 0 3px var(--sinko-glow);
+      }
+      .param-select option { background: #1a1a2e; color: #fff; }
+
+      /* Action button */
+      .btn-sinko {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 14px 24px;
+        border-radius: 12px;
+        border: none;
+        background: linear-gradient(135deg, #0891b2, #06b6d4);
+        color: #fff;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 20px var(--sinko-glow);
+      }
+      .btn-sinko:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px var(--sinko-glow);
+        background: linear-gradient(135deg, #0e7490, #0891b2);
+      }
+      .btn-sinko:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+      /* Progress area */
+      #progress-section {
+        display: none;
+        margin-bottom: 28px;
+      }
+      .progress-track {
+        background: rgba(255,255,255,0.07);
+        border-radius: 99px;
+        height: 8px;
+        overflow: hidden;
+        margin: 12px 0;
+      }
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #0891b2, #06b6d4, #38bdf8);
+        border-radius: 99px;
+        width: 0%;
+        transition: width 0.4s ease;
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .progress-text {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 13px;
+        color: rgba(255,255,255,0.7);
+        text-align: center;
+      }
+
+      /* Result section */
+      #result-section { display: none; }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      .stat-card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 18px 14px;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+      .stat-card:hover { transform: translateY(-2px); }
+      .stat-card.success { border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.06); }
+      .stat-card.warning { border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06); }
+      .stat-card.danger  { border-color: rgba(248,113,113,0.25); background: rgba(248,113,113,0.06); }
+
+      .stat-val {
+        font-family: 'Outfit', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        display: block;
+      }
+      .stat-card.success .stat-val { color: var(--success-color); }
+      .stat-card.warning .stat-val { color: var(--warning-color); }
+      .stat-card.danger  .stat-val { color: var(--error-color); }
+      .stat-lbl {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 11px;
+        color: rgba(255,255,255,0.5);
+        margin-top: 4px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      /* Outlet lists */
+      .result-lists {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      @media (max-width: 700px) { .result-lists { grid-template-columns: 1fr; } }
+
+      .outlet-list-box {
+        border-radius: 12px;
+        padding: 16px;
+        max-height: 220px;
+        overflow-y: auto;
+      }
+      .outlet-list-box.success-box {
+        background: rgba(74,222,128,0.06);
+        border: 1px solid rgba(74,222,128,0.2);
+      }
+      .outlet-list-box.warning-box {
+        background: rgba(245,158,11,0.06);
+        border: 1px solid rgba(245,158,11,0.2);
+      }
+      .outlet-list-box.error-box {
+        background: rgba(248,113,113,0.06);
+        border: 1px solid rgba(248,113,113,0.2);
+      }
+      .list-box-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .success-box .list-box-title { color: var(--success-color); }
+      .warning-box .list-box-title { color: var(--warning-color); }
+      .error-box   .list-box-title { color: var(--error-color); }
+
+      .list-item {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 12px;
+        padding: 5px 8px;
+        border-radius: 6px;
+        color: rgba(255,255,255,0.78);
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .list-item:nth-child(even) { background: rgba(255,255,255,0.025); }
+      .list-item i { flex-shrink: 0; margin-top: 2px; }
+
+      /* Download button */
+      .btn-download-zip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 14px 24px;
+        border-radius: 12px;
+        border: none;
+        background: linear-gradient(135deg, #059669, #10b981);
+        color: #fff;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 20px rgba(16,185,129,0.3);
+      }
+      .btn-download-zip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(16,185,129,0.45);
+        background: linear-gradient(135deg, #047857, #059669);
+        color: #fff;
+      }
+
+      /* Error toast */
+      #error-toast {
+        display: none;
+        background: rgba(248,113,113,0.12);
+        border: 1px solid rgba(248,113,113,0.3);
+        border-radius: 12px;
+        padding: 14px 18px;
+        color: #fca5a5;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
+      #error-toast i { margin-right: 8px; }
+
+      /* Section divider label */
+      .section-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.45);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255,255,255,0.07);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Background Glow Blobs -->
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
+
+    <div class="app-container">
+      <!-- ── Sidebar Navigation ─────────────────────────────────── -->
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <i class="fa-solid fa-chart-line-up brand-icon"></i>
+          <div class="brand-info">
+            <span class="brand-name">Goks!</span>
+            <span class="brand-tag">F&B Automation</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-item">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+            <span>Stock-In Gudang</span>
+          </a>
+          <a href="/settings" class="nav-item">
+            <i class="fa-solid fa-gears"></i>
+            <span>Konfigurasi SO</span>
+          </a>
+          <a href="/eresto" class="nav-item">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>eResto Analysis</span>
+          </a>
+          <a href="/eresto-mass" class="nav-item">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>eResto Mass Analysis</span>
+          </a>
+          <a href="/sinkronisasi" class="nav-item">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Sinkronisasi Penjualan</span>
+          </a>
+          <a href="/mass-sinkronisasi" class="nav-item active">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Mass Sinkronisasi</span>
+          </a>
+          <a href="/mass-update" class="nav-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Update Rumus Massal</span>
+          </a>
+          <a href="/mass-hide" class="nav-item">
+            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <i class="fa-solid fa-circle-user profile-icon"></i>
+            <div>
+              <div class="profile-name">Outlet Manager</div>
+              <div class="profile-role">Administrator</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── Main Content ──────────────────────────────────────── -->
+      <main class="app-main">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">
+              <i class="fa-solid fa-bolt" style="color: var(--sinko-accent);"></i>
+              Mass Sinkronisasi
+            </h1>
+            <p class="page-subtitle">
+              Upload ZIP eResto + ZIP SO Drive → sinkronisasi semua outlet sekaligus secara otomatis
+            </p>
+          </div>
+        </header>
+
+        <div class="content-card">
+
+          <!-- Error toast -->
+          <div id="error-toast">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="error-msg"></span>
+          </div>
+
+          <!-- ── Upload Section ──────────────────────────── -->
+          <p class="section-title"><i class="fa-solid fa-upload"></i> Upload File ZIP</p>
+
+          <div class="upload-grid">
+            <!-- eResto ZIP -->
+            <div class="upload-zone" id="zone-eresto" onclick="document.getElementById('input-eresto').click()">
+              <input type="file" id="input-eresto" accept=".zip" />
+              <i class="fa-solid fa-file-zipper upload-icon"></i>
+              <span class="upload-label">ZIP eResto Mass Analysis</span>
+              <span class="upload-hint">Hasil download dari menu eResto Mass Analysis</span>
+              <div class="upload-filename" id="name-eresto"></div>
+            </div>
+
+            <!-- SO ZIP -->
+            <div class="upload-zone" id="zone-so" onclick="document.getElementById('input-so').click()">
+              <input type="file" id="input-so" accept=".zip" />
+              <i class="fa-solid fa-folder-open upload-icon"></i>
+              <span class="upload-label">ZIP SO Drive (Semua Outlet)</span>
+              <span class="upload-hint">ZIP berisi semua file SO yang sudah didownload dari GDrive</span>
+              <div class="upload-filename" id="name-so"></div>
+            </div>
+          </div>
+
+          <!-- ── Bulan & Tahun ───────────────────────────── -->
+          <p class="section-title"><i class="fa-solid fa-calendar"></i> Periode</p>
+
+          <div class="params-row">
+            <div class="param-group">
+              <label class="param-label" for="sel-bulan">Bulan</label>
+              <select class="param-select" id="sel-bulan">
+                <option value="januari">Januari</option>
+                <option value="februari">Februari</option>
+                <option value="maret">Maret</option>
+                <option value="april">April</option>
+                <option value="mei">Mei</option>
+                <option value="juni">Juni</option>
+                <option value="juli" selected>Juli</option>
+                <option value="agustus">Agustus</option>
+                <option value="september">September</option>
+                <option value="oktober">Oktober</option>
+                <option value="november">November</option>
+                <option value="desember">Desember</option>
+              </select>
+            </div>
+            <div class="param-group">
+              <label class="param-label" for="inp-tahun">Tahun</label>
+              <input type="number" class="param-input" id="inp-tahun" value="2026" min="2020" max="2099" />
+            </div>
+          </div>
+
+          <!-- ── Action Button ──────────────────────────── -->
+          <button class="btn-sinko" id="btn-proses" disabled onclick="startProses()">
+            <i class="fa-solid fa-bolt"></i>
+            Proses Semua Outlet
+          </button>
+
+          <!-- ── Progress ───────────────────────────────── -->
+          <div id="progress-section">
+            <p class="section-title"><i class="fa-solid fa-spinner fa-spin"></i> Memproses…</p>
+            <div class="progress-track">
+              <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p class="progress-text" id="progress-text">Mengirim data ke server…</p>
+          </div>
+
+          <!-- ── Result Section ─────────────────────────── -->
+          <div id="result-section">
+            <p class="section-title"><i class="fa-solid fa-check-circle" style="color:var(--success-color)"></i> Hasil Proses</p>
+
+            <!-- Stats -->
+            <div class="stat-grid">
+              <div class="stat-card success">
+                <span class="stat-val" id="stat-ok">0</span>
+                <span class="stat-lbl">Berhasil</span>
+              </div>
+              <div class="stat-card warning">
+                <span class="stat-val" id="stat-missing">0</span>
+                <span class="stat-lbl">SO Tidak Ada</span>
+              </div>
+              <div class="stat-card danger">
+                <span class="stat-val" id="stat-error">0</span>
+                <span class="stat-lbl">Error</span>
+              </div>
+            </div>
+
+            <!-- Lists -->
+            <div class="result-lists" id="result-lists">
+              <!-- Outlet berhasil -->
+              <div class="outlet-list-box success-box" id="box-success" style="display:none">
+                <div class="list-box-title">
+                  <i class="fa-solid fa-circle-check"></i> Outlet Berhasil
+                </div>
+                <div id="list-success"></div>
+              </div>
+
+              <!-- Missing SO -->
+              <div class="outlet-list-box warning-box" id="box-missing" style="display:none">
+                <div class="list-box-title">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Tidak Ada File SO
+                </div>
+                <div id="list-missing"></div>
+              </div>
+
+              <!-- Errors -->
+              <div class="outlet-list-box error-box" id="box-error" style="display:none">
+                <div class="list-box-title">
+                  <i class="fa-solid fa-circle-xmark"></i> Error
+                </div>
+                <div id="list-error"></div>
+              </div>
+            </div>
+
+            <!-- Download -->
+            <a id="btn-download" class="btn-download-zip" href="#" style="display:none" target="_blank">
+              <i class="fa-solid fa-file-zipper"></i>
+              Download ZIP Hasil Sinkronisasi
+            </a>
+
+            <!-- Reset -->
+            <button onclick="resetForm()" style="
+              width:100%; margin-top:12px; padding:10px; border-radius:10px;
+              border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04);
+              color:rgba(255,255,255,0.6); font-family:'Plus Jakarta Sans',sans-serif;
+              font-size:13px; cursor:pointer; transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+               onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+              <i class="fa-solid fa-rotate-left"></i> Proses Ulang
+            </button>
+          </div>
+
+        </div><!-- end content-card -->
+      </main>
+    </div><!-- end app-container -->
+
+    <script>
+      // ── File input handling ────────────────────────────────────────
+      function setupZone(inputId, zoneId, nameId) {
+        const inp  = document.getElementById(inputId);
+        const zone = document.getElementById(zoneId);
+        const name = document.getElementById(nameId);
+
+        inp.addEventListener('change', () => {
+          if (inp.files.length) {
+            zone.classList.add('has-file');
+            name.textContent = '📎 ' + inp.files[0].name;
+            checkReady();
+          }
+        });
+
+        // Drag & drop
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+        zone.addEventListener('drop', e => {
+          e.preventDefault();
+          zone.classList.remove('drag-over');
+          if (e.dataTransfer.files.length) {
+            inp.files = e.dataTransfer.files;
+            zone.classList.add('has-file');
+            name.textContent = '📎 ' + e.dataTransfer.files[0].name;
+            checkReady();
+          }
+        });
+      }
+
+      setupZone('input-eresto', 'zone-eresto', 'name-eresto');
+      setupZone('input-so',     'zone-so',     'name-so');
+
+      function checkReady() {
+        const ok = document.getElementById('input-eresto').files.length > 0
+                && document.getElementById('input-so').files.length > 0;
+        document.getElementById('btn-proses').disabled = !ok;
+      }
+
+      // ── Progress animation ─────────────────────────────────────────
+      let _progInterval = null;
+      function startFakeProgress() {
+        let pct = 0;
+        const bar  = document.getElementById('progress-bar');
+        const txt  = document.getElementById('progress-text');
+        const msgs = [
+          'Membaca file ZIP eResto…',
+          'Membaca file ZIP SO Drive…',
+          'Mencocokkan nomor outlet…',
+          'Memproses outlet…',
+          'Menghasilkan file kerugian…',
+          'Mengemas ZIP output…',
+        ];
+        let msgIdx = 0;
+        _progInterval = setInterval(() => {
+          if (pct < 85) {
+            pct += Math.random() * 6;
+            bar.style.width = Math.min(pct, 85) + '%';
+          }
+          if (msgIdx < msgs.length - 1 && pct > (msgIdx + 1) * 14) {
+            msgIdx++;
+            txt.textContent = msgs[msgIdx];
+          }
+        }, 500);
+      }
+      function finishProgress() {
+        clearInterval(_progInterval);
+        document.getElementById('progress-bar').style.width = '100%';
+        document.getElementById('progress-text').textContent = 'Selesai!';
+      }
+
+      // ── Main process ───────────────────────────────────────────────
+      async function startProses() {
+        hideError();
+        const erestoFile = document.getElementById('input-eresto').files[0];
+        const soFile     = document.getElementById('input-so').files[0];
+        const bulan      = document.getElementById('sel-bulan').value;
+        const tahun      = document.getElementById('inp-tahun').value;
+
+        if (!erestoFile || !soFile) { showError('Kedua file ZIP wajib dipilih.'); return; }
+        if (!tahun || isNaN(tahun))  { showError('Tahun tidak valid.'); return; }
+
+        // Switch UI to processing
+        document.getElementById('btn-proses').disabled = true;
+        document.getElementById('progress-section').style.display = 'block';
+        document.getElementById('result-section').style.display = 'none';
+        document.getElementById('progress-bar').style.width = '0%';
+        document.getElementById('progress-text').textContent = 'Mengirim data ke server…';
+        startFakeProgress();
+
+        const fd = new FormData();
+        fd.append('eresto_zip', erestoFile);
+        fd.append('so_zip',     soFile);
+        fd.append('bulan',      bulan);
+        fd.append('tahun',      tahun);
+
+        try {
+          const res  = await fetch('/api/mass-sinkronisasi/proses', { method: 'POST', body: fd });
+          const data = await res.json();
+          finishProgress();
+
+          await new Promise(r => setTimeout(r, 500)); // pause sebentar biar bar 100% keliatan
+          document.getElementById('progress-section').style.display = 'none';
+
+          if (data.status === 'ok' || data.processed > 0) {
+            renderResult(data);
+          } else {
+            showError(data.message || 'Proses gagal.');
+            document.getElementById('btn-proses').disabled = false;
+          }
+        } catch (err) {
+          finishProgress();
+          document.getElementById('progress-section').style.display = 'none';
+          showError('Koneksi ke server gagal: ' + err.message);
+          document.getElementById('btn-proses').disabled = false;
+        }
+      }
+
+      // ── Render result ──────────────────────────────────────────────
+      function renderResult(data) {
+        document.getElementById('stat-ok').textContent      = data.processed || 0;
+        document.getElementById('stat-missing').textContent = (data.missing_so || []).length;
+        document.getElementById('stat-error').textContent   = (data.errors || []).length;
+
+        // Success list
+        const boxS = document.getElementById('box-success');
+        const lstS = document.getElementById('list-success');
+        lstS.innerHTML = '';
+        if ((data.success_outlets || []).length > 0) {
+          boxS.style.display = 'block';
+          data.success_outlets.forEach(o => {
+            lstS.innerHTML += `<div class="list-item"><i class="fa-solid fa-circle-check" style="color:#4ade80;font-size:11px"></i>${o}</div>`;
+          });
+        } else {
+          boxS.style.display = 'none';
+        }
+
+        // Missing SO list
+        const boxM = document.getElementById('box-missing');
+        const lstM = document.getElementById('list-missing');
+        lstM.innerHTML = '';
+        if ((data.missing_so || []).length > 0) {
+          boxM.style.display = 'block';
+          data.missing_so.forEach(o => {
+            lstM.innerHTML += `<div class="list-item"><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;font-size:11px"></i>${o}</div>`;
+          });
+        } else {
+          boxM.style.display = 'none';
+        }
+
+        // Error list
+        const boxE = document.getElementById('box-error');
+        const lstE = document.getElementById('list-error');
+        lstE.innerHTML = '';
+        if ((data.errors || []).length > 0) {
+          boxE.style.display = 'block';
+          data.errors.forEach(e => {
+            lstE.innerHTML += `<div class="list-item"><i class="fa-solid fa-xmark" style="color:#f87171;font-size:11px"></i><span><b>${e.outlet}</b>: ${e.error}</span></div>`;
+          });
+        } else {
+          boxE.style.display = 'none';
+        }
+
+        // Download button
+        const btnDl = document.getElementById('btn-download');
+        if (data.download_url && data.processed > 0) {
+          btnDl.href = data.download_url;
+          btnDl.style.display = 'flex';
+        } else {
+          btnDl.style.display = 'none';
+        }
+
+        document.getElementById('result-section').style.display = 'block';
+      }
+
+      // ── Helpers ───────────────────────────────────────────────────
+      function showError(msg) {
+        const t = document.getElementById('error-toast');
+        document.getElementById('error-msg').textContent = msg;
+        t.style.display = 'block';
+        t.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      function hideError() {
+        document.getElementById('error-toast').style.display = 'none';
+      }
+      function resetForm() {
+        document.getElementById('input-eresto').value = '';
+        document.getElementById('input-so').value = '';
+        document.getElementById('zone-eresto').classList.remove('has-file');
+        document.getElementById('zone-so').classList.remove('has-file');
+        document.getElementById('name-eresto').textContent = '';
+        document.getElementById('name-so').textContent = '';
+        document.getElementById('result-section').style.display = 'none';
+        document.getElementById('progress-section').style.display = 'none';
+        document.getElementById('btn-proses').disabled = true;
+        hideError();
+      }
+    </script>
+  </body>
+</html>

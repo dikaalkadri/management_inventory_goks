@@ -313,18 +313,27 @@
             <i class="fa-solid fa-file-excel"></i>
             <span>eResto Analysis</span>
           </a>
+          <a href="/eresto-mass" class="nav-item">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>eResto Mass Analysis</span>
+          </a>
           <a href="/sinkronisasi" class="nav-item active">
             <i class="fa-solid fa-arrows-rotate"></i>
             <span>Sinkronisasi Penjualan</span>
           </a>
-                    <a href="/mass-update" class="nav-item">
+          <a href="/mass-sinkronisasi" class="nav-item">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Mass Sinkronisasi</span>
+          </a>
+          <a href="/mass-update" class="nav-item">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             <span>Update Rumus Massal</span>
           </a>
-                  <a href="/mass-hide" class="nav-item">
-            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
+          <a href="/mass-hide" class="nav-item">
+            <i class="fa-solid fa-eye-slash"></i>
+            <span>Format Laporan</span>
           </a>
-</nav>
+        </nav>
 
         <div class="sidebar-footer">
           <div class="user-profile">
@@ -573,6 +582,11 @@
 
     <div class="alert-toast-container" id="toastContainer"></div>
 
+    <!-- Data injeksi untuk script (mencegah error syntax di IDE) -->
+    <script id="outlets-data" type="application/json">
+      {{ outlets | default([]) | tojson | safe }}
+    </script>
+
     <script>
       // ── State ──
       let pairs = [];
@@ -610,7 +624,7 @@
         renderPairs();
       }
 
-      const outletsData = {{ outlets | tojson | safe }};
+      const outletsData = JSON.parse(document.getElementById('outlets-data').textContent || '[]');
       let outletOptionsHtml = '<option value="">-- Auto-Detect (Dari Nama File) --</option>';
       if (outletsData && outletsData.length > 0) {
           outletsData.forEach(o => {
@@ -645,7 +659,7 @@
                         <!-- Sumber -->
                         <div style="flex: 1;">
                             <label style="font-size: 0.82rem; font-weight: 600; color: #b3b3b3; margin-bottom: 8px; display: block;">
-                                <i class="fa-solid fa-file-import" style="color: #a78bfa; margin-right: 6px"></i>File Sumber (eResto)
+                                <i class="fa-solid fa-file-import" style="color: #a78bfa; margin-right: 6px"></i>File Sumber (Sales eResto)
                             </label>
                             
                             <div class="upload-mini-zone" id="dz_s_${pair.id}" style="${pair.fileSumber ? 'display:none;' : ''}">
@@ -666,7 +680,7 @@
                         <!-- Tujuan -->
                         <div style="flex: 1;">
                             <label style="font-size: 0.82rem; font-weight: 600; color: #b3b3b3; margin-bottom: 8px; display: block;">
-                                <i class="fa-solid fa-file-export" style="color: #0ea5e9; margin-right: 6px"></i>File Tujuan (SO Harian)
+                                <i class="fa-solid fa-file-export" style="color: #0ea5e9; margin-right: 6px"></i>File Tujuan (SO Drive)
                             </label>
                             
                             <div class="upload-mini-zone" id="dz_t_${pair.id}" style="${pair.fileTujuan ? 'display:none;' : ''}">

@@ -106,7 +106,8 @@ def process_data():
         
     # ─── TAMBAHAN: AMBIL FORMAT OUTLET BERNOMOR DARI INVENTORY.JSON ───
     try:
-        with open('inventory.json', 'r', encoding='utf-8') as f:
+        inv_path = os.path.join(config.BASE_DIR, 'data', 'inventory.json')
+        with open(inv_path, 'r', encoding='utf-8') as f:
             import json
             inv = json.load(f)
             outlets_list = inv.get("outlets", [])

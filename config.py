@@ -25,7 +25,7 @@ ERESTO_SUMMARY_PRODUCT_COL = 19   # Column S
 ERESTO_DATE_START_COL = 20        # Column T
 
 # ─── MASTER PRODUCT FILE ────────────────────────────────────────────────────
-MASTER_PRODUCTS_FILE = os.path.join(BASE_DIR, 'master_products.json')
+MASTER_PRODUCTS_FILE = os.path.join(BASE_DIR, 'data', 'master_products.json')
 
 # ─── EXCEL STYLING COLORS ───────────────────────────────────────────────────
 COLOR_HEADER_BG = "5A189A"        # Medium purple (#5a189a)

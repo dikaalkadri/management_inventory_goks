@@ -1,8 +1,10 @@
 import os
 import json
 
-POS_PATH = 'master_pos.json'
-MATERIALS_PATH = 'master_materials.json'
+import config
+
+POS_PATH = os.path.join(config.BASE_DIR, 'data', 'master_pos.json')
+MATERIALS_PATH = os.path.join(config.BASE_DIR, 'data', 'master_materials.json')
 
 def load_pos():
     if not os.path.exists(POS_PATH):

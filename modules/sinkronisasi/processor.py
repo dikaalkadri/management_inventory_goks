@@ -45,6 +45,7 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
     ws_sumber = wb_sumber.worksheets[0]
 
     sales_map = {}
+    available_days = set()
     def clean_key(text):
         return re.sub(r'[^A-Z0-9]', '', str(text or "").upper())
 
@@ -68,6 +69,9 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
 
         if not day_str:
             continue
+            
+        available_days.add(day_str)
+        
         try:
             qty = float(qty_val)
         except:
@@ -98,6 +102,8 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
             day_str = f"{day_num:02d}"
         except ValueError:
             continue
+            
+        should_update_sales = (day_str in available_days)
 
         ws_tujuan = wb_tujuan[sheet_name]
         ws_tujuan.freeze_panes = 'C2'
@@ -180,12 +186,15 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                 safe_write_cell(ws_tujuan, r, 16, p_name)         # Kolom P (Product POS)
 
                 p_key = clean_key(p_name)
-                sales_qty = sales_map.get((day_str, p_key), 0)
-                safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
+                
+                if should_update_sales:
+                    sales_qty = sales_map.get((day_str, p_key), 0)
+                    safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
             else:
                 safe_write_cell(ws_tujuan, r, 15, "")
                 safe_write_cell(ws_tujuan, r, 16, "")
-                safe_write_cell(ws_tujuan, r, 17, "")
+                if should_update_sales:
+                    safe_write_cell(ws_tujuan, r, 17, "")
 
             # --- Tulis Data Bahan Baku (Kolom A, B, W) ---
             if idx < len(mat_list):
