@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goks! Mass Sinkronisasi</title>
-    <meta name="description" content="Upload ZIP eResto dan ZIP SO Drive, proses sinkronisasi kerugian semua outlet sekaligus secara otomatis." />
+    <title>Goks! Update Kerugian Harian</title>
+    <meta name="description" content="Update file kerugian harian menggunakan 3 sumber: eResto, SO Drive, dan File Kerugian Lama." />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="/static/css/eresto.css" />
@@ -26,7 +26,7 @@
       /* Upload zone */
       .upload-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 20px;
         margin-bottom: 24px;
       }
@@ -386,11 +386,11 @@
             <i class="fa-solid fa-arrows-rotate"></i>
             <span>Sinkronisasi Penjualan</span>
           </a>
-          <a href="/mass-sinkronisasi" class="nav-item active">
+          <a href="/mass-sinkronisasi" class="nav-item">
             <i class="fa-solid fa-bolt"></i>
             <span>Mass Sinkronisasi</span>
           </a>
-          <a href="/update-kerugian" class="nav-item">
+          <a href="/update-kerugian" class="nav-item active">
             <i class="fa-solid fa-calendar-check"></i>
             <span>Update Kerugian Harian</span>
           </a>
@@ -419,11 +419,11 @@
         <header class="page-header">
           <div>
             <h1 class="page-title">
-              <i class="fa-solid fa-bolt" style="color: var(--sinko-accent);"></i>
-              Mass Sinkronisasi
+              <i class="fa-solid fa-calendar-check" style="color: var(--sinko-accent);"></i>
+              Update Kerugian Harian
             </h1>
             <p class="page-subtitle">
-              Upload ZIP eResto + ZIP SO Drive → sinkronisasi semua outlet sekaligus secara otomatis
+              Upload ZIP eResto + ZIP SO Drive + ZIP Kerugian Lama → Update data harian semua outlet
             </p>
           </div>
         </header>
@@ -445,7 +445,7 @@
               <input type="file" id="input-eresto" accept=".zip" />
               <i class="fa-solid fa-file-zipper upload-icon"></i>
               <span class="upload-label">ZIP eResto Mass Analysis</span>
-              <span class="upload-hint">Hasil download dari menu eResto Mass Analysis</span>
+              <span class="upload-hint">Data eResto hari ini</span>
               <div class="upload-filename" id="name-eresto"></div>
             </div>
 
@@ -453,38 +453,22 @@
             <div class="upload-zone" id="zone-so" onclick="document.getElementById('input-so').click()">
               <input type="file" id="input-so" accept=".zip" />
               <i class="fa-solid fa-folder-open upload-icon"></i>
-              <span class="upload-label">ZIP SO Drive (Semua Outlet)</span>
-              <span class="upload-hint">ZIP berisi semua file SO yang sudah didownload dari GDrive</span>
+              <span class="upload-label">ZIP SO Drive (Asli)</span>
+              <span class="upload-hint">SO input anak outlet terbaru</span>
               <div class="upload-filename" id="name-so"></div>
             </div>
-          </div>
 
-          <!-- ── Bulan & Tahun ───────────────────────────── -->
-          <p class="section-title"><i class="fa-solid fa-calendar"></i> Periode</p>
-
-          <div class="params-row">
-            <div class="param-group">
-              <label class="param-label" for="sel-bulan">Bulan</label>
-              <select class="param-select" id="sel-bulan">
-                <option value="januari">Januari</option>
-                <option value="februari">Februari</option>
-                <option value="maret">Maret</option>
-                <option value="april">April</option>
-                <option value="mei">Mei</option>
-                <option value="juni">Juni</option>
-                <option value="juli" selected>Juli</option>
-                <option value="agustus">Agustus</option>
-                <option value="september">September</option>
-                <option value="oktober">Oktober</option>
-                <option value="november">November</option>
-                <option value="desember">Desember</option>
-              </select>
-            </div>
-            <div class="param-group">
-              <label class="param-label" for="inp-tahun">Tahun</label>
-              <input type="number" class="param-input" id="inp-tahun" value="2026" min="2020" max="2099" />
+            <!-- Kerugian ZIP -->
+            <div class="upload-zone" id="zone-kerugian" onclick="document.getElementById('input-kerugian').click()">
+              <input type="file" id="input-kerugian" accept=".zip" />
+              <i class="fa-solid fa-file-excel upload-icon"></i>
+              <span class="upload-label">ZIP Kerugian Lama</span>
+              <span class="upload-hint">File kerugian yang ada saat ini</span>
+              <div class="upload-filename" id="name-kerugian"></div>
             </div>
           </div>
+
+
 
           <!-- ── Action Button ──────────────────────────── -->
           <button class="btn-sinko" id="btn-proses" disabled onclick="startProses()">
@@ -602,10 +586,12 @@
 
       setupZone('input-eresto', 'zone-eresto', 'name-eresto');
       setupZone('input-so',     'zone-so',     'name-so');
+      setupZone('input-kerugian', 'zone-kerugian', 'name-kerugian');
 
       function checkReady() {
         const ok = document.getElementById('input-eresto').files.length > 0
-                && document.getElementById('input-so').files.length > 0;
+                && document.getElementById('input-so').files.length > 0
+                && document.getElementById('input-kerugian').files.length > 0;
         document.getElementById('btn-proses').disabled = !ok;
       }
 
@@ -644,13 +630,11 @@
       // ── Main process ───────────────────────────────────────────────
       async function startProses() {
         hideError();
-        const erestoFile = document.getElementById('input-eresto').files[0];
-        const soFile     = document.getElementById('input-so').files[0];
-        const bulan      = document.getElementById('sel-bulan').value;
-        const tahun      = document.getElementById('inp-tahun').value;
+        const erestoFile   = document.getElementById('input-eresto').files[0];
+        const soFile       = document.getElementById('input-so').files[0];
+        const kerugianFile = document.getElementById('input-kerugian').files[0];
 
-        if (!erestoFile || !soFile) { showError('Kedua file ZIP wajib dipilih.'); return; }
-        if (!tahun || isNaN(tahun))  { showError('Tahun tidak valid.'); return; }
+        if (!erestoFile || !soFile || !kerugianFile) { showError('Ketiga file ZIP wajib dipilih.'); return; }
 
         // Switch UI to processing
         document.getElementById('btn-proses').disabled = true;
@@ -663,11 +647,10 @@
         const fd = new FormData();
         fd.append('eresto_zip', erestoFile);
         fd.append('so_zip',     soFile);
-        fd.append('bulan',      bulan);
-        fd.append('tahun',      tahun);
+        fd.append('kerugian_zip', kerugianFile);
 
         try {
-          const res  = await fetch('/api/mass-sinkronisasi/proses', { method: 'POST', body: fd });
+          const res  = await fetch('/api/update-kerugian/proses', { method: 'POST', body: fd });
           const data = await res.json();
           finishProgress();
 
@@ -768,10 +751,13 @@
       function resetForm() {
         document.getElementById('input-eresto').value = '';
         document.getElementById('input-so').value = '';
+        document.getElementById('input-kerugian').value = '';
         document.getElementById('zone-eresto').classList.remove('has-file');
         document.getElementById('zone-so').classList.remove('has-file');
+        document.getElementById('zone-kerugian').classList.remove('has-file');
         document.getElementById('name-eresto').textContent = '';
         document.getElementById('name-so').textContent = '';
+        document.getElementById('name-kerugian').textContent = '';
         document.getElementById('result-section').style.display = 'none';
         document.getElementById('progress-section').style.display = 'none';
         document.getElementById('btn-proses').disabled = true;

@@ -70,17 +70,20 @@ CELL_BORDER    = Border(left=BORDER_THIN, right=BORDER_THIN,
 import json
 import os
 
-J_FORMULAS = {}
-_json_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "mass_formulas.json")
-if os.path.exists(_json_path):
-    try:
-        with open(_json_path, "r", encoding="utf-8") as _f:
-            _data = json.load(_f)
-            for _k, _v in _data.items():
-                if str(_k).isdigit():
-                    J_FORMULAS[int(_k)] = _v.get("formula", "")
-    except Exception as e:
-        pass
+def get_j_formulas():
+    """Memuat ulang rumus dari file JSON setiap kali dipanggil (dynamic load)."""
+    formulas = {}
+    _json_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "mass_formulas.json")
+    if os.path.exists(_json_path):
+        try:
+            with open(_json_path, "r", encoding="utf-8") as _f:
+                _data = json.load(_f)
+                for _k, _v in _data.items():
+                    if str(_k).isdigit():
+                        formulas[int(_k)] = _v.get("formula", "")
+        except Exception as e:
+            pass
+    return formulas
 
 # ─── RUMUS RELATIVE KOLOM K, L, M ────────────────────────────────────────────
 # {r} akan diganti dengan nomor baris saat penulisan
@@ -193,7 +196,9 @@ def apply_all(ws, lock_column_d=False):
     # ── STEP 2D: Kolom J (10) → baris 2–95, kuning + lock + rumus ───────────
     for r in range(J_FILL_ROW_START, J_FILL_ROW_END + 1):
         _set_cell(ws, r, 10, fill=FORMULA_FILL, locked=True)
-    for row_num, formula in J_FORMULAS.items():
+        
+    j_formulas = get_j_formulas()
+    for row_num, formula in j_formulas.items():
         _safe_write(ws, row_num, 10, formula)
 
     # ── STEP 2E: Kolom K(11), L(12), M(13) → baris 2–95, kuning+lock+rumus ──

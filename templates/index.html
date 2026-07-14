@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
       :root {
         --purple-dark: #6113a7;
@@ -1109,12 +1110,15 @@
       </div>
       <nav>
         <a href="/" class="active">Stock Gudang</a>
-        <a href="/settings">Konfigurasi SO</a>
         <a href="/eresto">eResto Analysis</a>
         <a href="/sinkronisasi">sinkronisasi</a>
                   <a href="/mass-sinkronisasi" class="nav-item">
             <i class="fa-solid fa-bolt"></i>
             <span>Mass Sinkronisasi</span>
+          </a>
+          <a href="/update-kerugian" class="nav-item">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Update Kerugian Harian</span>
           </a>
                   <a href="/mass-update" class="nav-item">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -1144,6 +1148,9 @@
       <button class="btn-sm btn-ghost" onclick="saveConfig()">Simpan</button>
       <button class="btn-sm btn-ghost" onclick="checkFile()">Cek File</button>
       <div class="file-status" id="file-status">—</div>
+      <a href="/settings" class="btn-sm btn-ghost" style="margin-left: auto; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-gears"></i> Konfigurasi SO
+      </a>
     </div>
 
     <main>

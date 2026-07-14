@@ -9,6 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
       :root {
         --green-dark: #6113a7;
@@ -322,6 +323,10 @@
             <i class="fa-solid fa-bolt"></i>
             <span>Mass Sinkronisasi</span>
           </a>
+          <a href="/update-kerugian" class="nav-item">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Update Kerugian Harian</span>
+          </a>
                   <a href="/mass-update" class="nav-item">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             <span>Update Rumus Massal</span>
@@ -334,13 +339,16 @@
 
     <main>
       <!-- ── PAGE TITLE ── -->
-      <div class="page-title">
+      <div class="page-title" style="justify-content: space-between; width: 100%;">
         <div>
           <h1>🏭 Stock Gudang</h1>
           <div class="subtitle">
             Kelola stok awal bulan dan pantau sisa stok terkini dari Excel
           </div>
         </div>
+        <a href="/settings" class="btn btn-primary" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-gears"></i> Konfigurasi SO
+        </a>
       </div>
 
       <!-- ── STOK AWAL BULAN ── -->

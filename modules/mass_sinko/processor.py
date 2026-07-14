@@ -119,26 +119,21 @@ def process_mass_sinkronisasi(
     tmpdir = tempfile.mkdtemp(prefix="mass_sinko_")
 
     try:
-        for no in all_nos:
-            outlet_display = f"{no}. {eresto_map.get(no, so_map.get(no, {})).get('filename', '???').split('_')[0].split('.', 1)[-1].strip()}"
+        from concurrent.futures import ThreadPoolExecutor, as_completed
 
+        def _proses_single(no):
             if no not in eresto_map:
-                missing_eresto.append(f"{no} (ada di SO tapi tidak di eResto)")
-                continue
-
+                return {"status": "missing_eresto", "no": no}
             if no not in so_map:
-                # Coba dapatkan nama outlet dari eResto filename
                 eresto_fname = eresto_map[no]["filename"]
-                nama = eresto_fname.split("_")[0]  # "01. Taplau"
-                missing_so.append(nama)
-                continue
+                nama = eresto_fname.split("_")[0]
+                return {"status": "missing_so", "name": nama}
 
-            # ── Pasangan lengkap → proses ──────────────────────────
             eresto_info = eresto_map[no]
             so_info     = so_map[no]
+            outlet_name = eresto_info['filename'].split('_')[0]
 
             try:
-                # Simpan file sementara ke tmpdir
                 eresto_tmp = os.path.join(tmpdir, f"eresto_{no}_{eresto_info['filename']}")
                 so_tmp     = os.path.join(tmpdir, f"so_{no}_{so_info['filename']}")
 
@@ -147,30 +142,50 @@ def process_mass_sinkronisasi(
                 with open(so_tmp, 'wb') as f:
                     f.write(so_info['bytes'])
 
-                # Konversi ke xlsx jika masih xls
                 eresto_xlsx = _to_xlsx(eresto_tmp, tmpdir)
                 so_xlsx     = _to_xlsx(so_tmp, tmpdir)
 
-                # Panggil processor sinkronisasi yang sudah ada
                 output_filename, sheets_count = proses_sinkronisasi_excel(
                     sumber_path_xlsx=eresto_xlsx,
                     tujuan_path_xlsx=so_xlsx,
                     output_folder=output_folder,
                 )
 
-                outlet_name = eresto_info['filename'].split('_')[0]  # "01. Taplau"
-                success_outlets.append({
+                return {
+                    "status": "success",
                     "no": no,
                     "name": outlet_name,
                     "output_file": output_filename,
                     "sheets": sheets_count,
-                })
-                print(f"[MASS-SINKO] ✅ {outlet_name} → {output_filename} ({sheets_count} sheets)")
-
+                }
             except Exception as e:
-                eresto_name = eresto_map[no]['filename'].split('_')[0]
-                errors.append({"outlet": eresto_name, "error": str(e)})
-                print(f"[MASS-SINKO] ❌ {eresto_name}: {e}")
+                return {
+                    "status": "error",
+                    "name": outlet_name,
+                    "error": str(e)
+                }
+
+        # Jalankan secara paralel menggunakan ThreadPoolExecutor dengan 5 worker
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures = {executor.submit(_proses_single, no): no for no in all_nos}
+            for future in as_completed(futures):
+                res = future.result()
+                status = res["status"]
+                if status == "success":
+                    success_outlets.append({
+                        "no": res["no"],
+                        "name": res["name"],
+                        "output_file": res["output_file"],
+                        "sheets": res["sheets"]
+                    })
+                    print(f"[MASS-SINKO] ✅ {res['name']} → {res['output_file']} ({res['sheets']} sheets)")
+                elif status == "missing_eresto":
+                    missing_eresto.append(f"{res['no']} (ada di SO tapi tidak di eResto)")
+                elif status == "missing_so":
+                    missing_so.append(res["name"])
+                elif status == "error":
+                    errors.append({"outlet": res["name"], "error": res["error"]})
+                    print(f"[MASS-SINKO] ❌ {res['name']}: {res['error']}")
 
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)

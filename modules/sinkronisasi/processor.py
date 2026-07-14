@@ -41,7 +41,7 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         raise ValueError("Data POS Menu dan Bahan Baku kosong.")
 
     # ── TAHAP 1: EKSTRAK DATA PENJUALAN SUMBER ──
-    wb_sumber = openpyxl.load_workbook(sumber_path_xlsx, data_only=True)
+    wb_sumber = openpyxl.load_workbook(sumber_path_xlsx, read_only=True, data_only=True)
     ws_sumber = wb_sumber.worksheets[0]
 
     sales_map = {}
@@ -49,13 +49,18 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
     def clean_key(text):
         return re.sub(r'[^A-Z0-9]', '', str(text or "").upper())
 
-    for r in range(2, ws_sumber.max_row + 1):
-        date_val = ws_sumber.cell(row=r, column=1).value
+    for r, row in enumerate(ws_sumber.iter_rows(values_only=True), start=1):
+        if r < 2:
+            continue
+        if not row or len(row) < 17:
+            continue
+        
+        date_val = row[0]
         if date_val is None:
             continue
         
-        prod_val = ws_sumber.cell(row=r, column=16).value
-        qty_val = ws_sumber.cell(row=r, column=17).value
+        prod_val = row[15]
+        qty_val = row[16]
         if not prod_val:
             continue
 
@@ -79,6 +84,8 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         
         key = (day_str, clean_key(prod_val))
         sales_map[key] = sales_map.get(key, 0) + qty
+
+    wb_sumber.close()
 
     # ── TAHAP 2: PROSES WORKBOOK TUJUAN ──
     wb_tujuan = openpyxl.load_workbook(tujuan_path_xlsx)
