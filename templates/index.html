@@ -4,349 +4,119 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Goks! Stock-In Manager</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/static/css/eresto.css" />
     <style>
-      :root {
-        --purple-dark: #6113a7;
-        --purple-mid: #5a189a;
-        --purple-main: #7b2cbf;
-        --purple-light: #ffffff;
-        --purple-pale: #ffffff;
-        --purple-bg: #f8f0ff;
-        --accent: #f9a826;
-        --red: #e63946;
-        --white: #ffffff;
-        --gray: #6b7280;
-        --border: #d6c1eb;
-        --shadow: 0 4px 20px rgba(90, 24, 154, 0.08);
-        --radius: 14px;
-        --divider: #c9a7e4;
-        --section-gap: 28px;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: "DM Sans", sans-serif;
-        background: var(--purple-bg);
-        color: var(--purple-dark);
-        min-height: 100vh;
-      }
-
-      /* ── HEADER ── */
-      header {
-        background: var(--purple-dark);
-        padding: 0 28px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 60px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
-      }
-
-      .logo {
-        font-family: "Syne", sans-serif;
-        font-weight: 800;
-        font-size: 1.3rem;
-        color: var(--white);
-        letter-spacing: -0.5px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .logo-badge {
-        background: var(--accent);
-        color: var(--purple-dark);
-        font-size: 0.65rem;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 20px;
-        letter-spacing: 0.5px;
-      }
-
-      nav {
-        display: flex;
-        gap: 8px;
-      }
-
-      nav a {
-        color: var(--purple-pale);
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 500;
-        padding: 6px 14px;
-        border-radius: 8px;
-        transition: all 0.2s;
-      }
-
-      nav a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        color: #fff;
-      }
-
-      nav a.active {
-        background: var(--purple-main);
-        color: white;
-      }
-
-      /* ── FILE CONFIG BAR ── */
+      /* Component specific styles adapted for dark mode */
       .config-bar {
-        background: var(--purple-dark);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 28px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 14px 20px;
         display: flex;
         align-items: center;
         gap: 12px;
         flex-wrap: wrap;
+        margin-bottom: 24px;
       }
-
       .config-bar label {
-        color: var(--purple-pale);
-        font-size: 0.78rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
         font-weight: 500;
-        white-space: nowrap;
       }
-
       .config-bar input {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: white;
-        padding: 5px 10px;
-        border-radius: 7px;
-        font-size: 0.82rem;
-        font-family: "DM Mono", monospace;
-        width: 200px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
         transition: all 0.2s;
+        font-family: "DM Mono", monospace;
       }
-
-      .config-bar input::placeholder {
-        color: rgba(255, 255, 255, 0.35);
-      }
-
       .config-bar input:focus {
         outline: none;
-        border-color: var(--purple-light);
-        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--color-emerald);
+        background: rgba(255, 255, 255, 0.1);
       }
-
-      .btn-sm {
-        padding: 5px 14px;
-        border-radius: 7px;
-        font-size: 0.8rem;
-        font-weight: 600;
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
         border: none;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: 0.2s;
+        font-weight: 600;
       }
-
-      .btn-ghost {
-        background: rgba(255, 255, 255, 0.12);
-        color: var(--purple-pale);
-      }
-
       .btn-ghost:hover {
         background: rgba(255, 255, 255, 0.2);
       }
-
       .file-status {
-        font-size: 0.78rem;
-        font-family: "DM Mono", monospace;
-        padding: 4px 10px;
+        padding: 6px 12px;
         border-radius: 6px;
-        flex: 1;
-        min-width: 0;
+        font-size: 0.8rem;
+        font-family: "DM Mono", monospace;
       }
-
       .file-status.found {
-        background: rgba(116, 198, 157, 0.2);
-        color: var(--purple-light);
+        background: rgba(16, 185, 129, 0.2);
+        color: #34d399;
       }
-
       .file-status.notfound {
-        background: rgba(230, 57, 70, 0.2);
-        color: #ff6b6b;
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
       }
-
-      /* ── MAIN CONTENT ── */
-      main {
-        padding: 24px 28px 120px;
-        max-width: 1450px;
-        margin: 0 auto;
-      }
-
-      /* ── DASHBOARD SECTION DIVIDER ── */
-      .section-divider {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin: var(--section-gap) 0 18px;
-      }
-
-      .section-divider::before,
-      .section-divider::after {
-        content: "";
-        flex: 1;
-        height: 2px;
-        background: linear-gradient(90deg, var(--divider), transparent);
-      }
-
-      .section-divider::after {
-        background: linear-gradient(90deg, transparent, var(--divider));
-      }
-
-      .section-divider-label {
-        font-family: "Syne", sans-serif;
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: var(--purple-mid);
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        white-space: nowrap;
-      }
-
-      /* ── DASHBOARD GRID LAYOUT ── */
+      
       .dashboard-grid {
         display: grid;
         grid-template-columns: 1.25fr 0.75fr;
         gap: 24px;
         align-items: start;
       }
-
-      .left-column {
+      .left-column, .right-column {
         display: flex;
         flex-direction: column;
         gap: 20px;
       }
-
-      .right-column {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .sisa-stock-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 16px;
-      }
-
-      /* ── TOP HERO SECTION: Sisa Stok Terkini ── */
-      .sisa-stok-top-section {
-        margin-bottom: 0;
-      }
-
-      .sisa-stok-top-section > .card {
-        border: 2px solid var(--divider);
-        box-shadow:
-          0 6px 32px rgba(90, 24, 154, 0.1),
-          0 1.5px 6px rgba(90, 24, 154, 0.06);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .sisa-stok-top-section > .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--purple-main),
-          var(--accent),
-          var(--purple-main)
-        );
-        background-size: 200% 100%;
-        animation: gradientSlide 4s ease-in-out infinite;
-        z-index: 2;
-      }
-
-      @keyframes gradientSlide {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-      }
-
-      .sisa-stok-top-section .card-header {
-        background: linear-gradient(
-          135deg,
-          var(--purple-dark),
-          var(--purple-mid)
-        );
-        padding: 16px 22px;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-      }
-
-      /* ── BOTTOM ROW CARDS ── */
-      .dashboard-grid .card {
-        border: 1.5px solid var(--border);
-        box-shadow: 0 4px 16px rgba(90, 24, 154, 0.06);
-      }
-
-      /* ── UPLOAD ZONE (Card-style) ── */
+      
       .upload-card-wrapper {
-        background: white;
-        border-radius: var(--radius);
-        border: 1.5px solid var(--border);
-        box-shadow: 0 4px 16px rgba(90, 24, 154, 0.06);
+        background: rgba(18, 18, 29, 0.45);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
         overflow: hidden;
       }
-
       .upload-card-header {
-        background: var(--purple-mid);
-        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
         align-items: center;
         gap: 10px;
       }
-
       .upload-card-header h2 {
-        font-family: "Syne", sans-serif;
         font-size: 1rem;
         font-weight: 700;
-        color: white;
         margin: 0;
       }
-
       .upload-zone {
-        border: 2.5px dashed var(--divider);
+        border: 2px dashed rgba(255, 255, 255, 0.15);
         border-radius: 12px;
-        background: var(--purple-bg);
-        padding: 44px 20px;
+        padding: 40px 20px;
         text-align: center;
         cursor: pointer;
-        transition: all 0.25s;
+        margin: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        transition: 0.2s;
         position: relative;
-        margin: 16px;
       }
-
-      .upload-zone:hover,
-      .upload-zone.drag-over {
-        border-color: var(--purple-main);
-        background: white;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(90, 24, 154, 0.1);
+      .upload-zone:hover, .upload-zone.drag-over {
+        border-color: var(--color-emerald);
+        background: rgba(123, 44, 191, 0.05);
       }
-
       .upload-zone input[type="file"] {
         position: absolute;
         inset: 0;
@@ -355,807 +125,244 @@
         width: 100%;
         height: 100%;
       }
-
       .upload-icon {
-        font-size: 2.8rem;
-        margin-bottom: 14px;
-        display: block;
-        filter: grayscale(0.15);
-      }
-
-      .upload-zone h3 {
-        font-family: "Syne", sans-serif;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--purple-mid);
-        margin-bottom: 6px;
-      }
-
-      .upload-zone p {
-        color: var(--gray);
-        font-size: 0.85rem;
-      }
-
-      /* ── CARDS ── */
-      #cards-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .card {
-        background: white;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        overflow: hidden;
-        animation: slideIn 0.3s ease;
-      }
-
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .card-header {
-        background: var(--purple-mid);
-        padding: 14px 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-
-      .card-filename {
-        font-family: "DM Mono", monospace;
-        font-size: 0.75rem;
-        color: var(--purple-pale);
-        margin-left: auto;
-        opacity: 0.7;
-      }
-
-      .field-group {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .field-group label {
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 0.78rem;
-        white-space: nowrap;
-      }
-
-      .field-group select,
-      .field-group input[type="date"],
-      .field-group input[type="text"] {
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 7px;
-        font-size: 0.82rem;
-        font-family: "DM Sans", sans-serif;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .field-group select option {
-        background: var(--purple-dark);
-        color: white;
-      }
-
-      .field-group select:focus,
-      .field-group input:focus {
-        outline: none;
-        border-color: var(--purple-light);
-        background: rgba(255, 255, 255, 0.22);
-      }
-
-      .card-body {
-        padding: 16px 20px;
-      }
-
-      /* ── ITEM TABLE ── */
-      .items-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.85rem;
-        margin-bottom: 12px;
-      }
-
-      .items-table th {
-        background: var(--purple-pale);
-        color: var(--purple-dark);
-        font-weight: 600;
-        padding: 8px 10px;
-        text-align: left;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-      }
-
-      .items-table th:first-child {
-        border-radius: 8px 0 0 8px;
-      }
-
-      .items-table th:last-child {
-        border-radius: 0 8px 8px 0;
-      }
-
-      .items-table td {
-        padding: 6px 8px;
-        border-bottom: 1px solid var(--purple-bg);
-        vertical-align: middle;
-      }
-
-      .items-table tr:last-child td {
-        border-bottom: none;
-      }
-
-      .items-table tr:hover td {
-        background: var(--purple-bg);
-      }
-
-      .items-table select,
-      .items-table input[type="number"],
-      .items-table input[type="text"] {
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 4px 8px;
-        font-size: 0.82rem;
-        font-family: "DM Sans", sans-serif;
-        width: 100%;
-        background: white;
-        color: var(--purple-dark);
-        transition: border-color 0.2s;
-      }
-
-      .items-table select:focus,
-      .items-table input:focus {
-        outline: none;
-        border-color: var(--purple-main);
-      }
-
-      .items-table input[type="number"] {
-        text-align: right;
-        font-family: "DM Mono", monospace;
-      }
-
-      .badge-sheet {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-
-      .badge-bahan-utama {
-        background: #fff3cd;
-        color: #856404;
-      }
-
-      .badge-topping {
-        background: #fde2e4;
-        color: #9d174d;
-      }
-
-      .badge-powder {
-        background: #e9d8fd;
-        color: #6b21a8;
-      }
-
-      .badge-bahan-lainnya {
-        background: #d1ecf1;
-        color: #0c5460;
-      }
-
-      .btn-del-row {
-        background: none;
-        border: none;
-        color: var(--red);
-        cursor: pointer;
-        font-size: 1rem;
-        padding: 2px 6px;
-        border-radius: 4px;
-        transition: background 0.15s;
-      }
-
-      .btn-del-row:hover {
-        background: #fee2e2;
-      }
-
-      /* ── SELECT MASUK/KELUAR ── */
-      select.mk-select {
-        font-weight: 600;
-      }
-
-      select.mk-select option[value="Keluar"] {
-        color: var(--red);
-      }
-
-      select.mk-select option[value="Masuk"] {
-        color: var(--purple-main);
-      }
-
-      /* ── ROW MASUK — highlight kuning ── */
-      tr.row-masuk td {
-        background: #fffbe6 !important;
-        border-bottom: 1px solid #ffe58f !important;
-      }
-
-      tr.row-masuk td input[type="number"] {
-        background: #fff8d6;
-      }
-
-      /* ── TOMBOL INPUT MANUAL ── */
-      .btn-manual {
-        background: white;
-        border: 2px solid var(--purple-main);
-        color: var(--purple-main);
-        padding: 10px 24px;
-        border-radius: var(--radius);
-        font-size: 0.92rem;
-        font-weight: 700;
-        font-family: "Syne", sans-serif;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .btn-manual:hover {
-        background: var(--purple-pale);
-        transform: translateY(-1px);
-        box-shadow: var(--shadow);
-      }
-
-      .action-bar {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 20px;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-
-      /* ── CARD FOOTER ── */
-      .card-footer {
-        padding: 12px 20px;
-        border-top: 1px solid var(--purple-bg);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .btn-add-row {
-        background: none;
-        border: 1.5px dashed var(--purple-main);
-        color: var(--purple-main);
-        padding: 5px 14px;
-        border-radius: 8px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .btn-add-row:hover {
-        background: var(--purple-pale);
-      }
-
-      .btn-submit-card {
-        background: var(--purple-mid);
-        color: white;
-        border: none;
-        padding: 7px 20px;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: "Syne", sans-serif;
-      }
-
-      .btn-submit-card:hover {
-        background: var(--purple-dark);
-      }
-
-      .btn-remove-card {
-        background: none;
-        border: none;
-        color: var(--gray);
-        font-size: 0.8rem;
-        cursor: pointer;
-        padding: 5px;
-        border-radius: 6px;
-        transition: all 0.2s;
-      }
-
-      .btn-remove-card:hover {
-        color: var(--red);
-        background: #fee2e2;
-      }
-
-      /* ── FIXED BOTTOM BAR ── */
-      .bottom-bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--purple-dark);
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 12px 28px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        z-index: 200;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
-      }
-
-      .bottom-info {
-        color: var(--purple-pale);
-        font-size: 0.85rem;
-      }
-
-      .bottom-info span {
-        font-family: "DM Mono", monospace;
-        color: var(--accent);
-        font-weight: 500;
-      }
-
-      .btn-submit-all {
-        background: var(--accent);
-        color: var(--purple-dark);
-        border: none;
-        padding: 10px 28px;
-        border-radius: 10px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        font-family: "Syne", sans-serif;
-        cursor: pointer;
-        transition: all 0.2s;
-        letter-spacing: 0.3px;
-      }
-
-      .btn-submit-all:hover {
-        background: #e09400;
-        transform: translateY(-1px);
-      }
-
-      .btn-submit-all:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      /* ── TOAST ── */
-      #toast {
-        position: fixed;
-        top: 75px;
-        right: 20px;
-        background: var(--purple-dark);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 10px;
-        font-size: 0.88rem;
-        max-width: 340px;
-        z-index: 9999;
-        transform: translateX(120%);
-        transition: transform 0.3s ease;
-        border-left: 4px solid var(--purple-light);
-        box-shadow: var(--shadow);
-      }
-
-      #toast.show {
-        transform: translateX(0);
-      }
-
-      #toast.error {
-        border-left-color: var(--red);
-      }
-
-      #toast.success {
-        border-left-color: var(--purple-light);
-      }
-
-      /* ── EMPTY STATE ── */
-      .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: var(--gray);
-        font-size: 0.9rem;
-      }
-
-      .empty-state .icon {
         font-size: 2.5rem;
         margin-bottom: 10px;
         display: block;
       }
-
-      /* ── LOADING ── */
-      .loading-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(27, 67, 50, 0.6);
-        z-index: 500;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 16px;
+      
+      .card {
+        background: rgba(18, 18, 29, 0.45);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow: hidden;
       }
-
-      .loading-overlay.show {
+      .card-header {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
+        align-items: center;
+        gap: 12px;
       }
-
-      .loading-spinner {
-        width: 44px;
-        height: 44px;
-        border: 4px solid rgba(255, 255, 255, 0.2);
-        border-top-color: var(--purple-light);
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+      .card-header h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
       }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+      .card-body {
+        padding: 20px;
       }
-
-      .loading-text {
+      .card-footer {
+        padding: 16px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      .items-table th {
+        color: var(--text-secondary);
+        font-weight: 600;
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .items-table td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .items-table select, .items-table input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: white;
-        font-size: 0.9rem;
-        font-family: "Syne", sans-serif;
+        padding: 6px 10px;
+        border-radius: 6px;
+        width: 100%;
       }
-
-      /* ── STOK GRID ── */
+      .items-table select option {
+        background: var(--bg-dark);
+      }
+      
       .stok-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 16px;
+        gap: 12px;
       }
-
       .stok-item {
         display: flex;
         align-items: center;
         gap: 8px;
+        background: rgba(255, 255, 255, 0.03);
         padding: 8px 12px;
-        background: var(--purple-bg);
         border-radius: 8px;
-        border: 1px solid var(--border);
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
-
-      .stok-item label {
-        font-size: 0.8rem;
-        flex: 1;
-        font-weight: 500;
-        color: var(--purple-dark);
-      }
-
       .stok-item input {
-        width: 75px;
-        border: 1px solid var(--border);
-        border-radius: 6px;
+        width: 80px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
         padding: 4px 8px;
-        font-family: "DM Mono", monospace;
-        font-size: 0.82rem;
+        border-radius: 6px;
         text-align: right;
-        transition: border-color 0.2s;
       }
-
-      .stok-item input:focus {
-        outline: none;
-        border-color: var(--purple-main);
+      
+      .sisa-stock-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 16px;
       }
-
-      /* ── INFO BOX ── */
-      .info-box {
-        background: rgba(249, 168, 38, 0.1);
-        border: 1px solid rgba(249, 168, 38, 0.3);
-        border-radius: 8px;
-        padding: 10px 14px;
-        font-size: 0.8rem;
-        color: #856404;
-        margin-bottom: 14px;
-      }
-
-      /* ── SISA STOK CARDS ── */
       .sisa-stok-card {
-        background: white;
-        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
-        padding: 14px 16px;
-        box-shadow: 0 2px 8px rgba(90, 24, 154, 0.04);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: all 0.22s ease-in-out;
-        position: relative;
-        overflow: hidden;
+        padding: 16px;
       }
-
-      .sisa-stok-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(90, 24, 154, 0.12);
-        border-color: var(--purple-main);
-      }
-
-      .sisa-stok-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--purple-main);
-      }
-
-      .sisa-stok-card.cat-bahan-utama::before {
-        background: var(--accent);
-      }
-      .sisa-stok-card.cat-powder::before {
-        background: #9d4edf;
-      }
-      .sisa-stok-card.cat-topping::before {
-        background: #ff7096;
-      }
-      .sisa-stok-card.cat-bahan-lainnya::before {
-        background: #3a86c8;
-      }
-
-      .sisa-stok-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 12px;
-      }
-
       .sisa-stok-card-title {
-        font-size: 0.92rem;
-        font-weight: 700;
-        color: var(--purple-dark);
-        line-height: 1.35;
-        margin: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+        font-weight: 600;
+        margin-bottom: 8px;
       }
-
       .sisa-stok-card-values {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-        margin-top: auto;
-        background: var(--purple-bg);
-        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2);
         padding: 10px;
-        border: 1px solid rgba(214, 193, 235, 0.35);
+        border-radius: 8px;
       }
-
       .sisa-stok-val-box {
         display: flex;
         flex-direction: column;
         gap: 2px;
       }
-
       .sisa-stok-val-label {
-        font-size: 0.65rem;
-        color: var(--gray);
-        text-transform: uppercase;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
         font-weight: 600;
-        letter-spacing: 0.3px;
       }
-
       .sisa-stok-val-num {
-        font-family: "DM Mono", monospace;
+        font-size: 0.95rem;
         font-weight: 700;
-        font-size: 0.9rem;
-        color: var(--purple-dark);
-        white-space: nowrap;
       }
-
-      .sisa-stok-val-num.live-stock {
-        color: var(--purple-main);
-        font-size: 1.05rem;
+      
+      .bottom-bar {
+        position: fixed;
+        bottom: 0;
+        left: 280px; /* offset sidebar */
+        right: 0;
+        background: rgba(10, 10, 15, 0.9);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 100;
       }
-
-      .sisa-stok-val-num.live-stock.pulse-dot::after {
-        content: "";
-        display: inline-block;
-        width: 7px;
-        height: 7px;
-        background: var(--purple-main);
-        border-radius: 50%;
-        margin-left: 6px;
-        vertical-align: middle;
-        animation: pulse 2s ease-in-out infinite;
+      
+      .btn-submit-all {
+        background: var(--color-emerald);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
       }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 0.4;
-          transform: scale(0.7);
-        }
+      .btn-submit-all:hover {
+        background: var(--color-emerald-light);
       }
-
-      .sisa-stok-val-unit {
-        font-size: 0.72rem;
-        color: var(--gray);
-        font-weight: 500;
-        margin-left: 1px;
-      }
-
-      /* ── SISA STOK GROUP HEADERS ── */
-      .sisa-stok-group-header {
-        grid-column: 1 / -1;
+      
+      /* Utilities */
+      .badge-sheet { padding: 4px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+      .badge-bahan-utama { background: rgba(249, 168, 38, 0.2); color: #f9a826; }
+      .badge-topping { background: rgba(230, 57, 70, 0.2); color: #e63946; }
+      .badge-powder { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+      .badge-bahan-lainnya { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+      
+      .btn-manual { background: rgba(123, 44, 191, 0.15); color: #a78bfa; border: 1px solid rgba(123, 44, 191, 0.3); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+      .btn-manual:hover { background: rgba(123, 44, 191, 0.3); }
+      .btn-remove-card { background: rgba(239, 68, 68, 0.1); color: #f87171; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+      .btn-del-row { background: none; border: none; color: #f87171; cursor: pointer; }
+      .btn-add-row { background: none; border: 1px dashed rgba(255, 255, 255, 0.2); color: var(--text-primary); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+      .btn-submit-card { background: rgba(255, 255, 255, 0.1); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+      .btn-submit-card:hover { background: rgba(255, 255, 255, 0.2); }
+      
+      /* Toast */
+      #toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; background: rgba(18, 18, 29, 0.9); border-left: 4px solid var(--color-emerald); transform: translateX(120%); transition: 0.3s; z-index: 1000; }
+      #toast.show { transform: translateX(0); }
+      #toast.error { border-left-color: #ef4444; }
+      
+      .info-box { background: rgba(249, 168, 38, 0.1); border: 1px solid rgba(249, 168, 38, 0.2); color: #fcd34d; padding: 12px; border-radius: 8px; font-size: 0.85rem; }
+      
+      .section-divider {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 16px;
-        background: linear-gradient(
-          135deg,
-          var(--purple-dark),
-          var(--purple-mid)
-        );
-        border-radius: 10px;
-        margin-top: 8px;
+        gap: 14px;
+        margin: 28px 0 18px;
       }
-
-      .sisa-stok-group-header:first-child {
-        margin-top: 0;
+      .section-divider::before, .section-divider::after {
+        content: ""; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);
       }
-
-      .sisa-stok-group-emoji {
-        font-size: 1.15rem;
+      .section-divider-label {
+        font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;
       }
-
-      .sisa-stok-group-title {
-        font-family: "Syne", sans-serif;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: white;
-        letter-spacing: 0.3px;
-      }
-
-      .sisa-stok-group-count {
-        margin-left: auto;
-        font-size: 0.7rem;
-        font-family: "DM Mono", monospace;
-        color: rgba(255, 255, 255, 0.6);
-        background: rgba(255, 255, 255, 0.12);
-        padding: 2px 10px;
-        border-radius: 20px;
-      }
-
-      /* ── RESPONSIVE ── */
-      @media (max-width: 1200px) {
-        .dashboard-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .sisa-stock-grid {
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 12px;
-        }
-
-        .sisa-stok-top-section .card-body {
-          padding: 12px;
-        }
-      }
-
-      @media (max-width: 600px) {
-        main {
-          padding: 16px 14px 110px;
-        }
-
-        header,
-        .config-bar {
-          padding: 0 14px;
-        }
-
-        .config-bar {
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 10px 14px;
-        }
-
-        .items-table {
-          font-size: 0.75rem;
-        }
-
-        .stok-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .sisa-stock-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .section-divider {
-          margin: 20px 0 14px;
-        }
+      
+      .empty-state { text-align: center; padding: 40px; color: var(--text-secondary); }
+      .empty-state .icon { font-size: 3rem; display: block; margin-bottom: 10px; }
+      
+      /* Row Masuk */
+      tr.row-masuk td {
+        background: rgba(16, 185, 129, 0.1) !important;
       }
     </style>
   </head>
 
   <body>
-    <header>
-      <div class="logo">
-        <img src="/static/Goks.png" alt="Goks Logo" class="logo-img" />
-      </div>
-      <nav>
-        <a href="/" class="active">Stock Gudang</a>
-        <a href="/eresto">eResto Analysis</a>
-        <a href="/sinkronisasi">sinkronisasi</a>
-                  <a href="/mass-sinkronisasi" class="nav-item">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Mass Sinkronisasi</span>
-          </a>
-          <a href="/update-kerugian" class="nav-item">
-            <i class="fa-solid fa-calendar-check"></i>
-            <span>Update Kerugian Harian</span>
-          </a>
-                  <a href="/mass-update" class="nav-item">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Update Rumus Massal</span>
-          </a>
-                  <a href="/mass-hide" class="nav-item">
-            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
-          </a>
-</nav>
-    </header>
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
 
-    <div class="config-bar">
-      <label>📄 File:</label>
-      <input
-        type="text"
-        id="cfg-filename"
-        placeholder="05__SO_MEI_2026.xlsx"
-        style="width: 200px"
-      />
-      <label>📁 Folder:</label>
-      <input
-        type="text"
-        id="cfg-folder"
-        placeholder="C:\Users\...\data"
-        style="width: 220px"
-      />
-      <button class="btn-sm btn-ghost" onclick="saveConfig()">Simpan</button>
-      <button class="btn-sm btn-ghost" onclick="checkFile()">Cek File</button>
-      <div class="file-status" id="file-status">—</div>
-      <a href="/settings" class="btn-sm btn-ghost" style="margin-left: auto; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-gears"></i> Konfigurasi SO
-      </a>
-    </div>
+    <div class="app-container">
+      {% set active_menu = 'stockin' %}
+      {% include 'sidebar.html' %}
 
-    <main>
-      <!-- ═══ TOP ROW: 2-Column Dashboard Grid ═══ -->
-      <div class="dashboard-grid">
+      <main class="app-main">
+        <header class="main-header">
+          <div class="header-title">
+            <h1>Stock-In Gudang</h1>
+            <p class="header-subtitle">
+              Kelola stok awal bulan dan pantau sisa stok terkini
+            </p>
+          </div>
+          <div class="header-status">
+            <span class="status-indicator online"></span>
+            <span class="status-text">System Active</span>
+          </div>
+        </header>
+
+        <div class="config-bar">
+          <label>📄 File:</label>
+          <input type="text" id="cfg-filename" placeholder="05__SO_MEI_2026.xlsx" style="width: 200px" />
+          <label>📁 Folder:</label>
+          <input type="text" id="cfg-folder" placeholder="C:\\Users\\...\\data" style="width: 220px" />
+          <button class="btn-ghost" onclick="saveConfig()">Simpan</button>
+          <button class="btn-ghost" onclick="checkFile()">Cek File</button>
+          <div class="file-status" id="file-status">—</div>
+          <a href="/settings" class="btn-ghost" style="margin-left: auto; text-decoration: none; display: flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-gears"></i> Konfigurasi SO
+          </a>
+        </div>
+
+        <!-- ═══ TOP ROW: 2-Column Dashboard Grid ═══ -->
+        <div class="dashboard-grid">
+
         <!-- LEFT: Upload PDF -->
         <div class="left-column">
           <div class="upload-card-wrapper">
@@ -2054,5 +1261,6 @@
       // ─── BOOT ─────────────────────────────────────────────────────────────────
       init();
     </script>
+      </div>
   </body>
 </html>

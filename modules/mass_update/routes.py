@@ -6,10 +6,9 @@ from config import UPLOAD_FOLDER, OUTPUT_FOLDER
 
 from . import mass_update_bp
 from .processor import proses_mass_update
+from services.task_manager import start_task
 
 JSON_PATH = os.path.join("data", "mass_formulas.json")
-
-progress_tracker = {}
 
 def load_mass_formulas():
     if not os.path.exists(JSON_PATH):
@@ -45,10 +44,6 @@ def save_formulas():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-@mass_update_bp.route('/api/mass-update/progress/<job_id>', methods=['GET'])
-def get_progress(job_id):
-    data = progress_tracker.get(job_id, {"total": 0, "current": 0, "status": "unknown"})
-    return jsonify(data)
 
 @mass_update_bp.route('/api/mass-update/process', methods=['POST'])
 def process_mass_update():
@@ -63,11 +58,7 @@ def process_mass_update():
     if not formulas:
         return jsonify({"status": "error", "message": "Data rumus masih kosong."}), 400
 
-    job_id = request.form.get('job_id', 'default_job')
-    progress_tracker[job_id] = {'total': len(uploaded_files), 'current': 0, 'status': 'running'}
-
     saved_paths = []
-    
     try:
         for f in uploaded_files:
             filename = secure_filename(f.filename)
@@ -80,36 +71,29 @@ def process_mass_update():
         if not saved_paths:
             return jsonify({"status": "error", "message": "Tidak ada file valid yang diunggah (.xlsx/.xls)"}), 400
 
-        output_filename, success_count, fail_count, errors = proses_mass_update(
+        task_id = start_task(
+            "mass_update",
+            proses_mass_update,
             file_paths=saved_paths,
             formulas=formulas,
-            output_folder=OUTPUT_FOLDER,
-            job_id=job_id,
-            progress_tracker=progress_tracker
+            output_folder=OUTPUT_FOLDER
         )
             
         return jsonify({
             "status": "ok",
-            "message": f"Proses selesai. {success_count} berhasil, {fail_count} gagal.",
-            "download_url": f"/api/mass-update/download/{output_filename}",
-            "filename": output_filename,
-            "success_count": success_count,
-            "fail_count": fail_count,
-            "errors": errors
+            "message": "Proses mass update dimulai di background.",
+            "task_id": task_id
         })
         
     except Exception as e:
-        return jsonify({"status": "error", "message": f"Terjadi kesalahan: {str(e)}"}), 500
-    finally:
-        if job_id in progress_tracker:
-            progress_tracker[job_id]['status'] = 'completed'
-            
+        # Jika error sebelum start_task, hapus file yang sudah ter-save
         for p in saved_paths:
             if os.path.exists(p):
                 try:
                     os.remove(p)
                 except:
                     pass
+        return jsonify({"status": "error", "message": f"Terjadi kesalahan: {str(e)}"}), 500
 
 @mass_update_bp.route('/api/mass-update/download/<filename>')
 def download_mass_update_output(filename):

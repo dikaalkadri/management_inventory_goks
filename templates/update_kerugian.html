@@ -360,59 +360,8 @@
 
     <div class="app-container">
       <!-- ── Sidebar Navigation ─────────────────────────────────── -->
-      <aside class="app-sidebar">
-        <div class="sidebar-brand">
-          <i class="fa-solid fa-chart-line-up brand-icon"></i>
-          <div class="brand-info">
-            <span class="brand-name">Goks!</span>
-            <span class="brand-tag">F&B Automation</span>
-          </div>
-        </div>
-
-        <nav class="sidebar-nav">
-          <a href="/" class="nav-item">
-            <i class="fa-solid fa-truck-ramp-box"></i>
-            <span>Stock-In Gudang</span>
-          </a>
-          <a href="/eresto" class="nav-item">
-            <i class="fa-solid fa-file-excel"></i>
-            <span>eResto Analysis</span>
-          </a>
-          <a href="/eresto-mass" class="nav-item">
-            <i class="fa-solid fa-layer-group"></i>
-            <span>eResto Mass Analysis</span>
-          </a>
-          <a href="/sinkronisasi" class="nav-item">
-            <i class="fa-solid fa-arrows-rotate"></i>
-            <span>Sinkronisasi Penjualan</span>
-          </a>
-          <a href="/mass-sinkronisasi" class="nav-item">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Mass Sinkronisasi</span>
-          </a>
-          <a href="/update-kerugian" class="nav-item active">
-            <i class="fa-solid fa-calendar-check"></i>
-            <span>Update Kerugian Harian</span>
-          </a>
-          <a href="/mass-update" class="nav-item">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Update Rumus Massal</span>
-          </a>
-          <a href="/mass-hide" class="nav-item">
-            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
-          </a>
-        </nav>
-
-        <div class="sidebar-footer">
-          <div class="user-profile">
-            <i class="fa-solid fa-circle-user profile-icon"></i>
-            <div>
-              <div class="profile-name">Outlet Manager</div>
-              <div class="profile-role">Administrator</div>
-            </div>
-          </div>
-        </div>
-      </aside>
+      {% set active_menu = 'update_kerugian' %}
+      {% include 'sidebar.html' %}
 
       <!-- ── Main Content ──────────────────────────────────────── -->
       <main class="app-main">
@@ -595,37 +544,61 @@
         document.getElementById('btn-proses').disabled = !ok;
       }
 
-      // ── Progress animation ─────────────────────────────────────────
-      let _progInterval = null;
-      function startFakeProgress() {
-        let pct = 0;
-        const bar  = document.getElementById('progress-bar');
-        const txt  = document.getElementById('progress-text');
-        const msgs = [
-          'Membaca file ZIP eResto…',
-          'Membaca file ZIP SO Drive…',
-          'Mencocokkan nomor outlet…',
-          'Memproses outlet…',
-          'Menghasilkan file kerugian…',
-          'Mengemas ZIP output…',
-        ];
-        let msgIdx = 0;
-        _progInterval = setInterval(() => {
-          if (pct < 85) {
-            pct += Math.random() * 6;
-            bar.style.width = Math.min(pct, 85) + '%';
+      // ── Progress & Polling ─────────────────────────────────────────
+      let _pollInterval = null;
+      
+      function startTaskPolling(taskId) {
+        document.getElementById('btn-proses').disabled = true;
+        document.getElementById('progress-section').style.display = 'block';
+        document.getElementById('result-section').style.display = 'none';
+        
+        // Save to local storage for persistence
+        localStorage.setItem('update_kerugian_task_id', taskId);
+        
+        _pollInterval = setInterval(async () => {
+          try {
+            const res = await fetch('/api/task/status/' + taskId);
+            if (!res.ok) {
+              clearInterval(_pollInterval);
+              localStorage.removeItem('update_kerugian_task_id');
+              return;
+            }
+            const data = await res.json();
+            
+            // Update UI
+            let pct = 0;
+            if (data.total > 0) {
+              pct = Math.round((data.progress / data.total) * 100);
+            }
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-text').textContent = 
+                `${data.progress}/${data.total} outlet - ${data.current_item}`;
+                
+            if (data.status === 'completed') {
+              clearInterval(_pollInterval);
+              localStorage.removeItem('update_kerugian_task_id');
+              document.getElementById('progress-section').style.display = 'none';
+              if (data.result) renderResult(data.result);
+              document.getElementById('btn-proses').disabled = false;
+            } else if (data.status === 'error') {
+              clearInterval(_pollInterval);
+              localStorage.removeItem('update_kerugian_task_id');
+              document.getElementById('progress-section').style.display = 'none';
+              showError(data.message || 'Proses gagal.');
+              document.getElementById('btn-proses').disabled = false;
+            }
+          } catch (e) {
+            console.error('Polling error:', e);
           }
-          if (msgIdx < msgs.length - 1 && pct > (msgIdx + 1) * 14) {
-            msgIdx++;
-            txt.textContent = msgs[msgIdx];
-          }
-        }, 500);
+        }, 1500);
       }
-      function finishProgress() {
-        clearInterval(_progInterval);
-        document.getElementById('progress-bar').style.width = '100%';
-        document.getElementById('progress-text').textContent = 'Selesai!';
-      }
+
+      window.addEventListener('load', () => {
+        const savedTaskId = localStorage.getItem('update_kerugian_task_id');
+        if (savedTaskId) {
+          startTaskPolling(savedTaskId);
+        }
+      });
 
       // ── Main process ───────────────────────────────────────────────
       async function startProses() {
@@ -642,7 +615,6 @@
         document.getElementById('result-section').style.display = 'none';
         document.getElementById('progress-bar').style.width = '0%';
         document.getElementById('progress-text').textContent = 'Mengirim data ke server…';
-        startFakeProgress();
 
         const fd = new FormData();
         fd.append('eresto_zip', erestoFile);
@@ -652,19 +624,15 @@
         try {
           const res  = await fetch('/api/update-kerugian/proses', { method: 'POST', body: fd });
           const data = await res.json();
-          finishProgress();
 
-          await new Promise(r => setTimeout(r, 500)); // pause sebentar biar bar 100% keliatan
-          document.getElementById('progress-section').style.display = 'none';
-
-          if (data.status === 'ok' || data.processed > 0) {
-            renderResult(data);
+          if (data.status === 'ok' && data.task_id) {
+            startTaskPolling(data.task_id);
           } else {
+            document.getElementById('progress-section').style.display = 'none';
             showError(data.message || 'Proses gagal.');
             document.getElementById('btn-proses').disabled = false;
           }
         } catch (err) {
-          finishProgress();
           document.getElementById('progress-section').style.display = 'none';
           showError('Koneksi ke server gagal: ' + err.message);
           document.getElementById('btn-proses').disabled = false;

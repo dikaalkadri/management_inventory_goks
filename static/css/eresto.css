@@ -147,11 +147,14 @@ body {
     font-size: 15px;
     font-weight: 500;
     border-radius: 12px;
+    white-space: nowrap;
     transition: all 0.3s ease;
 }
 
 .nav-item i {
     font-size: 18px;
+    width: 24px;
+    text-align: center;
     transition: transform 0.3s ease;
 }
 
@@ -165,10 +168,10 @@ body {
 }
 
 .nav-item.active {
-    color: #ffffff;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
+    color: var(--color-emerald, #10b981);
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.05);
 }
 
 .sidebar-footer {

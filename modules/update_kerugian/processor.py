@@ -9,6 +9,7 @@ import openpyxl
 
 from modules.sinkronisasi.processor import proses_sinkronisasi_excel
 from modules.mass_sinko.processor import _build_outlet_map, _to_xlsx
+from services.task_manager import active_tasks
 
 def _get_available_days(eresto_xlsx):
     wb = openpyxl.load_workbook(eresto_xlsx, read_only=True, data_only=True)
@@ -34,7 +35,7 @@ def _get_available_days(eresto_xlsx):
     wb.close()
     return days
 
-def process_update_kerugian(eresto_zip_bytes: bytes, so_zip_bytes: bytes, kerugian_zip_bytes: bytes, output_folder: str) -> dict:
+def process_update_kerugian(task_id: str, eresto_zip_bytes: bytes, so_zip_bytes: bytes, kerugian_zip_bytes: bytes, output_folder: str) -> dict:
     # 1. Ekstrak ketiga ZIP
     eresto_map = _build_outlet_map(eresto_zip_bytes, "eResto")
     so_map     = _build_outlet_map(so_zip_bytes, "SO")
@@ -114,6 +115,7 @@ def process_update_kerugian(eresto_zip_bytes: bytes, so_zip_bytes: bytes, kerugi
                     sumber_path_xlsx=eresto_xlsx,
                     tujuan_path_xlsx=kerugian_xlsx,
                     output_folder=output_folder,
+                    target_days=available_days,
                 )
 
                 return {
@@ -132,11 +134,21 @@ def process_update_kerugian(eresto_zip_bytes: bytes, so_zip_bytes: bytes, kerugi
                 }
 
         # Jalankan secara paralel menggunakan ThreadPoolExecutor dengan 5 worker
+        if task_id in active_tasks:
+            active_tasks[task_id]['total'] = len(all_nos)
+
         with ThreadPoolExecutor(max_workers=5) as executor:
             futures = {executor.submit(_proses_single, no): no for no in all_nos}
             for future in as_completed(futures):
+                if task_id in active_tasks:
+                    active_tasks[task_id]['progress'] += 1
+
                 res = future.result()
                 status = res["status"]
+                
+                if task_id in active_tasks:
+                    name_disp = res.get("name", res.get("no", "Unknown"))
+                    active_tasks[task_id]['current_item'] = f"Memproses: {name_disp}"
                 if status == "success":
                     success_outlets.append({
                         "no": res["no"],
@@ -171,6 +183,7 @@ def process_update_kerugian(eresto_zip_bytes: bytes, so_zip_bytes: bytes, kerugi
 
     return {
         "zip_filename": zip_name if processed_count > 0 else None,
+        "download_url": f"/api/update-kerugian/download/{zip_name}" if processed_count > 0 else None,
         "processed": processed_count,
         "missing_so": missing_so,
         "missing_eresto": missing_eresto,

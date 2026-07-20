@@ -4,340 +4,166 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stock Gudang — Goks! Stock-In</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/static/css/eresto.css" />
     <style>
-      :root {
-        --green-dark: #6113a7;
-        --green-mid: #5a189a;
-        --green-main: #7b2cbf;
-        --green-light: #ffffff;
-        --green-pale: #ffffff;
-        --green-bg: #f8f0ff;
-        --accent: #f9a826;
-        --red: #e63946;
-        --white: #fafff8;
-        --gray: #6b7280;
-        --border: #b7e4c7;
-        --shadow: 0 2px 12px rgba(27, 67, 50, 0.12);
-        --radius: 14px;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: "DM Sans", sans-serif;
-        background: var(--green-bg);
-        color: var(--green-dark);
-        min-height: 100vh;
-      }
-
-      /* ── HEADER ── */
-      header {
-        background: var(--green-dark);
-        padding: 0 28px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 60px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
-      }
-      .logo {
-        font-family: "Syne", sans-serif;
-        font-weight: 800;
-        font-size: 1.3rem;
-        color: #fafff8;
-        letter-spacing: -0.5px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .logo-badge {
-        background: var(--accent);
-        color: var(--green-dark);
-        font-size: 0.65rem;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 20px;
-      }
-      nav {
-        display: flex;
-        gap: 8px;
-      }
-      nav a {
-        color: var(--green-pale);
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 500;
-        padding: 6px 14px;
-        border-radius: 8px;
-        transition: all 0.2s;
-      }
-      nav a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        color: #fff;
-      }
-      nav a.active {
-        background: var(--green-main);
-        color: white;
-      }
-
-      /* ── MAIN ── */
-      main {
-        padding: 28px;
-        max-width: 860px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-      }
-
-      /* ── PAGE TITLE ── */
       .page-title {
         display: flex;
         align-items: center;
         gap: 12px;
+        margin-bottom: 24px;
       }
       .page-title h1 {
-        font-family: "Syne", sans-serif;
-        font-size: 1.4rem;
+        font-size: 1.8rem;
         font-weight: 800;
-        color: var(--green-dark);
+        margin: 0;
+        background: linear-gradient(135deg, #ffffff 30%, var(--text-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
-      .page-title .subtitle {
-        font-size: 0.82rem;
-        color: var(--gray);
-        margin-top: 2px;
+      .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
       }
-
-      /* ── SECTION CARD ── */
+      .btn-primary {
+        background: var(--color-emerald);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-primary:hover {
+        background: var(--color-emerald-light);
+      }
       .section-card {
-        background: white;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
+        background: rgba(18, 18, 29, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        margin-bottom: 24px;
         overflow: hidden;
       }
       .section-head {
-        background: var(--green-mid);
-        color: white;
-        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 10px;
+        align-items: center;
       }
       .section-head h2 {
-        font-family: "Syne", sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 700;
+        margin: 0;
       }
       .section-body {
         padding: 20px;
       }
-
-      /* ── STOK GRID ── */
+      .info-box {
+        background: rgba(249, 168, 38, 0.1);
+        border: 1px solid rgba(249, 168, 38, 0.2);
+        color: #fcd34d;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+      }
       .stok-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 16px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
       }
       .stok-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 10px;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: var(--green-bg);
-        border-radius: 8px;
-        border: 1px solid var(--border);
+        gap: 10px;
       }
       .stok-item label {
-        font-size: 0.8rem;
-        flex: 1;
         font-weight: 500;
-        color: var(--green-dark);
+        font-size: 0.9rem;
       }
       .stok-item input {
-        width: 80px;
-        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 6px 12px;
         border-radius: 6px;
-        padding: 4px 8px;
-        font-family: "DM Mono", monospace;
-        font-size: 0.82rem;
+        width: 100px;
         text-align: right;
-        transition: border-color 0.2s;
+        font-family: "DM Mono", monospace;
       }
       .stok-item input:focus {
         outline: none;
-        border-color: var(--green-main);
+        border-color: var(--color-emerald);
       }
-
-      /* ── INFO BOX ── */
-      .info-box {
-        background: rgba(249, 168, 38, 0.1);
-        border: 1px solid rgba(249, 168, 38, 0.3);
-        border-radius: 8px;
-        padding: 10px 14px;
-        font-size: 0.8rem;
-        color: #856404;
-        margin-bottom: 14px;
-      }
-
-      /* ── BUTTONS ── */
-      .btn {
-        padding: 8px 20px;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: "DM Sans", sans-serif;
-      }
-      .btn-primary {
-        background: var(--green-mid);
-        color: white;
-      }
-      .btn-primary:hover {
-        background: var(--green-dark);
-      }
-      .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      /* ── SISA STOK TABLE ── */
+      
       .sisa-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.83rem;
       }
       .sisa-table th {
-        background: var(--green-pale);
-        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-secondary);
+        font-weight: 600;
+        padding: 12px 20px;
         text-align: left;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        color: var(--green-dark);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .sisa-table td {
-        padding: 8px 12px;
-        border-bottom: 1px solid var(--green-bg);
-        vertical-align: middle;
-      }
-      .sisa-table tr:last-child td {
-        border-bottom: none;
+        padding: 12px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .sisa-table tr:hover td {
-        background: var(--green-bg);
+        background: rgba(255, 255, 255, 0.02);
       }
+      .badge-sheet {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .badge-utama { background: rgba(249, 168, 38, 0.2); color: #f9a826; }
+      .badge-topping { background: rgba(230, 57, 70, 0.2); color: #e63946; }
+      .badge-powder { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+      .badge-lainnya { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+      
       .sisa-val {
         font-family: "DM Mono", monospace;
         font-weight: 600;
-        color: var(--green-mid);
       }
-      .badge-sheet {
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 20px;
-      }
-      .badge-utama {
-        background: #dbeafe;
-        color: #1e40af;
-      }
-      .badge-topping {
-        background: #fef9c3;
-        color: #854d0e;
-      }
-      .badge-powder {
-        background: #fce7f3;
-        color: #9d174d;
-      }
-      .badge-lainnya {
-        background: #f3f4f6;
-        color: #374151;
-      }
-
-      /* ── TOAST ── */
-      #toast {
-        position: fixed;
-        top: 75px;
-        right: 20px;
-        background: var(--green-dark);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 10px;
-        font-size: 0.88rem;
-        max-width: 360px;
-        z-index: 9999;
-        transform: translateX(120%);
-        transition: transform 0.3s ease;
-        border-left: 4px solid var(--green-light);
-        box-shadow: var(--shadow);
-      }
-      #toast.show {
-        transform: translateX(0);
-      }
-      #toast.error {
-        border-left-color: var(--red);
-      }
-      #toast.success {
-        border-left-color: var(--green-light);
-      }
-
-      @media (max-width: 640px) {
-        main {
-          padding: 16px;
-        }
-        .stok-grid {
-          grid-template-columns: 1fr;
-        }
-      }
+      
+      /* Toast */
+      #toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; background: rgba(18, 18, 29, 0.9); border-left: 4px solid var(--color-emerald); transform: translateX(120%); transition: 0.3s; z-index: 1000; }
+      #toast.show { transform: translateX(0); }
+      #toast.error { border-left-color: #ef4444; }
     </style>
   </head>
   <body>
-    <header>
-      <div class="logo">
-        <img src="/static/Goks.png" alt="Goks Logo" class="logo-img" />
-      </div>
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
 
-      <nav>
-        <a href="/">Upload</a>
-        <a href="/stock-gudang" class="active">Stock Gudang</a>
-        <a href="/eresto">eResto Analysis</a>
-        <a href="/sinkronisasi">sinkronisasi</a>
-                  <a href="/mass-sinkronisasi" class="nav-item">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Mass Sinkronisasi</span>
-          </a>
-          <a href="/update-kerugian" class="nav-item">
-            <i class="fa-solid fa-calendar-check"></i>
-            <span>Update Kerugian Harian</span>
-          </a>
-                  <a href="/mass-update" class="nav-item">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Update Rumus Massal</span>
-          </a>
-                  <a href="/mass-hide" class="nav-item">
-            <i class="fa-solid fa-eye-slash"></i><span>Format Laporan</span>
-          </a>
-</nav>
-    </header>
+    <div class="app-container">
+      {% set active_menu = 'stockin' %}
+      {% include 'sidebar.html' %}
 
-    <main>
+      <main class="app-main">
+
       <!-- ── PAGE TITLE ── -->
       <div class="page-title" style="justify-content: space-between; width: 100%;">
         <div>
@@ -581,5 +407,6 @@
 
       init();
     </script>
+      </div>
   </body>
 </html>

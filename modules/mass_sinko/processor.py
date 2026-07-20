@@ -18,22 +18,28 @@ from typing import Optional
 
 from modules.sinkronisasi.processor import proses_sinkronisasi_excel
 from modules.stockin.helpers import convert_to_xlsx_if_needed  # dipakai untuk konversi xls→xlsx
+from services.task_manager import active_tasks
 
 
 # ─── Regex helper ────────────────────────────────────────────────────────────
 
 from modules.eresto_mass.processor import load_outlets_inventory
 
-def _extract_outlet_no(filename: str) -> Optional[str]:
+def _extract_outlet_no(filename: str, outlets_list: list = None) -> Optional[str]:
     """
     Ekstrak nomor outlet 2-digit dari nama file.
     Sekarang membaca nama outlet dari inventory agar 100% akurat 
     meskipun ada typo nomor (misal '3.' bukan '03.').
+
+    Parameter outlets_list bersifat opsional — jika tidak diberikan,
+    akan di-load dari disk (untuk penggunaan standalone).
     """
     name_lower = filename.lower()
     
     # 1. Coba cocokkan nama outlet dari inventory
-    outlets_list = load_outlets_inventory()
+    if outlets_list is None:
+        outlets_list = load_outlets_inventory()
+
     for outlet in outlets_list:
         parts = outlet.split('.', 1)
         if len(parts) == 2:
@@ -57,6 +63,9 @@ def _build_outlet_map(zip_bytes: bytes, label: str) -> dict:
     Abaikan file yang bukan .xlsx / .xls
     """
     outlet_map = {}
+    # Load daftar outlet SEKALI di sini, lalu pass ke setiap file
+    outlets_list = load_outlets_inventory()
+
     with zipfile.ZipFile(BytesIO(zip_bytes), 'r') as zf:
         for info in zf.infolist():
             fname = os.path.basename(info.filename)
@@ -66,7 +75,7 @@ def _build_outlet_map(zip_bytes: bytes, label: str) -> dict:
             if ext not in ('.xlsx', '.xls'):
                 continue
 
-            no = _extract_outlet_no(fname)
+            no = _extract_outlet_no(fname, outlets_list)
             if no is None:
                 print(f"[MASS-SINKO] [{label}] Tidak dapat ekstrak nomor outlet dari: {fname}")
                 continue
@@ -82,9 +91,11 @@ def _build_outlet_map(zip_bytes: bytes, label: str) -> dict:
     return outlet_map
 
 
+
 # ─── Main processor ──────────────────────────────────────────────────────────
 
 def process_mass_sinkronisasi(
+    task_id: str,
     eresto_zip_bytes: bytes,
     so_zip_bytes: bytes,
     bulan: str,
@@ -166,11 +177,21 @@ def process_mass_sinkronisasi(
                 }
 
         # Jalankan secara paralel menggunakan ThreadPoolExecutor dengan 5 worker
+        if task_id in active_tasks:
+            active_tasks[task_id]['total'] = len(all_nos)
+
         with ThreadPoolExecutor(max_workers=5) as executor:
             futures = {executor.submit(_proses_single, no): no for no in all_nos}
             for future in as_completed(futures):
+                if task_id in active_tasks:
+                    active_tasks[task_id]['progress'] += 1
+
                 res = future.result()
                 status = res["status"]
+                
+                if task_id in active_tasks:
+                    name_disp = res.get("name", res.get("no", "Unknown"))
+                    active_tasks[task_id]['current_item'] = f"Memproses: {name_disp}"
                 if status == "success":
                     success_outlets.append({
                         "no": res["no"],

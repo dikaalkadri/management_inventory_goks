@@ -61,58 +61,8 @@
     <div class="glow-blob blob-3"></div>
 
     <div class="app-container">
-      <aside class="app-sidebar">
-        <div class="sidebar-brand">
-          <i class="fa-solid fa-chart-line-up brand-icon"></i>
-          <div class="brand-info">
-            <span class="brand-name">Goks!</span>
-            <span class="brand-tag">F&B Automation</span>
-          </div>
-        </div>
-        <nav class="sidebar-nav">
-          <a href="/" class="nav-item">
-            <i class="fa-solid fa-truck-ramp-box"></i>
-            <span>Stock-In Gudang</span>
-          </a>
-          <a href="/eresto" class="nav-item">
-            <i class="fa-solid fa-file-excel"></i>
-            <span>eResto Analysis</span>
-          </a>
-          <a href="/eresto-mass" class="nav-item">
-            <i class="fa-solid fa-layer-group"></i>
-            <span>eResto Mass Analysis</span>
-          </a>
-          <a href="/sinkronisasi" class="nav-item">
-            <i class="fa-solid fa-arrows-rotate"></i>
-            <span>Sinkronisasi Penjualan</span>
-          </a>
-          <a href="/mass-sinkronisasi" class="nav-item">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Mass Sinkronisasi</span>
-          </a>
-          <a href="/update-kerugian" class="nav-item">
-            <i class="fa-solid fa-calendar-check"></i>
-            <span>Update Kerugian Harian</span>
-          </a>
-          <a href="/mass-update" class="nav-item active">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Update Rumus Massal</span>
-          </a>
-          <a href="/mass-hide" class="nav-item">
-            <i class="fa-solid fa-eye-slash"></i>
-            <span>Format Laporan</span>
-          </a>
-        </nav>
-        <div class="sidebar-footer">
-          <div class="user-profile">
-            <i class="fa-solid fa-circle-user profile-icon"></i>
-            <div>
-              <div class="profile-name">Outlet Manager</div>
-              <div class="profile-role">Administrator</div>
-            </div>
-          </div>
-        </div>
-      </aside>
+      {% set active_menu = 'mass_update' %}
+      {% include 'sidebar.html' %}
 
       <main class="app-main">
         <header class="main-header">
@@ -499,6 +449,88 @@
         }
       });
 
+      // ── Progress & Polling ─────────────────────────────────────────
+      let _pollInterval = null;
+      
+      function startTaskPolling(taskId) {
+        const btn = document.getElementById("processBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Memproses File...</span>';
+        
+        document.getElementById("progressContainer").style.display = "block";
+        
+        // Save to local storage for persistence
+        localStorage.setItem('mass_update_task_id', taskId);
+        
+        _pollInterval = setInterval(async () => {
+          try {
+            const res = await fetch('/api/task/status/' + taskId);
+            if (!res.ok) {
+              clearInterval(_pollInterval);
+              localStorage.removeItem('mass_update_task_id');
+              return;
+            }
+            const data = await res.json();
+            
+            // Update UI
+            let pct = 0;
+            if (data.total > 0) {
+              pct = Math.round((data.progress / data.total) * 100);
+            }
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressText').textContent = 
+                `${data.progress}/${data.total} file - ${data.current_item}`;
+                
+            if (data.status === 'completed') {
+              clearInterval(_pollInterval);
+              localStorage.removeItem('mass_update_task_id');
+              
+              const zip_filename = data.result[0];
+              const success_count = data.result[1];
+              const fail_count = data.result[2];
+              const errors = data.result[3];
+              
+              document.getElementById("downloadCard").style.display = "block";
+              document.getElementById("uploadCard").style.display = "none";
+              document.getElementById("statSuccess").textContent = success_count;
+              document.getElementById("statFail").textContent = fail_count;
+              
+              const errDiv = document.getElementById("errorContainer");
+              if (errors && errors.length > 0) {
+                errDiv.innerHTML = errors.map(e => `<div><i class="fa-solid fa-circle-exclamation"></i> ${e}</div>`).join("");
+              } else {
+                errDiv.innerHTML = "";
+              }
+              
+              const download_url = "/api/mass-update/download/" + zip_filename;
+              document.getElementById("downloadLink").href = download_url;
+              showToast("Update selesai!", "success");
+              
+              // Auto download
+              const a = document.createElement("a");
+              a.href = download_url;
+              a.click();
+            } else if (data.status === 'error') {
+              clearInterval(_pollInterval);
+              localStorage.removeItem('mass_update_task_id');
+              showToast(data.message || 'Proses gagal.', "error");
+              btn.disabled = false;
+              btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Update Rumus</span>';
+              document.getElementById("progressContainer").style.display = "none";
+            }
+          } catch (e) {
+            console.error('Polling error:', e);
+          }
+        }, 1500);
+      }
+
+      window.addEventListener('load', () => {
+        const savedTaskId = localStorage.getItem('mass_update_task_id');
+        if (savedTaskId) {
+          startTaskPolling(savedTaskId);
+        }
+      });
+
       document.getElementById("processBtn").addEventListener("click", async () => {
         if (uploadedFiles.length === 0) {
           showToast("Unggah minimal 1 file Excel", "warning");
@@ -507,28 +539,10 @@
         
         const btn = document.getElementById("processBtn");
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Memproses ' + uploadedFiles.length + ' File...</span>';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Mempersiapkan Upload...</span>';
         
-        const jobId = "job_" + Date.now();
         const formData = new FormData();
-        formData.append("job_id", jobId);
         uploadedFiles.forEach(f => formData.append("files[]", f));
-        
-        document.getElementById("progressContainer").style.display = "block";
-        document.getElementById("progressBar").style.width = "0%";
-        document.getElementById("progressText").textContent = "0 / " + uploadedFiles.length;
-        
-        const progressInterval = setInterval(async () => {
-          try {
-            const r = await fetch("/api/mass-update/progress/" + jobId);
-            const d = await r.json();
-            if (d.total > 0) {
-              const pct = Math.min(100, Math.round((d.current / d.total) * 100));
-              document.getElementById("progressBar").style.width = pct + "%";
-              document.getElementById("progressText").textContent = d.current + " / " + d.total;
-            }
-          } catch(err) {}
-        }, 1000);
         
         showToast("⏳ Sedang memproses update rumus...", "info");
         
@@ -539,45 +553,17 @@
           });
           const data = await res.json();
           
-          clearInterval(progressInterval);
-          document.getElementById("progressBar").style.width = "100%";
-          document.getElementById("progressText").textContent = uploadedFiles.length + " / " + uploadedFiles.length;
-          
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Update Rumus</span>';
-          
-          if (data.status === "ok") {
-            setTimeout(() => {
-                document.getElementById("downloadCard").style.display = "block";
-                document.getElementById("uploadCard").style.display = "none";
-                document.getElementById("statSuccess").textContent = data.success_count;
-                document.getElementById("statFail").textContent = data.fail_count;
-                
-                const errDiv = document.getElementById("errorContainer");
-                if (data.errors && data.errors.length > 0) {
-                  errDiv.innerHTML = data.errors.map(e => `<div><i class="fa-solid fa-circle-exclamation"></i> ${e}</div>`).join("");
-                } else {
-                  errDiv.innerHTML = "";
-                }
-                
-                document.getElementById("downloadLink").href = data.download_url;
-                showToast("Update selesai!", "success");
-                
-                // Auto download
-                const a = document.createElement("a");
-                a.href = data.download_url;
-                a.click();
-            }, 800);
+          if (data.status === "ok" && data.task_id) {
+            startTaskPolling(data.task_id);
           } else {
             showToast(data.message, "error");
-            document.getElementById("progressContainer").style.display = "none";
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Update Rumus</span>';
           }
         } catch (e) {
-          clearInterval(progressInterval);
           showToast("Terjadi kesalahan sistem", "error");
           btn.disabled = false;
           btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Update Rumus</span>';
-          document.getElementById("progressContainer").style.display = "none";
         }
       });
 

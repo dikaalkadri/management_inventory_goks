@@ -41,7 +41,7 @@
     },
     "13": {
         "name": "Sedotan Besar",
-        "formula": "=Q49+Q50+Q53+Q65+Q66+(SUM(Q101:Q109))"
+        "formula": "=Q49+Q50+Q53+Q65+Q66+(SUM(Q101:Q109))+Q68+Q69+Q71+Q72+Q74"
     },
     "14": {
         "name": "Sedotan Kecil",

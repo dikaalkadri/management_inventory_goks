@@ -5,6 +5,7 @@ import zipfile
 import openpyxl
 
 from modules.stockin.helpers import convert_to_xlsx_if_needed
+from services.task_manager import active_tasks
 
 def _safe_write(ws, row, col, value):
     cell = ws.cell(row=row, column=col)
@@ -19,7 +20,7 @@ def _safe_write(ws, row, col, value):
     except:
         pass
 
-def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progress_tracker=None):
+def proses_mass_update(task_id, file_paths, formulas, output_folder):
     """
     Memproses daftar file Excel, mengubah rumus di Kolom J sesuai data 'formulas',
     dan mengemas hasilnya ke dalam file ZIP.
@@ -35,11 +36,17 @@ def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progres
     fail_count = 0
     errors = []
     
+    if task_id in active_tasks:
+        active_tasks[task_id]['total'] = len(file_paths)
+    
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for fpath in file_paths:
             basename = os.path.basename(fpath)
             # Hilangkan prefix 'mu_' yang kita tambahkan di route
             clean_basename = basename[3:] if basename.startswith("mu_") else basename
+            
+            if task_id in active_tasks:
+                active_tasks[task_id]['current_item'] = f"Memproses: {clean_basename}"
             
             try:
                 # Convert ke .xlsx jika perlu
@@ -50,6 +57,12 @@ def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progres
                 wb = openpyxl.load_workbook(fpath_xlsx)
                 sheet_updated = False
                 
+                # Load data bahan baku SEKALI sebelum loop sheet
+                # (sebelumnya dipanggil 31× per outlet di dalam loop — sangat boros)
+                from services.catalog_service import load_materials
+                mat_list = load_materials()
+                mat_dict = {m.get('name', '').strip().lower(): m.get('price', 0) for m in mat_list}
+
                 for sheet_name in wb.sheetnames:
                     # Proses hanya sheet harian (01, 02, ..., 31)
                     if re.match(r"^\d{2}$", sheet_name.strip()):
@@ -57,11 +70,7 @@ def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progres
                         # Buka proteksi sheet sementara jika diperlukan (Openpyxl terkadang bisa menulis cell yang di-lock, 
                         # tapi amannya disable dulu)
                         ws.protection.sheet = False
-                        
-                        from services.catalog_service import load_materials
-                        mat_list = load_materials()
-                        mat_dict = {m.get('name', '').strip().lower(): m.get('price', 0) for m in mat_list}
-                        
+
                         for row_str, item in formulas.items():
                             try:
                                 row_idx = int(row_str)
@@ -114,7 +123,15 @@ def proses_mass_update(file_paths, formulas, output_folder, job_id=None, progres
                 fail_count += 1
                 errors.append(f"{clean_basename}: {str(e)}")
 
-            if job_id and progress_tracker and job_id in progress_tracker:
-                progress_tracker[job_id]['current'] += 1
+            if task_id in active_tasks:
+                active_tasks[task_id]['progress'] += 1
+                
+        # Bersihkan file origin
+        for p in file_paths:
+            if os.path.exists(p):
+                try:
+                    os.remove(p)
+                except:
+                    pass
                 
     return zip_filename, success_count, fail_count, errors

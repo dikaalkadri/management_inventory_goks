@@ -12,6 +12,7 @@ from flask import Blueprint, render_template, request, jsonify, send_from_direct
 import config
 from modules.mass_sinko.processor import process_mass_sinkronisasi
 from services.file_handler import save_upload, cleanup_file
+from services.task_manager import start_task
 from modules.eresto_mass.cleaner import clean_mass_data
 from modules.eresto_mass.processor import process_mass_to_zip
 
@@ -108,7 +109,9 @@ def api_proses_mass_sinko():
 
     # ── Proses ─────────────────────────────────────────────────────────
     try:
-        result = process_mass_sinkronisasi(
+        task_id = start_task(
+            "mass_sinko",
+            process_mass_sinkronisasi,
             eresto_zip_bytes=eresto_zip_bytes,
             so_zip_bytes=so_zip_bytes,
             bulan=bulan,
@@ -116,25 +119,12 @@ def api_proses_mass_sinko():
             output_folder=config.OUTPUT_FOLDER,
         )
     except Exception as e:
-        return jsonify({"status": "error", "message": f"Proses gagal: {str(e)}"}), 500
-
-    # ── Susun response ─────────────────────────────────────────────────
-    if result['processed'] == 0 and not result['errors']:
-        return jsonify({
-            "status": "error",
-            "message": "Tidak ada outlet yang dapat diproses. Periksa konten kedua ZIP.",
-            **result,
-        }), 422
-
-    download_url = None
-    if result['zip_filename']:
-        download_url = f"/api/mass-sinkronisasi/download/{result['zip_filename']}"
+        return jsonify({"status": "error", "message": f"Gagal memulai proses: {str(e)}"}), 500
 
     return jsonify({
         "status": "ok",
-        "message": f"Selesai! {result['processed']} outlet berhasil diproses.",
-        "download_url": download_url,
-        **result,
+        "message": "Proses sinkronisasi dimulai di background.",
+        "task_id": task_id
     })
 
 

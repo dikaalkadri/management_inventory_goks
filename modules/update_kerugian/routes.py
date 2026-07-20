@@ -4,6 +4,7 @@ import config
 
 from . import update_kerugian_bp
 from .processor import process_update_kerugian
+from services.task_manager import start_task
 
 @update_kerugian_bp.route('/update-kerugian')
 def update_kerugian_page():
@@ -37,31 +38,21 @@ def api_proses_update_kerugian():
         return jsonify({"status": "error", "message": f"Gagal membaca file: {str(e)}"}), 500
 
     try:
-        result = process_update_kerugian(
+        task_id = start_task(
+            "update_kerugian",
+            process_update_kerugian,
             eresto_zip_bytes=eresto_bytes,
             so_zip_bytes=so_bytes,
             kerugian_zip_bytes=kerugian_bytes,
             output_folder=config.OUTPUT_FOLDER
         )
     except Exception as e:
-        return jsonify({"status": "error", "message": f"Proses gagal: {str(e)}"}), 500
-
-    if result['processed'] == 0 and not result['errors']:
-        return jsonify({
-            "status": "error",
-            "message": "Tidak ada outlet yang dapat diproses. Periksa isi file ZIP.",
-            **result,
-        }), 422
-
-    download_url = None
-    if result['zip_filename']:
-        download_url = f"/api/update-kerugian/download/{result['zip_filename']}"
+        return jsonify({"status": "error", "message": f"Gagal memulai proses: {str(e)}"}), 500
 
     return jsonify({
         "status": "ok",
-        "message": f"Selesai! {result['processed']} outlet berhasil diupdate.",
-        "download_url": download_url,
-        **result,
+        "message": "Proses update kerugian dimulai di background.",
+        "task_id": task_id
     })
 
 @update_kerugian_bp.route('/api/update-kerugian/download/<filename>')

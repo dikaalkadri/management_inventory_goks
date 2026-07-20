@@ -13,6 +13,32 @@ from openpyxl.formatting.rule import CellIsRule
 from openpyxl.utils import get_column_letter
 from openpyxl.cell.cell import MergedCell
 
+# ── Pre-built style objects (dibuat sekali, dipakai ulang setiap sheet/outlet) ─
+# Menghindari jutaan object allocation selama proses batch berlangsung.
+_FILL_ZEBRA_EVEN = PatternFill("solid", fgColor="F5F7FA")  # biru-abu muda
+_FILL_ZEBRA_ODD  = PatternFill("solid", fgColor="FFFFFF")  # putih
+
+# ── Pre-built style untuk sheet "Rekap Kerugian" ─────────────────────────────
+# Dibuat SEKALI di sini, bukan 35× di dalam proses_sinkronisasi_excel().
+_REKAP_THIN          = Side(border_style="thin", color="BDBDBD")
+_REKAP_BORDER        = Border(left=_REKAP_THIN, right=_REKAP_THIN,
+                               top=_REKAP_THIN, bottom=_REKAP_THIN)
+_REKAP_HDR_FONT      = Font(name="Segoe UI", bold=True, color="FFFFFF", size=11)
+_REKAP_HDR_FILL      = PatternFill("solid", fgColor="1B5E20")   # hijau gelap
+_REKAP_HDR_ALIGN     = Alignment(horizontal="center", vertical="center")
+_REKAP_TITLE_FONT    = Font(name="Segoe UI", bold=True, size=14, color="1B5E20")
+_REKAP_TITLE_ALIGN   = Alignment(horizontal="center", vertical="center")
+_REKAP_EVEN_FILL     = PatternFill("solid", fgColor="F1F8E9")
+_REKAP_ODD_FILL      = PatternFill("solid", fgColor="FFFFFF")
+_REKAP_ZERO_FONT     = Font(name="Segoe UI", size=10, color="BDBDBD")  # abu-abu
+_REKAP_DATA_FONT     = Font(name="Segoe UI", size=10, color="000000")
+_REKAP_DATE_FONT     = Font(name="Segoe UI", size=10)
+_REKAP_ALIGN_CENTER  = Alignment(horizontal="center", vertical="center")
+_REKAP_ALIGN_RIGHT   = Alignment(horizontal="right",  vertical="center")
+_REKAP_TOT_FONT      = Font(name="Segoe UI", bold=True, size=11, color="FFFFFF")
+_REKAP_TOT_FILL      = PatternFill("solid", fgColor="1B5E20")
+_REKAP_TOT_ALIGN     = Alignment(horizontal="center", vertical="center")
+
 from services.catalog_service import load_pos, load_materials
 from services.excel_style_helper import copy_row_properties
 from modules.stockin.formula_config import apply_all as apply_formulas_and_protect, RELATIVE_ROW_START, RELATIVE_ROW_END
@@ -33,7 +59,7 @@ def safe_write_cell(ws, row, col, value, number_format=None):
     except:
         pass
 
-def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder, outlet=None):
+def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder, outlet=None, target_days=None):
     pos_list = load_pos()
     mat_list = load_materials()
     total_items = max(len(pos_list), len(mat_list))
@@ -113,6 +139,35 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         should_update_sales = (day_str in available_days)
 
         ws_tujuan = wb_tujuan[sheet_name]
+        
+        # --- SMART SKIP LOGIC ---
+        if target_days is not None and day_str not in target_days:
+            # Pengecekan: apakah jumlah baris produk sudah sama persis dengan master catalog?
+            temp_start_row = None
+            for r in range(1, 25):
+                val_p = str(ws_tujuan.cell(row=r, column=16).value or "").strip().upper()
+                if "PRODUCT" in val_p:
+                    temp_start_row = r + 1
+                    break
+            if not temp_start_row:
+                temp_start_row = 2
+            
+            temp_curr_row = temp_start_row
+            while True:
+                val_p = ws_tujuan.cell(row=temp_curr_row, column=16).value
+                if val_p and any(keyword in str(val_p).upper() for keyword in ["TOTAL", "JUMLAH"]):
+                    break
+                if not val_p and not ws_tujuan.cell(row=temp_curr_row + 1, column=16).value:
+                    break
+                temp_curr_row += 1
+                
+            temp_existing_count = (temp_curr_row - 1) - temp_start_row + 1
+            
+            # Jika jumlah baris klop, kita BISA skip 100% sheet ini untuk menghemat waktu
+            if temp_existing_count == total_items:
+                continue
+        # --- END SMART SKIP LOGIC ---
+
         ws_tujuan.freeze_panes = 'C2'
 
         # Update header tanggal di kolom Q (17) row 1 sesuai tanggal sheet
@@ -169,6 +224,24 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
             except:
                 pass
 
+        # 3b. BACKUP DATA MANUAL (KOLOM C, D, E, F, G, H, N, R) BERDASARKAN NAMA BAHAN BAKU
+        manual_backup = {}
+        for r in range(start_data_row, old_last_data_row + 1):
+            b_val = ws_tujuan.cell(row=r, column=2).value
+            if b_val:
+                b_key = str(b_val).strip().lower()
+                manual_backup[b_key] = {
+                    'C': ws_tujuan.cell(row=r, column=3).value,
+                    'D': ws_tujuan.cell(row=r, column=4).value if (day_num == 1) else None,
+                    'E': ws_tujuan.cell(row=r, column=5).value,
+                    'F': ws_tujuan.cell(row=r, column=6).value,
+                    'G': ws_tujuan.cell(row=r, column=7).value,
+                    'H': ws_tujuan.cell(row=r, column=8).value,
+                    'N': ws_tujuan.cell(row=r, column=14).value,
+                    'R': ws_tujuan.cell(row=r, column=18).value,
+                }
+
+
         # 4. Tambah / Hapus baris sesuai selisih dengan Master Catalog
         if existing_row_count < total_items:
             rows_to_add = total_items - existing_row_count
@@ -195,13 +268,14 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                 p_key = clean_key(p_name)
                 
                 if should_update_sales:
-                    sales_qty = sales_map.get((day_str, p_key), 0)
-                    safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
+                    if (day_str, p_key) in sales_map:
+                        sales_qty = sales_map[(day_str, p_key)]
+                        safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
             else:
                 safe_write_cell(ws_tujuan, r, 15, "")
                 safe_write_cell(ws_tujuan, r, 16, "")
-                if should_update_sales:
-                    safe_write_cell(ws_tujuan, r, 17, "")
+                # Jika item tidak ada di master catalog, biarkan saja penjualannya (jangan dihapus)
+                # agar tidak terjadi overwrite yang merusak data.
 
             # --- Tulis Data Bahan Baku (Kolom A, B, W) ---
             if idx < len(mat_list):
@@ -213,18 +287,51 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                 safe_write_cell(ws_tujuan, r, 1, mat_cat)         # Kolom A (Kategori Bahan)
                 safe_write_cell(ws_tujuan, r, 2, mat_name)        # Kolom B (Nama Bahan)
                 safe_write_cell(ws_tujuan, r, 23, price, '#,##0') # Kolom W (Harga Modal)
+                
+                # RESTORE DATA MANUAL JIKA ADA
+                b_key = mat_name.lower()
+                if b_key in manual_backup:
+                    backup = manual_backup[b_key]
+                    safe_write_cell(ws_tujuan, r, 3, backup['C'])
+                    if day_num == 1:
+                        safe_write_cell(ws_tujuan, r, 4, backup['D'])
+                    safe_write_cell(ws_tujuan, r, 5, backup['E'])
+                    safe_write_cell(ws_tujuan, r, 6, backup['F'])
+                    safe_write_cell(ws_tujuan, r, 7, backup['G'])
+                    safe_write_cell(ws_tujuan, r, 8, backup['H'])
+                    safe_write_cell(ws_tujuan, r, 14, backup['N'])
+                    safe_write_cell(ws_tujuan, r, 18, backup['R'])
+                else:
+                    # Kosongkan sel manual untuk item baru agar tidak mewarisi data baris lama
+                    safe_write_cell(ws_tujuan, r, 3, None)
+                    if day_num == 1:
+                        safe_write_cell(ws_tujuan, r, 4, None)
+                    safe_write_cell(ws_tujuan, r, 5, None)
+                    safe_write_cell(ws_tujuan, r, 6, None)
+                    safe_write_cell(ws_tujuan, r, 7, None)
+                    safe_write_cell(ws_tujuan, r, 8, None)
+                    safe_write_cell(ws_tujuan, r, 14, None)
+                    safe_write_cell(ws_tujuan, r, 18, None)
             else:
                 safe_write_cell(ws_tujuan, r, 1, "")
                 safe_write_cell(ws_tujuan, r, 2, "")
                 safe_write_cell(ws_tujuan, r, 23, "")
+                
+                # Kosongkan sel manual jika tidak ada data bahan baku
+                safe_write_cell(ws_tujuan, r, 3, None)
+                if day_num == 1:
+                    safe_write_cell(ws_tujuan, r, 4, None)
+                safe_write_cell(ws_tujuan, r, 5, None)
+                safe_write_cell(ws_tujuan, r, 6, None)
+                safe_write_cell(ws_tujuan, r, 7, None)
+                safe_write_cell(ws_tujuan, r, 8, None)
+                safe_write_cell(ws_tujuan, r, 14, None)
+                safe_write_cell(ws_tujuan, r, 18, None)
 
         # 5a. Berikan warna ZigZag (Zebra) pada baris data sebelum rumus diterapkan
-        COLOR_EVEN_BG = "F5F7FA" # Warna biru-abu sangat muda dan soft
-        COLOR_ODD_BG  = "FFFFFF"
+        # Menggunakan objek PatternFill yang sudah dibuat di level modul (bukan baru tiap baris)
         for row_idx in range(start_data_row, target_last_data_row + 1):
-            is_even = (row_idx - start_data_row) % 2 == 0
-            fill_color = COLOR_EVEN_BG if is_even else COLOR_ODD_BG
-            pattern = PatternFill("solid", fgColor=fill_color)
+            pattern = _FILL_ZEBRA_EVEN if (row_idx - start_data_row) % 2 == 0 else _FILL_ZEBRA_ODD
             for col_idx in range(1, 14): # Kolom A (1) sampai M (13) saja
                 cell = ws_tujuan.cell(row=row_idx, column=col_idx)
                 if not isinstance(cell, MergedCell):
@@ -318,32 +425,23 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
     # Buat sheet baru, letakkan di posisi pertama
     ws_rekap = wb_tujuan.create_sheet(REKAP_SHEET, 0)
 
-    COLOR_HEADER_BG   = "1B5E20"   # hijau gelap
-    COLOR_HEADER_FONT = "FFFFFF"
-    COLOR_TOTAL_BG    = "F9FBE7"
-    COLOR_EVEN_BG     = "F1F8E9"
-    COLOR_ODD_BG      = "FFFFFF"
-    COLOR_ZERO_FONT   = "BDBDBD"   # abu-abu untuk tgl yang tidak ada datanya
-
-    thin = Side(border_style="thin", color="BDBDBD")
-    border = Border(left=thin, right=thin, top=thin, bottom=thin)
-
+    # ── Helper fungsi pakai pre-built style objects dari level modul ──────────
     def hdr_cell(ws, row, col, value, width=None):
         c = ws.cell(row=row, column=col, value=value)
-        c.font = Font(name="Segoe UI", bold=True, color=COLOR_HEADER_FONT, size=11)
-        c.fill = PatternFill("solid", fgColor=COLOR_HEADER_BG)
-        c.alignment = Alignment(horizontal="center", vertical="center")
-        c.border = border
+        c.font      = _REKAP_HDR_FONT
+        c.fill      = _REKAP_HDR_FILL
+        c.alignment = _REKAP_HDR_ALIGN
+        c.border    = _REKAP_BORDER
         if width:
             ws.column_dimensions[get_column_letter(col)].width = width
         return c
 
     def data_cell(ws, row, col, value, fmt=None, even=True, zero=False):
         c = ws.cell(row=row, column=col, value=value)
-        c.font = Font(name="Segoe UI", size=10, color=COLOR_ZERO_FONT if zero else "000000")
-        c.fill = PatternFill("solid", fgColor=COLOR_EVEN_BG if even else COLOR_ODD_BG)
-        c.alignment = Alignment(horizontal="center" if fmt is None else "right", vertical="center")
-        c.border = border
+        c.font      = _REKAP_ZERO_FONT if zero else _REKAP_DATA_FONT
+        c.fill      = _REKAP_EVEN_FILL if even else _REKAP_ODD_FILL
+        c.alignment = _REKAP_ALIGN_CENTER if fmt is None else _REKAP_ALIGN_RIGHT
+        c.border    = _REKAP_BORDER
         if fmt:
             c.number_format = fmt
         return c
@@ -351,8 +449,8 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
     # ── Judul ──
     ws_rekap.row_dimensions[1].height = 30
     title_cell = ws_rekap.cell(row=1, column=1, value=f"REKAP KERUGIAN — {bulan_str.upper()} {tahun_str}")
-    title_cell.font = Font(name="Segoe UI", bold=True, size=14, color=COLOR_HEADER_BG)
-    title_cell.alignment = Alignment(horizontal="center", vertical="center")
+    title_cell.font      = _REKAP_TITLE_FONT
+    title_cell.alignment = _REKAP_TITLE_ALIGN
     ws_rekap.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
 
     # ── Header kolom ──
@@ -385,14 +483,25 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         c_tgl = data_cell(ws_rekap, row, 2, tgl, even=even, zero=(tgl is None))
         if tgl:
             c_tgl.number_format = "dd/mm/yyyy"
-            c_tgl.font = Font(name="Segoe UI", size=10)
+            c_tgl.font = _REKAP_DATE_FONT
 
         if sheet_exists:
-            # Rumus INDIRECT — ROW(A1) di baris rekap hari ke-1, ROW(A2) hari ke-2, dst
-            # Hasil di Excel: =INDIRECT("'"&TEXT(ROW(A1),"00")&"'!X123")
-            a_ref = f"A{day}"
-            f_bersih = '=INDIRECT("\'"&TEXT(ROW(' + a_ref + '),"00")&"\'!X122")'
-            f_murni  = '=INDIRECT("\'"&TEXT(ROW(' + a_ref + '),"00")&"\'!X123")'
+            ws_day = wb_tujuan[f"{day:02d}"]
+            
+            # Cari baris TOTAL secara dinamis untuk sheet ini
+            total_row_bersih = 122
+            total_row_murni = 123
+            
+            for r_idx in range(50, 250):
+                val_p = str(ws_day.cell(row=r_idx, column=16).value or "").strip().upper()
+                if "TOTAL" in val_p or "JUMLAH" in val_p:
+                    total_row_bersih = r_idx
+                    total_row_murni = r_idx + 1
+                    break
+
+            # Rumus statis (direct link) lebih cepat dari INDIRECT
+            f_bersih = f"='{day:02d}'!X{total_row_bersih}"
+            f_murni  = f"='{day:02d}'!X{total_row_murni}"
             data_cell(ws_rekap, row, 3, f_bersih, fmt=rp_fmt, even=even)
             data_cell(ws_rekap, row, 4, f_murni,  fmt=rp_fmt, even=even)
         else:
@@ -407,27 +516,27 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
     ws_rekap.row_dimensions[total_row].height = 22
     for col in range(1, 6):
         c = ws_rekap.cell(row=total_row, column=col)
-        c.font = Font(name="Segoe UI", bold=True, size=11, color=COLOR_HEADER_FONT)
-        c.fill = PatternFill("solid", fgColor=COLOR_HEADER_BG)
-        c.alignment = Alignment(horizontal="center", vertical="center")
-        c.border = border
+        c.font      = _REKAP_TOT_FONT
+        c.fill      = _REKAP_TOT_FILL
+        c.alignment = _REKAP_TOT_ALIGN
+        c.border    = _REKAP_BORDER
 
     ws_rekap.cell(row=total_row, column=1).value = ""
     ws_rekap.cell(row=total_row, column=2).value = "TOTAL"
 
     c_tot_bersih = ws_rekap.cell(row=total_row, column=3, value=f"=SUM(C3:C33)")
     c_tot_bersih.number_format = rp_fmt
-    c_tot_bersih.font = Font(name="Segoe UI", bold=True, color=COLOR_HEADER_FONT, size=11)
-    c_tot_bersih.fill = PatternFill("solid", fgColor=COLOR_HEADER_BG)
+    c_tot_bersih.font = _REKAP_TOT_FONT
+    c_tot_bersih.fill = _REKAP_TOT_FILL
     c_tot_bersih.alignment = Alignment(horizontal="right", vertical="center")
-    c_tot_bersih.border = border
+    c_tot_bersih.border = _REKAP_BORDER
 
     c_tot_murni = ws_rekap.cell(row=total_row, column=4, value=f"=SUM(D3:D33)")
     c_tot_murni.number_format = rp_fmt
-    c_tot_murni.font = Font(name="Segoe UI", bold=True, color=COLOR_HEADER_FONT, size=11)
-    c_tot_murni.fill = PatternFill("solid", fgColor=COLOR_HEADER_BG)
+    c_tot_murni.font = _REKAP_TOT_FONT
+    c_tot_murni.fill = _REKAP_TOT_FILL
     c_tot_murni.alignment = Alignment(horizontal="right", vertical="center")
-    c_tot_murni.border = border
+    c_tot_murni.border = _REKAP_BORDER
 
     # Freeze header
     ws_rekap.freeze_panes = "A3"
