@@ -271,6 +271,8 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                     if (day_str, p_key) in sales_map:
                         sales_qty = sales_map[(day_str, p_key)]
                         safe_write_cell(ws_tujuan, r, 17, sales_qty)      # Kolom Q (Paid Qty)
+                    else:
+                        safe_write_cell(ws_tujuan, r, 17, 0)              # Tulis 0 jika tidak terjual
             else:
                 safe_write_cell(ws_tujuan, r, 15, "")
                 safe_write_cell(ws_tujuan, r, 16, "")
@@ -330,12 +332,21 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
 
         # 5a. Berikan warna ZigZag (Zebra) pada baris data sebelum rumus diterapkan
         # Menggunakan objek PatternFill yang sudah dibuat di level modul (bukan baru tiap baris)
+        mat_last_row = start_data_row + len(mat_list) - 1
         for row_idx in range(start_data_row, target_last_data_row + 1):
-            pattern = _FILL_ZEBRA_EVEN if (row_idx - start_data_row) % 2 == 0 else _FILL_ZEBRA_ODD
-            for col_idx in range(1, 14): # Kolom A (1) sampai M (13) saja
-                cell = ws_tujuan.cell(row=row_idx, column=col_idx)
-                if not isinstance(cell, MergedCell):
-                    cell.fill = pattern
+            if row_idx <= mat_last_row:
+                pattern = _FILL_ZEBRA_EVEN if (row_idx - start_data_row) % 2 == 0 else _FILL_ZEBRA_ODD
+                for col_idx in range(1, 14): # Kolom A (1) sampai M (13) saja
+                    cell = ws_tujuan.cell(row=row_idx, column=col_idx)
+                    if not isinstance(cell, MergedCell):
+                        cell.fill = pattern
+            else:
+                # Bersihkan format sisa baris di kolom A-N dan S-V agar tidak ada tabel kosong
+                for col_idx in list(range(1, 15)) + list(range(19, 23)):
+                    cell = ws_tujuan.cell(row=row_idx, column=col_idx)
+                    if not isinstance(cell, MergedCell):
+                        cell.border = Border()
+                        cell.fill = PatternFill(fill_type=None)
 
         # 5b. Rumus Stock Awal kolom D dari Stok Akhir (kolom F) sheet sebelumnya
         #     Sheet "01" → input manual, kolom D tidak dikunci/kuning
@@ -350,7 +361,7 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                         cell_d.value = f"='{prev_day_str}'!F{r}"
 
         # 5c. Terapkan semua kuning + lock + rumus + proteksi (satu pass)
-        apply_formulas_and_protect(ws_tujuan, lock_column_d=not is_first_sheet)
+        apply_formulas_and_protect(ws_tujuan, lock_column_d=not is_first_sheet, target_last_data_row=target_last_data_row)
 
         # 6. RE-MERGE KOLOM KATEGORI BERDASARKAN SUSUNAN BARU (Untuk POS Menu)
         current_cat = None
@@ -489,15 +500,22 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
             ws_day = wb_tujuan[f"{day:02d}"]
             
             # Cari baris TOTAL secara dinamis untuk sheet ini
-            total_row_bersih = 122
-            total_row_murni = 123
+            total_row_bersih = None
+            total_row_murni = None
             
             for r_idx in range(50, 250):
-                val_p = str(ws_day.cell(row=r_idx, column=16).value or "").strip().upper()
-                if "TOTAL" in val_p or "JUMLAH" in val_p:
+                val_w = str(ws_day.cell(row=r_idx, column=23).value or "").strip().upper()
+                if "SELISIH" in val_w:
                     total_row_bersih = r_idx
-                    total_row_murni = r_idx + 1
+                elif "KERUGIAN" in val_w:
+                    total_row_murni = r_idx
+                if total_row_bersih and total_row_murni:
                     break
+
+            if not total_row_bersih:
+                total_row_bersih = target_last_data_row + 1 if 'target_last_data_row' in locals() else 134
+            if not total_row_murni:
+                total_row_murni = total_row_bersih + 1
 
             # Rumus statis (direct link) lebih cepat dari INDIRECT
             f_bersih = f"='{day:02d}'!X{total_row_bersih}"

@@ -152,7 +152,20 @@ def _set_cell(ws, row, col, fill=None, locked=True, border=None, value=None):
     cell.protection = Protection(locked=locked)
 
 
-def apply_all(ws, lock_column_d=False):
+def _get_default_last_data_row():
+    try:
+        from services.catalog_service import load_pos, load_materials
+        pos_list = load_pos()
+        mat_list = load_materials()
+        total_items = max(len(pos_list), len(mat_list))
+        if total_items > 0:
+            return 1 + total_items
+    except Exception:
+        pass
+    return 133
+
+
+def apply_all(ws, lock_column_d=False, target_last_data_row=None):
     """
     Fungsi utama yang dipanggil dari processor.py.
 
@@ -169,23 +182,29 @@ def apply_all(ws, lock_column_d=False):
       I(9)              → kuning + lock, baris 2–95  (nilai tetap, tidak ada rumus)
       J(10)             → kuning + lock + rumus J_FORMULAS, baris 2–95
       K(11),L(12),M(13) → kuning + lock + rumus relative, baris 2–95
-      O(15),P(16),Q(17) → kuning + lock + border, baris 2–120
+      O(15),P(16),Q(17) → kuning + lock + border, baris 2–last_data_row
       S(19),T(20),U(21) → kuning + lock, baris 2–19
-      W(23),X(24)       → kuning + lock + border + rumus, baris 1–123
-        - W/X baris 1        : header oranye
-        - W/X baris 2–121    : data produk (X = =W{r}*M{r})
-        - W122               : label "Selisih Bersih", X122 = =SUM(X2:X121)
-        - W123               : label "Kerugian Murni", X123 = =SUMIF(X2:X121,"<0")
+      W(23),X(24)       → kuning + lock + border + rumus, baris 1–summary_murni
+        - W/X baris 1                      : header oranye
+        - W/X baris 2–last_data_row        : data produk (X = =W{r}*M{r})
+        - W{summary_bersih}                : label "Selisih Bersih", X = =SUM(X2:X{last_data_row})
+        - W{summary_murni}                 : label "Kerugian Murni", X = =SUMIF(X2:X{last_data_row},"<0")
 
     Parameter:
         lock_column_d (bool): True untuk sheet 02-31, False untuk sheet 01.
+        target_last_data_row (int, optional): Baris data produk terakhir (misal 133).
     """
+    if not target_last_data_row or target_last_data_row < 2:
+        target_last_data_row = _get_default_last_data_row()
+
+    last_data_row = target_last_data_row
+    opq_row_end = last_data_row
+    summary_start_row = last_data_row + 1
+    summary_murni_row = last_data_row + 2
+    max_managed_row = summary_murni_row
 
     # ── STEP 1: Unlock semua cell (clean slate) ───────────────────────────────
-    # Dibatasi sampai WX_ROW_END (baris 123) — baris tertinggi yang kita kelola.
-    # Tidak perlu unlock baris kosong di bawahnya yang tidak pernah disentuh.
-    # Penghematan: ~51% lebih sedikit operasi dibanding iter_rows() tanpa batas.
-    for row in ws.iter_rows(max_row=WX_ROW_END):
+    for row in ws.iter_rows(max_row=max_managed_row + 10):
         for cell in row:
             if not isinstance(cell, MergedCell):
                 cell.protection = Protection(locked=False)
@@ -229,9 +248,8 @@ def apply_all(ws, lock_column_d=False):
             formula = RELATIVE_FORMULAS[col_letter].format(r=r)
             _set_cell(ws, r, col_idx, fill=FORMULA_FILL, locked=True, value=formula)
 
-    # ── STEP 2F: Kolom O(15), P(16), Q(17) → baris 2–120, kuning+lock+border─
-    # Bersihkan dulu label lama di baris 118 & 119 kolom W jika ada
-    for r in range(OPQ_ROW_START, OPQ_ROW_END + 1):
+    # ── STEP 2F: Kolom O(15), P(16), Q(17) → baris 2–last_data_row, kuning+lock+border─
+    for r in range(OPQ_ROW_START, opq_row_end + 1):
         for col in [15, 16, 17]:
             _set_cell(ws, r, col, fill=FORMULA_FILL, locked=True, border=CELL_BORDER)
 
@@ -240,36 +258,39 @@ def apply_all(ws, lock_column_d=False):
         for r in range(STU_ROW_START, STU_ROW_END + 1):
             _set_cell(ws, r, col, fill=FORMULA_FILL, locked=True)
 
-    # ── STEP 2H: Kolom W(23) dan X(24) → baris 1–122 ────────────────────────
-    # Bersihkan label lama "Selisih Bersih" / "Kerugian Murni" di baris 118-119
-    for r in [118, 119]:
-        cell_w = ws.cell(row=r, column=23)
-        if not isinstance(cell_w, MergedCell):
-            old_val = str(cell_w.value or "")
-            if "Selisih" in old_val or "Kerugian" in old_val:
-                cell_w.value = None
+    # ── STEP 2H: Kolom W(23) dan X(24) → dinamis sampai summary_murni_row ───
+    # Bersihkan dulu label lama "Selisih Bersih" / "Kerugian Murni" di baris lain (misal 118-133)
+    for r in range(118, max_managed_row + 5):
+        if r != summary_start_row and r != summary_murni_row:
+            cell_w = ws.cell(row=r, column=23)
+            cell_x = ws.cell(row=r, column=24)
+            if not isinstance(cell_w, MergedCell):
+                old_val = str(cell_w.value or "")
+                if "Selisih" in old_val or "Kerugian" in old_val:
+                    cell_w.value = None
+                    cell_x.value = None
 
     # Baris 1: header oranye
     for col in [23, 24]:
         _set_cell(ws, 1, col, fill=HEADER_WX_FILL, locked=True, border=CELL_BORDER)
 
-    # Baris 2–120: data produk, kuning, rumus X = W*M
-    for r in range(2, WX_DATA_END + 1):
+    # Baris 2–last_data_row: data produk, kuning, rumus X = W*M
+    for r in range(2, last_data_row + 1):
         _set_cell(ws, r, 23, fill=FORMULA_FILL, locked=True, border=CELL_BORDER)
         _set_cell(ws, r, 24, fill=FORMULA_FILL, locked=True, border=CELL_BORDER,
                   value=f"=W{r}*M{r}")
 
-    # Baris 122: Selisih Bersih
-    _set_cell(ws, WX_SUMMARY_START, 23, fill=FORMULA_FILL, locked=True,
+    # Baris summary_start_row (misal 134): Selisih Bersih
+    _set_cell(ws, summary_start_row, 23, fill=FORMULA_FILL, locked=True,
               border=CELL_BORDER, value="Selisih Bersih")
-    _set_cell(ws, WX_SUMMARY_START, 24, fill=FORMULA_FILL, locked=True,
-              border=CELL_BORDER, value=f"=SUM(X2:X{WX_DATA_END})")
+    _set_cell(ws, summary_start_row, 24, fill=FORMULA_FILL, locked=True,
+              border=CELL_BORDER, value=f"=SUM(X2:X{last_data_row})")
 
-    # Baris 123: Kerugian Murni
-    _set_cell(ws, WX_SUMMARY_START + 1, 23, fill=FORMULA_FILL, locked=True,
+    # Baris summary_murni_row (misal 135): Kerugian Murni
+    _set_cell(ws, summary_murni_row, 23, fill=FORMULA_FILL, locked=True,
               border=CELL_BORDER, value="Kerugian Murni")
-    _set_cell(ws, WX_SUMMARY_START + 1, 24, fill=FORMULA_FILL, locked=True,
-              border=CELL_BORDER, value=f'=SUMIF(X2:X{WX_DATA_END},"<0")')
+    _set_cell(ws, summary_murni_row, 24, fill=FORMULA_FILL, locked=True,
+              border=CELL_BORDER, value=f'=SUMIF(X2:X{last_data_row},"<0")')
 
     # ── STEP 3: Aktifkan proteksi sheet ──────────────────────────────────────
     ws.protection.sheet = True
@@ -277,4 +298,4 @@ def apply_all(ws, lock_column_d=False):
     ws.protection.selectLockedCells = False
     ws.protection.selectUnlockedCells = False
     ws.protection.formatColumns = False   # izinkan resize kolom
-    ws.protection.formatRows = False      # izinkan resize baris
+    ws.protection.formatRows = False      # izinkan resize baris

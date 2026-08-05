@@ -1,7 +1,7 @@
 {
     "2": {
         "name": "Susu UHT",
-        "formula": "=((Q8+Q9+Q140+Q10+(Q142+Q11)+Q14+Q15+Q16+(Q124+Q17)+Q18+(Q139+Q19)+Q49+Q50+Q51+Q52+Q53+Q61+Q63+Q64)*130)+((Q56+(Q123+Q57)+Q65+(Q143+Q58))*100)+((Q127+Q66)*150)"
+        "formula": "=((Q8+Q9+Q10+Q11+Q14+Q15+Q16+Q17+Q18+Q19+Q49+Q50+Q51+Q52+Q53+Q61+Q63+Q64)*130)+((Q56+Q57+Q65+Q58)*100)+(Q66*150)"
     },
     "3": {
         "name": "Teh Bubuk Chatramue",
@@ -17,15 +17,15 @@
     },
     "6": {
         "name": "Fructose Syrup",
-        "formula": "=(Q2+(Q127+(3*Q131)+Q3)+Q4+(3*Q132+Q5)+Q8+Q9+Q140+Q10+(Q142+Q11)+Q16+(Q124+Q17)+Q18+(Q139+Q19)+Q49+Q50+Q51+Q52+Q53+(Q145+Q54)+(Q144+Q55)+Q61+Q63+Q64+Q65+(Q127+Q66)+Q6+Q7+Q60+Q137+Q119+Q138+Q120+(3*Q133)+Q136+Q121)*40"
+        "formula": "=(Q2+Q3+Q4+Q5+Q8+Q9+Q10+Q11+Q16+Q17+Q18+Q19+Q49+Q50+Q51+Q52+Q53+Q54+Q55+Q61+Q63+Q64+Q65+Q66+Q6+Q7+Q60+Q119+Q120+Q121)*40"
     },
     "8": {
         "name": "Gula Aren Cair",
-        "formula": "=(Q37+Q65+(Q127+Q66))*10+((Q143+Q58)*25)"
+        "formula": "=(Q37+Q65+Q66)*10+(Q58*25)"
     },
     "9": {
         "name": "Carnation (Susu Evaporasi)",
-        "formula": "=(Q6+Q7+Q12+Q13+Q141+Q56+(Q123+Q57)+Q59+Q60+Q62)*40"
+        "formula": "=(Q6+Q7+Q12+Q13+Q56+Q57+Q59+Q60+Q62)*40"
     },
     "10": {
         "name": "Hazelnut Syrup",
@@ -33,19 +33,19 @@
     },
     "11": {
         "name": "Small Cup - 14 Oz",
-        "formula": "=Q2+Q4+Q6+Q8+Q10+Q12+Q14+Q16+Q18+(Q145+Q54)+(Q144+Q55)+(Q143+Q58)+Q59+Q79"
+        "formula": "=Q2+Q4+Q6+Q8+Q10+Q12+Q14+Q16+Q18+Q54+Q55+Q58+Q59+Q79"
     },
     "12": {
         "name": "Large Cup - 22 Oz",
-        "formula": "=(Q127+(3*Q131)+Q3)+(3*Q132+Q5)+Q7+Q9+Q140+(Q142+Q11)+Q13+Q141+Q15+(Q124+Q17)+(Q139+Q19)+Q49+Q50+Q51+Q52+Q53+Q56+(Q123+Q57)+Q60+Q61+Q62+Q63+Q64+Q65+(Q127+Q66)+Q137+Q119+Q138+Q120+(3*Q133)+Q136+Q121"
+        "formula": "=Q3+Q5+Q7+Q9+Q11+Q13+Q15+Q17+Q19+Q49+Q50+Q51+Q52+Q53+Q56+Q57+Q60+Q61+Q62+Q63+Q64+Q65+Q66+Q119+Q120+Q121"
     },
     "13": {
         "name": "Sedotan Besar",
-        "formula": "=Q49+Q50+Q53+Q65+(Q127+Q66)+(SUM(Q101:Q109))+Q68+Q69+Q71+Q72+Q74"
+        "formula": "=Q49+Q50+Q53+Q65+Q66+(SUM(Q101:Q109))+Q68+Q69+Q71+Q72+Q74"
     },
     "14": {
         "name": "Sedotan Kecil",
-        "formula": "=(SUM(Q2:Q19))+Q52+Q51+(SUM(Q54:Q66))-(SUM(Q101:Q109))+Q137+Q119+Q120+Q138+Q139+Q140+Q141+Q142+Q143+Q144+Q145+(3*Q133)+(3*Q132)+(3*Q131)+Q136+Q121+Q123+Q124+Q127"
+        "formula": "=(SUM(Q2:Q19))+Q52+Q51+((SUM(Q54:Q66)))-(SUM(Q101:Q109))+Q119+Q120+Q121"
     },
     "17": {
         "name": "Teh Bubuk Kayu Aro",
@@ -65,7 +65,7 @@
     },
     "22": {
         "name": "Bubble Gum Powder",
-        "formula": "=(Q18+Q139+Q19)*30"
+        "formula": "=(Q18+Q19)*30"
     },
     "23": {
         "name": "Cotton Candy Powder",
@@ -77,31 +77,31 @@
     },
     "25": {
         "name": "Es Permen Karet Powder",
-        "formula": "=(Q12+Q13+Q141)*30"
+        "formula": "=(Q12+Q13)*30"
     },
     "26": {
         "name": "Green Tea Powder",
-        "formula": "=(Q10+(Q142+Q11)+Q63)*30"
+        "formula": "=(Q10+Q11+Q63)*30"
     },
     "27": {
         "name": "Lemon Tea Powder",
-        "formula": "=(Q2+(3*Q131)+Q3+Q127)*30"
+        "formula": "=(Q2+Q3)*30"
     },
     "28": {
         "name": "Lychee Powder",
-        "formula": "=(Q144+Q55)*30"
+        "formula": "=Q55*30"
     },
     "29": {
         "name": "Lychee Tea Powder",
-        "formula": "=(Q4+Q5+(3*Q132))*30"
+        "formula": "=(Q4+Q5)*30"
     },
     "30": {
         "name": "Mango Powder",
-        "formula": "=(Q145+Q54)*30"
+        "formula": "=Q54*30"
     },
     "31": {
         "name": "Milo Powder",
-        "formula": "=(Q35+(Q123+Q57))*30+(Q112*12)"
+        "formula": "=(Q35+Q57)*30"
     },
     "32": {
         "name": "NDC Creamer Powder",
@@ -117,11 +117,11 @@
     },
     "35": {
         "name": "Royal Chocolate Powder",
-        "formula": "=(Q14+Q15+Q16+(Q124+Q17)+Q64)*30"
+        "formula": "=(Q14+Q15+Q16+Q17+Q64)*30"
     },
     "36": {
         "name": "Taro Powder",
-        "formula": "=(Q8+Q9+Q140)*30"
+        "formula": "=(Q8+Q9)*30"
     },
     "37": {
         "name": "Vanilla Powder",
@@ -129,7 +129,7 @@
     },
     "38": {
         "name": "Cold Brew",
-        "formula": "=((Q143+Q58)*100)+(Q59*120)"
+        "formula": "=(Q58*100)+(Q59*120)"
     },
     "39": {
         "name": "Biang Black Tea Kayu Aro",
@@ -145,47 +145,47 @@
     },
     "42": {
         "name": "Boba",
-        "formula": "=(Q37+Q65+(Q127+Q66)+Q68+Q103)*40"
+        "formula": "=(Q37+Q65+Q66+Q68+Q103)*40"
     },
     "43": {
         "name": "Creamer Cair",
-        "formula": "=((Q123+Q57)+Q59+Q6+Q7+Q65+(Q127+Q66))*30+((Q143+Q58)*20)"
+        "formula": "=(Q57+Q59+Q6+Q7+Q65+Q66)*30+(Q58*20)"
     },
     "44": {
         "name": "biang vanilla",
-        "formula": "=(Q138+Q120)*200"
+        "formula": "=Q120*200"
     },
     "45": {
         "name": "biang melati/jasmin",
-        "formula": "=(Q137+Q119)*200"
+        "formula": "=Q119*200"
     },
     "46": {
         "name": "biang teh bendera",
-        "formula": "=((3*Q133)+Q136+Q121)*200"
+        "formula": "=Q121*200"
     },
     "47": {
         "name": "Lotus / Biscoff Crumb",
-        "formula": "=((Q38+Q53+Q74+Q109)*30)+(Q88*15)+(Q122*15)+(Q111*12)"
+        "formula": "=((Q38+Q53+Q74+Q109)*30)+(Q88*15)+(Q122*15)"
     },
     "48": {
         "name": "Oreo Crumbs",
-        "formula": "=(((Q123+Q126+(2*Q128+Q130+Q24))+Q34+Q43+Q47+Q49+Q69+Q102)*30)+((Q82+Q86)*15+(Q110*12))"
+        "formula": "=((Q24+Q34+Q43+Q47+Q49+Q69+Q102)*30)+((Q82+Q86)*15)"
     },
     "49": {
         "name": "Strawberry Jam",
-        "formula": "=((Q20+(Q126+Q134+Q21)+Q76+Q108)*30)+(Q85*15)+(Q114*12)"
+        "formula": "=((Q20+Q21+Q76+Q108)*30)+(Q85*15)"
     },
     "50": {
         "name": "Mango Jam",
-        "formula": "=(((Q130+Q135+Q25)+Q77+Q105)*30)+(Q83*15)"
+        "formula": "=((Q25+Q77+Q105)*30)+(Q83*15)"
     },
     "51": {
         "name": "Chocolate Topping / Chocolate Sauce",
-        "formula": "=(((Q124+Q130+Q26)+Q32+Q33+Q40+Q44+Q73+Q106)*30)+((Q81+Q87)*15+(Q115*10))"
+        "formula": "=((Q26+Q32+Q33+Q40+Q44+Q73+Q106)*30)+((Q81+Q87)*15)"
     },
     "52": {
         "name": "Yakult",
-        "formula": "=(Q145+Q54)+(Q144+Q55)"
+        "formula": "=Q54+Q55"
     },
     "53": {
         "name": "Kacang Morin (Peanut)",
@@ -193,11 +193,11 @@
     },
     "54": {
         "name": "Meses",
-        "formula": "=Q113*22"
+        "formula": "=Q13*225"
     },
     "55": {
         "name": "Choco Chip",
-        "formula": "=Q115*15"
+        "formula": "=Q115*22"
     },
     "56": {
         "name": "Nutella",
@@ -217,7 +217,7 @@
     },
     "60": {
         "name": "Softmix Vanilla",
-        "formula": "=((Q126+Q134+Q21)*210)+((Q123+Q126+(2*Q128)+Q130+Q24)*210)+((Q130+Q135+Q25)*210)+((Q124+Q130+Q26)*210)+(Q27*210)+(Q28*210)+(((Q125*2)+(3*Q129+Q29))*110)+(Q37*210)+(Q38*210)+(Q39*210)+(Q40*210)+(Q41*55)+(Q42*55)+(Q46*55)+(Q48*55)+(Q99*45)+(Q100*85)+(Q107*85)+((Q70+Q101)*100)+(200*(SUM(Q110:Q118)))"
+        "formula": "=(Q21*210)+(Q24*210)+(Q25*210)+(Q26*210)+(Q27*210)+(Q28*210)+(Q29*110)+(Q37*210)+(Q38*210)+(Q39*210)+(Q40*210)+(Q41*55)+(Q42*55)+(Q46*55)+(Q48*55)+(Q99*45)+(Q100*85)+(Q107*85)+((Q70+Q101)*100)+(200*(SUM(Q110:Q117)))"
     },
     "61": {
         "name": "Softmix Mocca",
@@ -237,15 +237,15 @@
     },
     "65": {
         "name": "Cup 12 Oz",
-        "formula": "=Q20+(Q126+Q134+Q21)+Q22+(Q123+Q126+(2*Q128+Q130+Q24))+(Q130+Q135+Q25)+(Q124+(Q130)+Q26)+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78+Q122"
+        "formula": "=Q20+Q21+Q22+Q24+Q25+Q26+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78+Q122"
     },
     "66": {
         "name": "Cone",
-        "formula": "=Q23+((Q125*2)+(3*Q129+Q29))+Q31+Q36+Q41+Q42+Q45+Q46+Q48"
+        "formula": "=Q23+Q29+Q31+Q36+Q41+Q42+Q45+Q46+Q48"
     },
     "67": {
         "name": "Sendok Ice Cream",
-        "formula": "=Q20+(Q126+Q134+Q21)+Q22+Q123+Q126+((2*Q128)+(Q130)+Q24)+(Q130+Q135+Q25)+(Q124+Q130+Q26)+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78+Q89+Q90+Q91+Q92+Q93+Q94+Q95+Q96+Q97+Q122"
+        "formula": "=Q20+Q21+Q22+Q24+Q25+Q26+Q27+Q28+Q30+Q32+Q33+Q34+Q35+Q37+Q38+Q39+Q40+Q43+Q44+Q47+Q78+Q89+Q90+Q91+Q92+Q93+Q94+Q95+Q96+Q97+Q122"
     },
     "68": {
         "name": "Cup 4 Oz",
@@ -269,14 +269,14 @@
     },
     "73": {
         "name": "cup twist",
-        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117+Q118"
+        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117"
     },
     "74": {
         "name": "tutup twist",
-        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117+Q118"
+        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117"
     },
     "75": {
         "name": "sendok silky",
-        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117+Q118"
+        "formula": "=Q110+Q111+Q112+Q113+Q114+Q115+Q116+Q117"
     }
 }

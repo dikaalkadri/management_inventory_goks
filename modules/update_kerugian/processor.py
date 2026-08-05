@@ -96,8 +96,8 @@ def process_update_kerugian(task_id: str, eresto_zip_bytes: bytes, so_zip_bytes:
                     if day_str in wb_tujuan.sheetnames and day_str in wb_so.sheetnames:
                         ws_t = wb_tujuan[day_str]
                         ws_s = wb_so[day_str]
-                        # Salin kolom E(5), F(6), G(7), H(8) untuk baris 2 hingga 120 secara cepat menggunakan iter_rows
-                        for r_idx, row_cells in enumerate(ws_s.iter_rows(min_row=2, max_row=120, min_col=5, max_col=8, values_only=True), start=2):
+                        # Salin kolom E(5), F(6), G(7), H(8) untuk baris 2 hingga 150 secara cepat menggunakan iter_rows
+                        for r_idx, row_cells in enumerate(ws_s.iter_rows(min_row=2, max_row=150, min_col=5, max_col=8, values_only=True), start=2):
                             for c_idx, val in enumerate(row_cells, start=5):
                                 if val is not None:
                                     ws_t.cell(row=r_idx, column=c_idx).value = val
