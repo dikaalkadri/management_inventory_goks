@@ -1,0 +1,547 @@
+{
+    "REKAP": {
+        "shape": [
+            116,
+            10
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stock Rumus",
+            "Stock Keluar",
+            "Sisa Stock 31 ",
+            "Keterangan"
+        ]
+    },
+    "01": {
+        "shape": [
+            106,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "02": {
+        "shape": [
+            99,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "03": {
+        "shape": [
+            99,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "04": {
+        "shape": [
+            99,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "05": {
+        "shape": [
+            99,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "06": {
+        "shape": [
+            99,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "07": {
+        "shape": [
+            99,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "08": {
+        "shape": [
+            100,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "09": {
+        "shape": [
+            100,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "10": {
+        "shape": [
+            100,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "11": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "12": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "13": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "14": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "15": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "16": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "17": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "18": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "19": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "20": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "21": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "22": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "23": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "24": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "25": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "26": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "27": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "28": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "29": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "30": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    },
+    "31": {
+        "shape": [
+            101,
+            9
+        ],
+        "columns": [
+            "Kategori",
+            "Nama Barang",
+            "Berat Wadah",
+            "Stock Awal",
+            "Stok Masuk",
+            "Stok Keluar",
+            "Sisa Stok",
+            "Keterangan",
+            "Minimum Stok"
+        ]
+    }
+}

@@ -10,6 +10,7 @@ from modules.mass_update.routes import mass_update_bp
 from modules.mass_hide.routes import mass_hide_bp
 from modules.mass_sinko.routes import mass_sinko_bp
 from modules.update_kerugian.routes import update_kerugian_bp
+from modules.perbaikan_data.routes import perbaikan_data_bp
 from services.task_manager import task_bp
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ app.register_blueprint(mass_update_bp)
 app.register_blueprint(mass_hide_bp)
 app.register_blueprint(mass_sinko_bp)
 app.register_blueprint(update_kerugian_bp)
+app.register_blueprint(perbaikan_data_bp)
 app.register_blueprint(task_bp)
 
 # Configurations
