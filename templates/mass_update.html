@@ -154,11 +154,16 @@
                   <div class="card-header-icon bg-yellow-glow">
                     <i class="fa-solid fa-square-root-variable"></i>
                   </div>
-                  <h3>Konfigurasi Rumus (Kolom J)</h3>
+                  <h3>Konfigurasi Rumus (Kolom J & B)</h3>
                 </div>
-                <button class="btn btn-success" id="saveFormulasBtn" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px;">
-                  <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan
-                </button>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-primary" id="addFormulaBtn" onclick="addNewRow()" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px;">
+                    <i class="fa-solid fa-plus" style="margin-right: 4px;"></i> Tambah
+                  </button>
+                  <button class="btn btn-success" id="saveFormulasBtn" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 8px;">
+                    <i class="fa-solid fa-floppy-disk" style="margin-right: 4px;"></i> Simpan
+                  </button>
+                </div>
               </div>
               <div class="card-body" style="padding-top: 10px;">
                 <div class="form-group" style="margin-bottom: 12px;">
@@ -172,6 +177,7 @@
                     <thead style="background: rgba(234, 179, 8, 0.15); position: sticky; top: 0; z-index: 10;">
                       <tr class="catalog-table-header" style="border-bottom: 2px solid rgba(234, 179, 8, 0.3);">
                         <th style="text-align: center; width: 50px; color: #fde047 !important;">Baris</th>
+                        <th style="text-align: left; width: 25%; color: #fde047 !important;">Kategori</th>
                         <th style="text-align: left; width: 35%; color: #fde047 !important;">Nama Bahan</th>
                         <th style="text-align: left; color: #fde047 !important;">Rumus Excel</th>
                       </tr>
@@ -330,8 +336,9 @@
         tbody.innerHTML = keys.map(k => `
           <tr class="catalog-row-item" data-row="${k}">
             <td style="padding: 8px; text-align: center; color: #a3a3a3; font-weight: 600;">${k}</td>
-            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-name" value="${dataObj[k].name}" onchange="syncName('${k}', this.value)"></td>
-            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-val" value="${dataObj[k].formula.replace(/"/g, '&quot;')}"></td>
+            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-category" value="${dataObj[k].category || ''}"></td>
+            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-name" value="${dataObj[k].name || ''}" onchange="syncName('${k}', this.value)"></td>
+            <td style="padding: 8px;"><input type="text" class="catalog-input-text formula-val" value="${dataObj[k].formula ? dataObj[k].formula.replace(/"/g, '&quot;') : ''}"></td>
           </tr>
         `).join("");
       }
@@ -362,6 +369,32 @@
           if (el) el.textContent = val;
       };
 
+      function addNewRow() {
+        const nextRowIdx = Object.keys(formulasData).length > 0 ? Math.max(...Object.keys(formulasData).map(k => parseInt(k))) + 1 : 15;
+        const rowNumStr = prompt("Masukkan nomor baris untuk item baru (misal: " + nextRowIdx + "):", nextRowIdx);
+        if (!rowNumStr) return;
+        const rowNum = parseInt(rowNumStr);
+        if (isNaN(rowNum) || rowNum <= 0) {
+            alert("Nomor baris tidak valid");
+            return;
+        }
+        if (formulasData[rowNum]) {
+            alert("Baris " + rowNum + " sudah ada!");
+            return;
+        }
+        formulasData[rowNum] = { category: "Food", name: "Bahan Baru", formula: "" };
+        
+        // Remove search filter temporary if adding
+        document.getElementById("searchFormula").value = "";
+        document.getElementById("searchPrice").value = "";
+        renderFormulas(formulasData);
+        renderPrices(formulasData);
+        
+        // Scroll to bottom
+        const container = document.querySelector(".catalog-scroll-container");
+        if(container) container.scrollTop = container.scrollHeight;
+      }
+
       document.getElementById("searchFormula").addEventListener("input", (e) => {
         const v = e.target.value.toLowerCase().trim();
         const filtered = {};
@@ -390,6 +423,7 @@
         rows.forEach(r => {
           const k = r.getAttribute("data-row");
           newData[k] = {
+            category: (r.querySelector(".formula-category") ? r.querySelector(".formula-category").value.trim() : ""),
             name: r.querySelector(".formula-name").value.trim(),
             formula: r.querySelector(".formula-val").value.trim()
           };

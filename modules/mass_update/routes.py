@@ -40,6 +40,11 @@ def save_formulas():
         if not data:
             return jsonify({"status": "error", "message": "Data tidak boleh kosong"}), 400
         save_mass_formulas(data)
+        try:
+            from modules.stockin.formula_config import invalidate_formulas_cache
+            invalidate_formulas_cache()
+        except:
+            pass
         return jsonify({"status": "ok", "message": "Rumus berhasil disimpan permanen."})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
