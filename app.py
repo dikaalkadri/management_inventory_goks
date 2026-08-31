@@ -8,7 +8,7 @@ from modules.stockin.routes import stockin_bp
 from modules.sinkronisasi.routes import sinkronisasi_bp
 from modules.mass_update.routes import mass_update_bp
 from modules.mass_hide.routes import mass_hide_bp
-from modules.mass_sinko.routes import mass_sinko_bp
+from modules.mass_sinko.routes import mass_sinko_bp 
 from modules.update_kerugian.routes import update_kerugian_bp
 from modules.perbaikan_data.routes import perbaikan_data_bp
 from modules.add_stock_auth.routes import add_stock_auth_bp
@@ -22,6 +22,7 @@ app.register_blueprint(eresto_mass_bp)
 app.register_blueprint(stockin_bp)
 app.register_blueprint(sinkronisasi_bp)
 app.register_blueprint(mass_update_bp)
+
 app.register_blueprint(mass_hide_bp)
 app.register_blueprint(mass_sinko_bp)
 app.register_blueprint(update_kerugian_bp)

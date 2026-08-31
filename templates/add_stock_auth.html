@@ -227,7 +227,7 @@
       {% include 'sidebar.html' %}
 
       <main class="app-main">
-        <header class="page-header">
+        <header class="page-header" style="display:flex; justify-content:space-between; align-items:center;">
           <div>
             <h1 class="page-title">
               <i class="fa-solid fa-boxes-packing" style="color: var(--asa-accent);"></i>
@@ -237,6 +237,9 @@
               Generate file Add Stock Auth untuk semua outlet secara otomatis dari file SO Drive.
             </p>
           </div>
+          <button class="btn-reset" style="width:auto; padding:8px 16px; margin:0;" onclick="openOutletModal()">
+            <i class="fa-solid fa-gear"></i> Atur Outlet
+          </button>
         </header>
 
         <div class="content-card">
@@ -312,6 +315,32 @@
 
         </div>
       </main>
+    </div>
+
+    <!-- Outlet Modal -->
+    <div id="outlet-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+      <div style="background:#1e293b; border:1px solid rgba(255,255,255,0.1); border-radius:16px; width:100%; max-width:450px; padding:24px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="margin:0; font-family:'Outfit'; color:#fff; font-size:18px;"><i class="fa-solid fa-store" style="color:var(--asa-accent);"></i> Atur Urutan & Outlet</h3>
+          <button onclick="closeOutletModal()" style="background:none; border:none; color:rgba(255,255,255,0.5); cursor:pointer; font-size:20px;">&times;</button>
+        </div>
+        
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <input type="text" id="new-outlet-input" placeholder="Nama Outlet Baru (ex: CABANG BARU)" style="flex:1; padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:#fff; font-family:'Plus Jakarta Sans'; font-size:13px; outline:none;" />
+          <button onclick="addOutlet()" style="background:var(--asa-accent); border:none; color:#fff; padding:0 16px; border-radius:8px; cursor:pointer; font-weight:bold;"><i class="fa-solid fa-plus"></i></button>
+        </div>
+
+        <p style="font-family:'Plus Jakarta Sans'; font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:8px;">Drag & Drop untuk mengatur urutan kolom (kiri ke kanan):</p>
+        
+        <ul id="outlet-list" style="list-style:none; padding:0; margin:0; max-height:300px; overflow-y:auto; border:1px solid rgba(255,255,255,0.05); border-radius:8px; background:rgba(0,0,0,0.1);">
+          <!-- List loaded here via JS -->
+        </ul>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button onclick="closeOutletModal()" style="padding:10px 16px; border-radius:8px; border:none; background:rgba(255,255,255,0.1); color:#fff; cursor:pointer; font-family:'Outfit'; font-size:13px;">Batal</button>
+          <button onclick="saveOutlets()" style="padding:10px 16px; border-radius:8px; border:none; background:var(--success-color); color:#000; cursor:pointer; font-family:'Outfit'; font-size:13px; font-weight:bold;"><i class="fa-solid fa-save"></i> Simpan</button>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -502,6 +531,113 @@
         document.getElementById('outlet-chips').innerHTML = '';
         document.getElementById('result-stats').innerHTML = '';
         hideError();
+      }
+
+      // ── Outlet Modal Logic ──
+      let currentOutlets = [];
+
+      async function openOutletModal() {
+        document.getElementById('outlet-modal').style.display = 'flex';
+        try {
+          const res = await fetch('/api/add-stock-auth/outlets');
+          const data = await res.json();
+          if (data.status === 'ok') {
+            currentOutlets = data.outlets;
+            renderOutletList();
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      function closeOutletModal() {
+        document.getElementById('outlet-modal').style.display = 'none';
+      }
+
+      function renderOutletList() {
+        const ul = document.getElementById('outlet-list');
+        ul.innerHTML = '';
+        currentOutlets.forEach((o, i) => {
+          const li = document.createElement('li');
+          li.draggable = true;
+          li.dataset.index = i;
+          li.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.05); cursor:grab; font-family:'Plus Jakarta Sans'; font-size:13px; color:#fff; transition:background 0.2s;";
+          li.innerHTML = `
+            <div style="pointer-events:none;">
+              <i class="fa-solid fa-grip-vertical" style="color:rgba(255,255,255,0.3); margin-right:10px;"></i>
+              ${o}
+            </div>
+            <button onclick="removeOutlet(${i})" style="background:none; border:none; color:var(--error-color); cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+          `;
+          
+          li.addEventListener('dragstart', handleDragStart);
+          li.addEventListener('dragover', handleDragOver);
+          li.addEventListener('drop', handleDrop);
+          li.addEventListener('dragend', handleDragEnd);
+
+          ul.appendChild(li);
+        });
+      }
+
+      function addOutlet() {
+        const inp = document.getElementById('new-outlet-input');
+        const val = inp.value.trim().toUpperCase();
+        if (val && !currentOutlets.includes(val)) {
+          currentOutlets.push(val);
+          inp.value = '';
+          renderOutletList();
+        }
+      }
+
+      function removeOutlet(idx) {
+        currentOutlets.splice(idx, 1);
+        renderOutletList();
+      }
+
+      let dragSrcEl = null;
+
+      function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', this.dataset.index);
+        this.style.opacity = '0.4';
+      }
+      function handleDragOver(e) {
+        if (e.preventDefault) { e.preventDefault(); }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+      }
+      function handleDrop(e) {
+        if (e.stopPropagation) { e.stopPropagation(); }
+        if (dragSrcEl !== this) {
+          const srcIdx = parseInt(dragSrcEl.dataset.index);
+          const tgtIdx = parseInt(this.dataset.index);
+          const moved = currentOutlets.splice(srcIdx, 1)[0];
+          currentOutlets.splice(tgtIdx, 0, moved);
+          renderOutletList();
+        }
+        return false;
+      }
+      function handleDragEnd(e) {
+        this.style.opacity = '1';
+      }
+
+      async function saveOutlets() {
+        try {
+          const res = await fetch('/api/add-stock-auth/outlets', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ outlets: currentOutlets })
+          });
+          const data = await res.json();
+          if (data.status === 'ok') {
+            closeOutletModal();
+          } else {
+            alert('Gagal menyimpan: ' + data.message);
+          }
+        } catch (e) {
+          alert('Koneksi gagal');
+        }
       }
     </script>
   </body>

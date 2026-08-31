@@ -13,30 +13,46 @@ Sesuai requirement:
 import os
 import re
 import pandas as pd
+import json
+
 import openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 from datetime import datetime
 from services.task_manager import active_tasks
 
-VALID_OUTLETS = [
-    "AIRDINGIN", "AIRPACAH", "AIRTAWAR", "ANDURING", "BALAIBARU", "BANDARBUAT", 
-    "BELIBIS", "BELIMBING", "BUNGUS", "CENDRAWASIH", "GP", "JATI", "KANTOR", 
-    "KASANG", "KURANJI", "KURAITAJI", "LUBAY", "LUBEG", "LUBUKALUNG", "LUBUKLINTAH", 
-    "PARAKLAWEH", "PASBAR", "RAWANG", "SEBPDG", "SITEBA", "TABING", "TAPLAU", 
-    "TC", "TH"
-]
+def get_valid_outlets():
+    json_path = os.path.join('data', 'add_stock_outlets.json')
+    try:
+        with open(json_path, 'r') as f:
+            return json.load(f)
+    except:
+        # Fallback default
+        return [
+            "AIRDINGIN", "AIRPACAH", "AIRTAWAR", "ANDURING", "BALAIBARU", "BANDARBUAT", 
+            "BELIBIS", "BELIMBING", "BUNGUS", "CENDRAWASIH", "GP", "JATI", "KANTOR", 
+            "KASANG", "KURANJI", "KURAITAJI", "LUBAY", "LUBEG", "LUBUKALUNG", "LUBUKLINTAH", 
+            "PARAKLAWEH", "PASBAR", "RAWANG", "SEBPDG", "SITEBA", "TABING", "TAPLAU", 
+            "TC", "TH"
+        ]
 
 def _norm(text: str) -> str:
     if not text or (isinstance(text, float)): return ""
     return re.sub(r'[^a-z0-9]', '', str(text).lower())
 
 def _scan_so_drive(so_path: str):
+    valid_outlets = get_valid_outlets()
     xls = pd.ExcelFile(so_path, engine='openpyxl')
     available_sheets = xls.sheet_names
     so_data = {}
     
+    valid_sheets = ["TOPPING", "BAHAN UTAMA", "POWDER", "BAHAN LAINNYA"]
+    
     for sheet_name in available_sheets:
+        # Hanya memproses sheet dengan nama spesifik sesuai format
+        if sheet_name.strip().upper() not in valid_sheets:
+            continue
+            
         df = pd.read_excel(so_path, sheet_name=sheet_name, header=None, engine='openpyxl')
         if df.empty: continue
             
@@ -50,7 +66,8 @@ def _scan_so_drive(so_path: str):
                 continue
                 
             item_name = str(header_val).strip()
-            if not item_name:
+            # Double guard: skip if item_name is clearly a header or outlet string
+            if not item_name or item_name.upper() in ["NAMA PRODUK/ OUTLET", "NAMA BARANG"] or item_name.upper().startswith("U/"):
                 col_offset += 6
                 continue
                 
@@ -60,6 +77,8 @@ def _scan_so_drive(so_path: str):
                 continue
                 
             keluar_col_letter = get_column_letter(col_offset + 3)
+            ket_col_letter = get_column_letter(col_offset + 5)
+            masuk_col_letter = get_column_letter(col_offset + 2)
             
             if norm_key not in so_data:
                 so_data[norm_key] = {
@@ -67,12 +86,25 @@ def _scan_so_drive(so_path: str):
                     'wrong_names': set(),
                     'sheet': sheet_name,
                     'keluar_col': keluar_col_letter,
-                    'original_name': item_name
+                    'ket_col': ket_col_letter,
+                    'masuk_col': masuk_col_letter,
+                    'original_name': item_name,
+                    'stock_akhir': 0.0
                 }
             
             data_rows = df.iloc[2:, col_offset:col_offset+5]
+            last_sisa = so_data[norm_key]['stock_akhir']
+            
             for _, row in data_rows.iterrows():
                 if len(row) < 5: continue
+                
+                sisa_val = row.iloc[3]
+                if pd.notna(sisa_val):
+                    try:
+                        last_sisa = float(sisa_val)
+                    except:
+                        pass
+                        
                 ket_val = row.iloc[4]
                 keluar_val = row.iloc[2]
                 
@@ -88,11 +120,15 @@ def _scan_so_drive(so_path: str):
                     
                 if qty <= 0: continue
                 
-                if outlet_code in VALID_OUTLETS:
+                if outlet_code in valid_outlets:
                     so_data[norm_key]['outlets'][outlet_code] = so_data[norm_key]['outlets'].get(outlet_code, 0.0) + qty
                 else:
                     so_data[norm_key]['wrong_names'].add(outlet_code)
                     
+            if last_sisa < 0:
+                last_sisa = 0.0
+            so_data[norm_key]['stock_akhir'] = last_sisa
+            
             col_offset += 6
             
     return so_data
@@ -165,7 +201,8 @@ def process_add_stock_auth(task_id: str, so_bytes: bytes, output_folder: str) ->
 
         # Outlet columns
         col_idx = 2
-        for outlet in VALID_OUTLETS:
+        valid_outlets_list = get_valid_outlets()
+        for outlet in valid_outlets_list:
             cell = ws.cell(row=1, column=col_idx, value=f"U/{outlet}")
             cell.fill      = hfill(BLUE_HDR)
             cell.font      = font_header_white
@@ -173,6 +210,16 @@ def process_add_stock_auth(task_id: str, so_bytes: bytes, output_folder: str) ->
             cell.border    = border
             ws.column_dimensions[get_column_letter(col_idx)].width = 13
             col_idx += 1
+
+        # WASTE
+        col_waste = col_idx
+        cell = ws.cell(row=1, column=col_waste, value="WASTE")
+        cell.fill      = hfill(BLUE_HDR)
+        cell.font      = font_header_white
+        cell.alignment = align_center
+        cell.border    = border
+        ws.column_dimensions[get_column_letter(col_waste)].width = 13
+        col_idx += 1
 
         # SUM PER OUTLET
         col_sum_outlet = col_idx
@@ -195,8 +242,22 @@ def process_add_stock_auth(task_id: str, so_bytes: bytes, output_folder: str) ->
         c.alignment = align_center; c.border = border
         ws.column_dimensions[get_column_letter(col_selisih)].width = 13
 
+        # STOCK MASUK
+        col_stockmasuk = col_idx + 3
+        c = ws.cell(row=1, column=col_stockmasuk, value="STOCK MASUK")
+        c.fill = hfill("005A9C"); c.font = font_header_white
+        c.alignment = align_center; c.border = border
+        ws.column_dimensions[get_column_letter(col_stockmasuk)].width = 15
+
+        # STOCK AKHIR
+        col_stockakhir = col_idx + 4
+        c = ws.cell(row=1, column=col_stockakhir, value="STOCK AKHIR")
+        c.fill = hfill("008080"); c.font = font_header_white
+        c.alignment = align_center; c.border = border
+        ws.column_dimensions[get_column_letter(col_stockakhir)].width = 15
+
         # WRONG NAME
-        col_wrong = col_idx + 3
+        col_wrong = col_idx + 5
         c = ws.cell(row=1, column=col_wrong, value="WRONG NAME")
         c.fill = hfill(RED_HDR); c.font = font_header_yellow
         c.alignment = align_center; c.border = border
@@ -217,17 +278,32 @@ def process_add_stock_auth(task_id: str, so_bytes: bytes, output_folder: str) ->
             # Outlet qty columns
             c_idx = 2
             row_bg = ROW_EVEN if is_even else ROW_ODD
-            for outlet in VALID_OUTLETS:
-                qty = found_data['outlets'].get(outlet, 0)
-                cell = ws.cell(row=row_idx, column=c_idx, value=qty)
+            for outlet in valid_outlets_list:
+                sheet_name = found_data['sheet']
+                keluar_col = found_data['keluar_col']
+                ket_col = found_data['ket_col']
+                
+                # Formula SUMIF with wildcard (*) to catch trailing spaces like "U/AIRDINGIN "
+                formula = f"=SUMIF('{sheet_name}'!{ket_col}:{ket_col}, \"U/{outlet}*\", '{sheet_name}'!{keluar_col}:{keluar_col})"
+                
+                cell = ws.cell(row=row_idx, column=c_idx, value=formula)
                 cell.fill = hfill(row_bg)
                 cell.alignment = align_center
                 cell.border = border
-                if qty == 0:
-                    cell.font = Font(color="AAAAAA", size=9)  # dim zeros
-                else:
-                    cell.font = Font(color="1D3557", bold=True, size=9)
+                cell.font = Font(color="1D3557", bold=True, size=9)
                 c_idx += 1
+
+            # WASTE column
+            sheet_name = found_data['sheet']
+            keluar_col = found_data['keluar_col']
+            ket_col = found_data['ket_col']
+            waste_formula = f"=SUMIF('{sheet_name}'!{ket_col}:{ket_col}, \"WASTE*\", '{sheet_name}'!{keluar_col}:{keluar_col})"
+            
+            cell = ws.cell(row=row_idx, column=col_waste, value=waste_formula)
+            cell.fill = hfill(row_bg)
+            cell.alignment = align_center
+            cell.border = border
+            cell.font = Font(color="1D3557", bold=True, size=9)
 
             # SUM PER OUTLET
             outlet_start = get_column_letter(2)
@@ -254,6 +330,22 @@ def process_add_stock_auth(task_id: str, so_bytes: bytes, output_folder: str) ->
             cell = ws.cell(row=row_idx, column=col_selisih, value=sel_formula)
             cell.fill = hfill(SEL_EVEN if is_even else SEL_ODD)
             cell.font = Font(bold=True, color="3D1A78", size=10)
+            cell.alignment = align_center; cell.border = border
+
+            # STOCK MASUK
+            masuk_col = found_data['masuk_col']
+            sheet_name = found_data['sheet']
+            # Formula SUM untuk seluruh kolom Masuk
+            masuk_formula = f"=SUM('{sheet_name}'!{masuk_col}:{masuk_col})"
+            cell = ws.cell(row=row_idx, column=col_stockmasuk, value=masuk_formula)
+            cell.fill = hfill("E6F2FF" if is_even else "FFFFFF")
+            cell.font = Font(bold=True, color="005A9C", size=10)
+            cell.alignment = align_center; cell.border = border
+
+            # STOCK AKHIR
+            cell = ws.cell(row=row_idx, column=col_stockakhir, value=found_data['stock_akhir'])
+            cell.fill = hfill("E6FFFF" if is_even else "FFFFFF")
+            cell.font = Font(bold=True, color="008080", size=10)
             cell.alignment = align_center; cell.border = border
 
             # WRONG NAME

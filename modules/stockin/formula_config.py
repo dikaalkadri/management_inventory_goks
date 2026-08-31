@@ -29,20 +29,18 @@ SHEET_PASSWORD = "12345678"
 # S(19),T(20),U(21)   → baris 2–19   (semua sheet)
 # W(23),X(24)         → baris 1–123  (semua sheet; 122-123 = summary)
 
-A_ROW_START    = 1;  A_ROW_END    = 95
-D_ROW_START     = 1;  D_ROW_END     = 95
-IJKLM_ROW_START = 2;  IJKLM_ROW_END = 95
-OPQ_ROW_START   = 1;  OPQ_ROW_END   = 120
+A_ROW_START    = 1
+D_ROW_START     = 1
+IJKLM_ROW_START = 2
+OPQ_ROW_START   = 1
 STU_ROW_START   = 1;  STU_ROW_END   = 19
-WX_ROW_START    = 1;  WX_ROW_END    = 123
+WX_ROW_START    = 1
 
 # Alias agar kompatibel dengan import di processor.py
 RELATIVE_ROW_START = IJKLM_ROW_START
-RELATIVE_ROW_END   = IJKLM_ROW_END
 
 # Rentang background kuning kolom J (sama dengan IJKLM)
 J_FILL_ROW_START = IJKLM_ROW_START
-J_FILL_ROW_END   = IJKLM_ROW_END
 
 # Baris summary W/X
 WX_SUMMARY_START = 122   # W122 = "Selisih Bersih", X122 = SUM
@@ -164,6 +162,16 @@ def _get_default_last_data_row():
         pass
     return 133
 
+def _get_default_mat_last_row():
+    try:
+        from services.catalog_service import load_materials
+        mat_list = load_materials()
+        if len(mat_list) > 0:
+            return 1 + len(mat_list)
+    except Exception:
+        pass
+    return 95
+
 
 def apply_all(ws, lock_column_d=False, target_last_data_row=None):
     """
@@ -196,6 +204,13 @@ def apply_all(ws, lock_column_d=False, target_last_data_row=None):
     """
     if not target_last_data_row or target_last_data_row < 2:
         target_last_data_row = _get_default_last_data_row()
+
+    mat_last_row = _get_default_mat_last_row()
+    A_ROW_END = mat_last_row
+    D_ROW_END = mat_last_row
+    IJKLM_ROW_END = mat_last_row
+    RELATIVE_ROW_END = mat_last_row
+    J_FILL_ROW_END = mat_last_row
 
     last_data_row = target_last_data_row
     opq_row_end = last_data_row

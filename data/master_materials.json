@@ -469,6 +469,11 @@
       "name": "cairan porselen (4000)",
       "category": "Bahan Lainnya",
       "price": 0.0
+    },
+    {
+      "name": "Meises Red",
+      "category": "Event",
+      "price": 57.0
     }
   ]
 }

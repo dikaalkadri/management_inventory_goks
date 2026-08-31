@@ -41,7 +41,7 @@ _REKAP_TOT_ALIGN     = Alignment(horizontal="center", vertical="center")
 
 from services.catalog_service import load_pos, load_materials
 from services.excel_style_helper import copy_row_properties
-from modules.stockin.formula_config import apply_all as apply_formulas_and_protect, RELATIVE_ROW_START, RELATIVE_ROW_END
+from modules.stockin.formula_config import apply_all as apply_formulas_and_protect, RELATIVE_ROW_START
 from modules.stockin.helpers import load_inventory, safe_save_workbook
 
 def safe_write_cell(ws, row, col, value, number_format=None):
@@ -332,6 +332,8 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
 
         # 5a. Berikan warna ZigZag (Zebra) pada baris data sebelum rumus diterapkan
         # Menggunakan objek PatternFill yang sudah dibuat di level modul (bukan baru tiap baris)
+        _THIN_SIDE = Side(style='thin', color='BDBDBD') # Warna abu-abu gelap agar tidak terlalu mencolok seperti default, atau '000000' untuk hitam. Kita pakai hitam sesuai request tebal.
+        _THIN_SIDE = Side(style='thin', color='000000') 
         mat_last_row = start_data_row + len(mat_list) - 1
         for row_idx in range(start_data_row, target_last_data_row + 1):
             if row_idx <= mat_last_row:
@@ -340,6 +342,16 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                     cell = ws_tujuan.cell(row=row_idx, column=col_idx)
                     if not isinstance(cell, MergedCell):
                         cell.fill = pattern
+                        
+                        # --- FIX BORDER KIRI & KANAN ---
+                        # Memaksa setiap cell memiliki border kiri & kanan, 
+                        # sambil tetap mengamankan border atas/bawah bawaan template aslinya.
+                        cell.border = Border(
+                            left=_THIN_SIDE,
+                            right=_THIN_SIDE,
+                            top=cell.border.top,
+                            bottom=cell.border.bottom
+                        )
             else:
                 # Bersihkan format sisa baris di kolom A-N dan S-V agar tidak ada tabel kosong
                 for col_idx in list(range(1, 15)) + list(range(19, 23)):
@@ -355,7 +367,7 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         if not is_first_sheet:
             prev_day_str = f"{day_num - 1:02d}"
             if prev_day_str in wb_tujuan.sheetnames:
-                for r in range(RELATIVE_ROW_START, RELATIVE_ROW_END + 1):
+                for r in range(RELATIVE_ROW_START, mat_last_row + 1):
                     cell_d = ws_tujuan.cell(row=r, column=4)
                     if not isinstance(cell_d, MergedCell):
                         cell_d.value = f"='{prev_day_str}'!F{r}"

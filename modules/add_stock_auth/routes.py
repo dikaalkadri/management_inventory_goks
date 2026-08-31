@@ -2,6 +2,7 @@
 routes.py – Add Stock Auth Blueprint
 """
 import os
+import json
 from flask import Blueprint, render_template, request, jsonify, send_from_directory
 import config
 
@@ -61,3 +62,34 @@ def api_proses_add_stock_auth():
 def download_add_stock_auth(filename):
     filename = os.path.basename(filename)
     return send_from_directory(config.OUTPUT_FOLDER, filename, as_attachment=True)
+
+
+@add_stock_auth_bp.route('/api/add-stock-auth/outlets', methods=['GET'])
+def api_get_outlets():
+    json_path = os.path.join('data', 'add_stock_outlets.json')
+    try:
+        with open(json_path, 'r') as f:
+            outlets = json.load(f)
+        return jsonify({'status': 'ok', 'outlets': outlets})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@add_stock_auth_bp.route('/api/add-stock-auth/outlets', methods=['POST'])
+def api_save_outlets():
+    json_path = os.path.join('data', 'add_stock_outlets.json')
+    try:
+        data = request.json
+        if not data or 'outlets' not in data:
+            return jsonify({'status': 'error', 'message': 'Invalid payload'}), 400
+        
+        outlets = data['outlets']
+        if not isinstance(outlets, list):
+            return jsonify({'status': 'error', 'message': 'Outlets must be a list'}), 400
+            
+        with open(json_path, 'w') as f:
+            json.dump(outlets, f, indent=4)
+            
+        return jsonify({'status': 'ok', 'message': 'Outlets saved successfully.'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500

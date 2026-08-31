@@ -87,36 +87,61 @@ def process_update_kerugian(task_id: str, eresto_zip_bytes: bytes, so_zip_bytes:
                 # 3. Ambil daftar tanggal dari eResto
                 available_days = _get_available_days(eresto_xlsx)
 
-                # 4. Patch (salin E,F,G,H) dari SO ke Kerugian
-                wb_tujuan = openpyxl.load_workbook(kerugian_xlsx)
-                wb_so = openpyxl.load_workbook(so_xlsx, read_only=True, data_only=True)
-
-                patched = False
-                for day_str in available_days:
-                    if day_str in wb_tujuan.sheetnames and day_str in wb_so.sheetnames:
-                        ws_t = wb_tujuan[day_str]
-                        ws_s = wb_so[day_str]
-                        # Salin kolom E(5), F(6), G(7), H(8) untuk baris 2 hingga 150 secara cepat menggunakan iter_rows
-                        for r_idx, row_cells in enumerate(ws_s.iter_rows(min_row=2, max_row=150, min_col=5, max_col=8, values_only=True), start=2):
-                            for c_idx, val in enumerate(row_cells, start=5):
-                                if val is not None:
-                                    ws_t.cell(row=r_idx, column=c_idx).value = val
-                        patched = True
-
-                wb_so.close()
-
-                if patched:
-                    wb_tujuan.save(kerugian_xlsx)
-                else:
-                    wb_tujuan.close()
-
-                # 5. Lempar ke prosesor utama (menggunakan Kerugian yang sudah di-patch sebagai tujuan)
+                # 4. Jalankan Sinkronisasi DULU — agar item baru (misal Meises Red yang ada di SO/eResto
+                #    tapi belum ada di Kerugian template) sudah masuk ke output sebelum kita patch datanya.
                 output_filename, sheets_count = proses_sinkronisasi_excel(
                     sumber_path_xlsx=eresto_xlsx,
                     tujuan_path_xlsx=kerugian_xlsx,
                     output_folder=output_folder,
                     target_days=available_days,
                 )
+
+                synced_filepath = os.path.join(output_folder, output_filename)
+
+                # 5. Patch E(Stok Masuk), F(Stok Akhir), G(Stok Terbuang), H(Keterangan Terbuang)
+                #    dari SO ke file output hasil sinkronisasi — cocokkan berdasarkan Nama Barang (kolom B)
+                #    agar item baru seperti Meises Red yang posisi barisnya beda tetap ter-patch dengan benar.
+                wb_synced = openpyxl.load_workbook(synced_filepath)
+                wb_so = openpyxl.load_workbook(so_xlsx, read_only=True, data_only=True)
+
+                patched = False
+                for day_str in available_days:
+                    if day_str in wb_synced.sheetnames and day_str in wb_so.sheetnames:
+                        ws_t = wb_synced[day_str]
+                        ws_s = wb_so[day_str]
+
+                        # Bangun map: nama barang (lower) → nomor baris di SO
+                        so_name_to_row = {}
+                        for r_so, row_cells in enumerate(
+                            ws_s.iter_rows(min_row=2, max_row=500, min_col=2, max_col=2, values_only=True), start=2
+                        ):
+                            nama = str(row_cells[0]).strip().lower() if row_cells[0] is not None else ""
+                            if nama:
+                                so_name_to_row[nama] = r_so
+
+                        # Iterasi baris di output synced, cocokkan nama, salin E,F,G,H dari SO
+                        for r_out, row_cells in enumerate(
+                            ws_t.iter_rows(min_row=2, max_row=500, min_col=2, max_col=2, values_only=True), start=2
+                        ):
+                            nama = str(row_cells[0]).strip().lower() if row_cells[0] is not None else ""
+                            if not nama:
+                                continue
+                            so_row = so_name_to_row.get(nama)
+                            if so_row is None:
+                                continue
+                            # Salin kolom E(5), F(6), G(7), H(8)
+                            for c_idx in range(5, 9):
+                                val = ws_s.cell(row=so_row, column=c_idx).value
+                                if val is not None:
+                                    ws_t.cell(row=r_out, column=c_idx).value = val
+
+                        patched = True
+
+                wb_so.close()
+                if patched:
+                    wb_synced.save(synced_filepath)
+                else:
+                    wb_synced.close()
 
                 return {
                     "status": "success",
@@ -125,6 +150,7 @@ def process_update_kerugian(task_id: str, eresto_zip_bytes: bytes, so_zip_bytes:
                     "output_file": output_filename,
                     "sheets": sheets_count
                 }
+
 
             except Exception as e:
                 return {

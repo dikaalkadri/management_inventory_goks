@@ -3,15 +3,16 @@ import re
 import datetime
 import zipfile
 import openpyxl
-from openpyxl.styles import Border, Side
+from openpyxl.styles import Border, Side, PatternFill
 from openpyxl.cell.cell import MergedCell
 
 from modules.stockin.helpers import convert_to_xlsx_if_needed
 from services.task_manager import active_tasks
 
-# Border tipis hanya untuk kolom A s/d M pada baris bahan yang ditambahkan
+# Border tipis dan PatternFill untuk zebra
 BORDER_THIN = Side(border_style="thin", color="000000")
-CELL_BORDER_AM = Border(left=BORDER_THIN, right=BORDER_THIN, top=BORDER_THIN, bottom=BORDER_THIN)
+FILL_ZEBRA_EVEN = PatternFill("solid", fgColor="F5F7FA")
+FILL_ZEBRA_ODD  = PatternFill("solid", fgColor="FFFFFF")
 
 def _safe_write(ws, row, col, value):
     cell = ws.cell(row=row, column=col)
@@ -28,14 +29,6 @@ def _safe_write(ws, row, col, value):
     return cell
 
 def proses_mass_update(task_id, file_paths, formulas, output_folder):
-    """
-    Memproses daftar file Excel:
-    - Mengubah rumus di Kolom J sesuai data 'formulas'
-    - Menulis kategori di Kolom A, nama bahan di Kolom B, dan harga di Kolom W
-    - Menambahkan border grid HANYA pada Kolom A s/d M (kolom 1-13) untuk baris yang di-update
-    - Kolom N sampai X tidak diganggu / tidak dirubah
-    - Mengemas hasilnya ke dalam file ZIP
-    """
     if not os.path.exists(output_folder):
         os.makedirs(output_folder, exist_ok=True)
         
@@ -70,25 +63,45 @@ def proses_mass_update(task_id, file_paths, formulas, output_folder):
                 mat_list = load_materials()
                 mat_dict = {m.get('name', '').strip().lower(): m.get('price', 0) for m in mat_list}
 
+                sorted_rows = sorted([int(k) for k in formulas.keys()])
+
                 for sheet_name in wb.sheetnames:
                     # Proses sheet harian (01, 02, ..., 31)
                     if re.match(r"^\d{2}$", sheet_name.strip()):
                         ws = wb[sheet_name]
                         ws.protection.sheet = False
+                        day_num = int(sheet_name.strip())
+                        is_first_sheet = (day_num == 1)
 
-                        for row_str, item in formulas.items():
+                        for idx, row_idx in enumerate(sorted_rows):
+                            row_str = str(row_idx)
+                            item = formulas[row_str]
                             try:
-                                row_idx = int(row_str)
                                 formula_val = item.get("formula", "")
                                 orig_cat = item.get("category", "").strip()
                                 orig_name = item.get("name", "").strip()
                                 mat_name = orig_name.lower()
                                 
-                                # 1. Set border HANYA untuk kolom A s/d M (kolom 1 s/d 13) pada baris ini
+                                pattern = FILL_ZEBRA_EVEN if idx % 2 == 0 else FILL_ZEBRA_ODD
+                                formula_fill = PatternFill("solid", fgColor="E6E6FA") # Warna agak pekat (Lavender)
+                                
+                                # Tentukan kolom mana yang mendapat warna formula (agak pekat)
+                                formula_cols = [1, 9, 10, 11, 12, 13] # A, I, J, K, L, M
+                                if not is_first_sheet:
+                                    formula_cols.append(4) # Tambah D jika bukan sheet tgl 1
+                                
+                                # 1. Set border dan fill HANYA untuk kolom A s/d M (kolom 1 s/d 13)
                                 for col_idx in range(1, 14):
                                     c = ws.cell(row=row_idx, column=col_idx)
                                     if not isinstance(c, MergedCell):
-                                        c.border = CELL_BORDER_AM
+                                        # Set semua border ke thin secara default untuk merapikan
+                                        c.border = Border(left=BORDER_THIN, right=BORDER_THIN, top=BORDER_THIN, bottom=BORDER_THIN)
+                                        
+                                        # Terapkan warna sesuai jenis kolom
+                                        if col_idx in formula_cols:
+                                            c.fill = formula_fill
+                                        else:
+                                            c.fill = pattern
                                 
                                 # 2. Tulis Kategori (Kolom A)
                                 if orig_cat:
@@ -98,18 +111,54 @@ def proses_mass_update(task_id, file_paths, formulas, output_folder):
                                 if orig_name:
                                     _safe_write(ws, row_idx, 2, orig_name)
                                     
-                                # 4. Tulis Rumus J (Kolom J)
+                                # 4. Tulis Rumus Stock Awal (Kolom D) kecuali sheet 01
+                                if not is_first_sheet:
+                                    prev_day_str = f"{day_num - 1:02d}"
+                                    _safe_write(ws, row_idx, 4, f"='{prev_day_str}'!F{row_idx}")
+                                    
+                                # 5. Tulis Rumus J (Kolom J - Stock Keluar POS)
                                 if formula_val:
                                     _safe_write(ws, row_idx, 10, formula_val)
                                     
-                                # 5. Tulis Master Harga (Kolom W)
+                                # 6. Tulis Rumus K, L, M
+                                _safe_write(ws, row_idx, 11, f"=D{row_idx}+E{row_idx}-F{row_idx}-G{row_idx}") # K
+                                _safe_write(ws, row_idx, 12, f"=D{row_idx}+E{row_idx}-J{row_idx}")            # L
+                                _safe_write(ws, row_idx, 13, f"=J{row_idx}-K{row_idx}")                       # M
+                                    
+                                # 7. Tulis Master Harga (Kolom W)
                                 if mat_name and mat_name in mat_dict:
                                     price_val = mat_dict[mat_name]
                                     _safe_write(ws, row_idx, 23, price_val)
                                 elif item.get("price") is not None:
                                     _safe_write(ws, row_idx, 23, item.get("price"))
+                                    
+                                # 8. Tulis Rumus X (Nilai Kerugian)
+                                _safe_write(ws, row_idx, 24, f"=W{row_idx}*M{row_idx}")
                             except ValueError:
                                 continue
+
+                        # Apply category borders
+                        thick_side = Side(style='medium', color='000000')
+                        current_cat = None
+                        for idx, row_idx in enumerate(sorted_rows):
+                            cat = formulas[str(row_idx)].get("category", "").strip()
+                            if current_cat is None:
+                                current_cat = cat
+                            elif current_cat != cat:
+                                prev_row = sorted_rows[idx - 1]
+                                for col_idx in range(1, 14):
+                                    cell = ws.cell(row=prev_row, column=col_idx)
+                                    if not isinstance(cell, MergedCell):
+                                        # Pastikan border lainnya tetap terjaga (thin)
+                                        cell.border = Border(left=cell.border.left, right=cell.border.right, top=cell.border.top, bottom=thick_side)
+                                current_cat = cat
+                                
+                        if sorted_rows:
+                            last_row = sorted_rows[-1]
+                            for col_idx in range(1, 14):
+                                cell = ws.cell(row=last_row, column=col_idx)
+                                if not isinstance(cell, MergedCell):
+                                    cell.border = Border(left=cell.border.left, right=cell.border.right, top=cell.border.top, bottom=thick_side)
 
                         # Kembalikan proteksi sheet
                         ws.protection.sheet = True
@@ -155,3 +204,4 @@ def proses_mass_update(task_id, file_paths, formulas, output_folder):
                     pass
                 
     return zip_filename, success_count, fail_count, errors
+
