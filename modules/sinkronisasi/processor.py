@@ -209,12 +209,13 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         existing_row_count = (old_last_data_row - start_data_row) + 1
         target_last_data_row = start_data_row + total_items - 1
 
-        # 3. UNMERGE SEL KATEGORI LAMA DI KOLOM O (15) SECARA DINAMIS
+        # 3. UNMERGE SEL KATEGORI LAMA DI KOLOM A (1) DAN KOLOM O (15) SECARA DINAMIS
         merges_to_remove = []
         for merged_range in list(ws_tujuan.merged_cells.ranges):
-            # Cari merge yang berada di dalam area data lama dan khusus untuk Kolom Kategori (15)
+            # Cari merge yang berada di dalam area data lama untuk Kolom A (1) dan Kolom O (15)
             if merged_range.min_row >= start_data_row and merged_range.max_row <= old_last_data_row:
-                if merged_range.min_col == 15 and merged_range.max_col == 15:
+                if (merged_range.min_col == 1 and merged_range.max_col == 1) or \
+                   (merged_range.min_col == 15 and merged_range.max_col == 15):
                     merges_to_remove.append(merged_range)
         
         # Hapus proteksi read-only pada kategori
@@ -343,14 +344,12 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                     if not isinstance(cell, MergedCell):
                         cell.fill = pattern
                         
-                        # --- FIX BORDER KIRI & KANAN ---
-                        # Memaksa setiap cell memiliki border kiri & kanan, 
-                        # sambil tetap mengamankan border atas/bawah bawaan template aslinya.
+                        # Set border thin lengkap (left, right, top, bottom)
                         cell.border = Border(
                             left=_THIN_SIDE,
                             right=_THIN_SIDE,
-                            top=cell.border.top,
-                            bottom=cell.border.bottom
+                            top=_THIN_SIDE,
+                            bottom=_THIN_SIDE
                         )
             else:
                 # Bersihkan format sisa baris di kolom A-N dan S-V agar tidak ada tabel kosong
@@ -375,7 +374,42 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
         # 5c. Terapkan semua kuning + lock + rumus + proteksi (satu pass)
         apply_formulas_and_protect(ws_tujuan, lock_column_d=not is_first_sheet, target_last_data_row=target_last_data_row)
 
-        # 6. RE-MERGE KOLOM KATEGORI BERDASARKAN SUSUNAN BARU (Untuk POS Menu)
+        # 6. RE-MERGE KOLOM KATEGORI BERDASARKAN SUSUNAN BARU
+        # --- 6a. Kategori Bahan Baku (Kolom A / Kolom 1) ---
+        mat_cat_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        mat_cat_font = Font(name="Segoe UI", bold=True)
+        current_mat_cat = None
+        start_mat_cat_row = start_data_row
+
+        for idx in range(len(mat_list)):
+            r = start_data_row + idx
+            mat_cat = mat_list[idx].get('category', '').strip()
+
+            if current_mat_cat is None:
+                current_mat_cat = mat_cat
+                start_mat_cat_row = r
+            elif current_mat_cat != mat_cat:
+                if r - 1 > start_mat_cat_row:
+                    ws_tujuan.merge_cells(start_row=start_mat_cat_row, start_column=1, end_row=r - 1, end_column=1)
+                top_cell = ws_tujuan.cell(row=start_mat_cat_row, column=1)
+                top_cell.value = current_mat_cat
+                top_cell.alignment = mat_cat_align
+                top_cell.font = mat_cat_font
+
+                current_mat_cat = mat_cat
+                start_mat_cat_row = r
+
+        if len(mat_list) > 0:
+            last_mat_r = start_data_row + len(mat_list) - 1
+            if last_mat_r > start_mat_cat_row:
+                ws_tujuan.merge_cells(start_row=start_mat_cat_row, start_column=1, end_row=last_mat_r, end_column=1)
+            top_cell = ws_tujuan.cell(row=start_mat_cat_row, column=1)
+            top_cell.value = current_mat_cat
+            top_cell.alignment = mat_cat_align
+            top_cell.font = mat_cat_font
+
+        # --- 6b. Kategori POS Menu (Kolom O / Kolom 15) ---
+        pos_cat_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
         current_cat = None
         start_cat_row = start_data_row
         
@@ -390,7 +424,8 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                 # Gabungkan baris kategori yang sama (jika lebih dari 1 baris)
                 if r - 1 > start_cat_row:
                     ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=r - 1, end_column=15)
-                    ws_tujuan.cell(row=start_cat_row, column=15).alignment = Alignment(horizontal='center', vertical='center')
+                top_cell = ws_tujuan.cell(row=start_cat_row, column=15)
+                top_cell.alignment = pos_cat_align
                 
                 current_cat = cat
                 start_cat_row = r
@@ -400,9 +435,10 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
             last_r = start_data_row + len(pos_list) - 1
             if last_r > start_cat_row:
                 ws_tujuan.merge_cells(start_row=start_cat_row, start_column=15, end_row=last_r, end_column=15)
-                ws_tujuan.cell(row=start_cat_row, column=15).alignment = Alignment(horizontal='center', vertical='center')
+            top_cell = ws_tujuan.cell(row=start_cat_row, column=15)
+            top_cell.alignment = pos_cat_align
             
-        # 6b. BERI GARIS TEBAL BAWAH UNTUK KATEGORI BAHAN BAKU (Kolom A sampai M)
+        # 6c. BERI GARIS TEBAL BAWAH UNTUK KATEGORI BAHAN BAKU (Kolom A sampai M)
         thick_side = Side(style='medium', color='000000')
         current_mat_cat = None
 

@@ -476,23 +476,23 @@
       "price": 57.0
     },
     {
-      "category": "Bahan Baku",
-      "name": "Pistachio Elmer 1kg",
+      "category": "Event",
+      "name": "Elmer Pistachio Glaze",
       "price": 100.0
     },
     {
-      "category": "Bahan Baku",
+      "category": "Event",
       "name": "Kunafa",
       "price": 265.0
     },
     {
+      "category": "Event",
       "name": "Elmer Chesee Glaze",
-      "category": "Bahan Baku",
       "price": 66.0
     },
     {
+      "category": "Event",
       "name": "Elmer Taro Glaze",
-      "category": "Bahan Baku",
       "price": 74.0
     }
   ]
