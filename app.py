@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 
 # Import Blueprints
 from modules.eresto.routes import eresto_bp
@@ -12,6 +12,8 @@ from modules.mass_sinko.routes import mass_sinko_bp
 from modules.update_kerugian.routes import update_kerugian_bp
 from modules.perbaikan_data.routes import perbaikan_data_bp
 from modules.add_stock_auth.routes import add_stock_auth_bp
+from modules.visualisasi_kerugian.routes import visualisasi_kerugian_bp
+from modules.reset_so.routes import reset_so_bp
 from services.task_manager import task_bp
 
 app = Flask(__name__)
@@ -22,17 +24,22 @@ app.register_blueprint(eresto_mass_bp)
 app.register_blueprint(stockin_bp)
 app.register_blueprint(sinkronisasi_bp)
 app.register_blueprint(mass_update_bp)
-
 app.register_blueprint(mass_hide_bp)
 app.register_blueprint(mass_sinko_bp)
 app.register_blueprint(update_kerugian_bp)
 app.register_blueprint(perbaikan_data_bp)
 app.register_blueprint(add_stock_auth_bp)
+app.register_blueprint(visualisasi_kerugian_bp)
+app.register_blueprint(reset_so_bp)
 app.register_blueprint(task_bp)
 
 # Configurations
 app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 200MB
+app.config['MAX_CONTENT_LENGTH'] = 1000 * 1024 * 1024  # 1GB
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    return jsonify({"status": "error", "message": "Ukuran file terlalu besar! Maksimal keseluruhan file adalah 1GB."}), 413
 
 # Ensure necessary directories exist
 os.makedirs('uploads', exist_ok=True)

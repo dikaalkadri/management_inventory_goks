@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goks! Reset SO Bulanan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/static/css/eresto.css" />
+
+    <style>
+      .content-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 24px !important;
+        width: 100% !important;
+        align-items: flex-start !important;
+      }
+      .grid-col-center { flex: 0 0 60% !important; max-width: 60% !important; display: flex !important; flex-direction: column !important; gap: 20px !important; margin: 0 auto; }
+      @media (max-width: 1100px) {
+        .grid-col-center { flex: 0 0 100% !important; max-width: 100% !important; }
+      }
+
+      .upload-zone {
+        border: 2px dashed rgba(123, 44, 191, 0.35);
+        border-radius: 14px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        background: rgba(123, 44, 191, 0.03);
+        position: relative;
+      }
+      .upload-zone:hover, .upload-zone.drag-over { border-color: #7b2cbf; background: rgba(123, 44, 191, 0.08); }
+      .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+      .upload-zone .drop-icon { font-size: 3rem; margin-bottom: 15px; display: block; color: #a78bfa; }
+      
+      .file-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; margin-top: 15px; font-size: 0.9rem; border: 1px solid rgba(16, 185, 129, 0.3); color: white;}
+      .file-item i { color: #10b981; margin-right: 12px; font-size: 1.2rem; }
+      .file-item span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+    </style>
+  </head>
+
+  <body>
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+    <div class="glow-blob blob-3"></div>
+
+    <div class="app-container">
+      {% set active_menu = 'reset_so' %}
+      {% include 'sidebar.html' %}
+
+      <main class="app-main">
+        <header class="main-header">
+          <div class="header-title">
+            <h1>Reset SO Bulanan</h1>
+            <p class="header-subtitle">
+              Format ulang file Stock Opname (SO) agar siap digunakan untuk bulan berikutnya.
+            </p>
+          </div>
+          <div class="header-status">
+            <span class="status-indicator online"></span><span class="status-text">System Active</span>
+          </div>
+        </header>
+
+        <div class="content-grid">
+          <div class="grid-col-center">
+            <div class="card glass-card upload-card" id="uploadCard">
+              <div class="card-header" style="justify-content: center; text-align: center;">
+                <div class="card-header-icon bg-purple-glow">
+                  <i class="fa-solid fa-eraser"></i>
+                </div>
+                <h3>Unggah File SO</h3>
+              </div>
+              <div class="card-body">
+                <div class="upload-zone" id="dropZone">
+                  <input type="file" id="fileInput" accept=".xlsx,.xlsm" />
+                  <i class="fa-solid fa-file-excel drop-icon"></i>
+                  <h4 style="color: white; margin-bottom: 8px;">Seret file atau klik di sini</h4>
+                  <p style="color: #b3b3b3; font-size: 0.9rem;">Pilih 1 file Excel Stock Opname (SO)</p>
+                </div>
+                <div id="fileContainer" style="display: none;">
+                  <div class="file-item">
+                    <div style="display: flex; align-items: center; overflow: hidden;">
+                      <i class="fa-solid fa-file-excel"></i>
+                      <span id="fileNameDisplay">file.xlsx</span>
+                    </div>
+                    <button onclick="removeFile()" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0 5px;"><i class="fa-solid fa-xmark" style="margin:0; color: #ef4444;"></i></button>
+                  </div>
+                </div>
+                <div class="action-box" style="margin-top: 30px;">
+                  <button class="btn btn-primary btn-large btn-block" id="processBtn" style="font-size: 1.1rem; padding: 15px;">
+                    <i class="fa-solid fa-wand-magic-sparkles btn-icon"></i>
+                    <span>Mulai Reset File SO</span>
+                  </button>
+                </div>
+                
+                <div id="progressContainer" style="display: none; margin-top: 25px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                  <div style="display: flex; justify-content: center; font-size: 0.9rem; margin-bottom: 12px; color: #b3b3b3; font-weight: 600;">
+                    <span><i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: #a78bfa;"></i>Sedang memproses file... mohon tunggu.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card glass-card download-card animate-pulse" id="downloadCard" style="display: none">
+              <div class="card-body text-center">
+                <div class="success-icon-wrapper" style="font-size: 4rem; color: #34d399; margin-bottom: 20px;">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2 style="margin-bottom: 15px;">Reset SO Berhasil!</h2>
+                
+                <div style="text-align: left; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 25px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.1);">
+                  <div style="margin-bottom: 10px;"><strong>File Sumber:</strong> <span id="resSourceFile" style="color: #a78bfa;">-</span></div>
+                  <div style="margin-bottom: 10px;"><strong>Jumlah Sheet:</strong> <span id="resSheetCount" style="color: #34d399;">-</span></div>
+                  <div style="margin-bottom: 10px;"><strong>Kolom Di-reset:</strong> <span style="color: #60a5fa;">C, E, F, G, H, Q (Semua) + D (Hanya Sheet 01)</span></div>
+                  <div><strong>Status:</strong> <span style="color: #34d399; font-weight: bold;">Berhasil</span></div>
+                </div>
+
+                <div class="download-actions" style="display: flex; justify-content: center; gap: 15px;">
+                  <a href="#" class="btn btn-success btn-large" id="downloadLink" style="padding: 12px 25px; font-size: 1.05rem;">
+                    <i class="fa-solid fa-cloud-arrow-down btn-icon"></i>
+                    <span>Download SO yang Sudah Di-reset</span>
+                  </a>
+                  <button class="btn btn-secondary" id="resetBtn" onclick="location.reload()" style="padding: 12px 20px;">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Baru
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="alert-toast-container" id="toastContainer"></div>
+
+    <script>
+      let currentFile = null;
+
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        const icons = { success: "fa-circle-check", error: "fa-circle-xmark", warning: "fa-triangle-exclamation", info: "fa-circle-info" };
+        toast.className = `alert-toast alert-${type}`;
+        toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateX(100%)";
+          setTimeout(() => toast.remove(), 300);
+        }, 4500);
+      }
+
+      // Drag and drop logic
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const fileContainer = document.getElementById("fileContainer");
+      const fileNameDisplay = document.getElementById("fileNameDisplay");
+
+      dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+      dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault(); dropZone.classList.remove("drag-over");
+        if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+      });
+
+      function handleFile(file) {
+        if (file.name.match(/\.(xlsx|xlsm)$/i)) {
+          currentFile = file;
+          fileNameDisplay.textContent = file.name;
+          fileContainer.style.display = "block";
+          dropZone.style.display = "none";
+        } else {
+          showToast("File harus berupa Excel (.xlsx atau .xlsm)", "error");
+        }
+      }
+
+      function removeFile() {
+        currentFile = null;
+        fileInput.value = "";
+        fileContainer.style.display = "none";
+        dropZone.style.display = "block";
+      }
+
+      document.getElementById("processBtn").addEventListener("click", async () => {
+        if (!currentFile) {
+          showToast("Silakan unggah 1 file Excel SO terlebih dahulu", "warning");
+          return;
+        }
+        
+        const btn = document.getElementById("processBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin btn-icon"></i><span>Memproses File...</span>';
+        
+        const formData = new FormData();
+        formData.append("file", currentFile);
+        
+        document.getElementById("progressContainer").style.display = "block";
+        
+        try {
+          const res = await fetch("/api/reset-so", {
+            method: "POST",
+            body: formData
+          });
+          const data = await res.json();
+          
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Reset File SO</span>';
+          document.getElementById("progressContainer").style.display = "none";
+          
+          if (data.status === "success") {
+            document.getElementById("downloadCard").style.display = "block";
+            document.getElementById("uploadCard").style.display = "none";
+            
+            document.getElementById("resSourceFile").textContent = data.data.original_filename;
+            document.getElementById("resSheetCount").textContent = data.data.sheet_count;
+            
+            document.getElementById("downloadLink").href = data.data.download_url;
+            showToast("Proses reset selesai!", "success");
+            
+            // Auto download
+            const a = document.createElement("a");
+            a.href = data.data.download_url;
+            a.click();
+          } else {
+            showToast(data.message || "Terjadi kesalahan", "error");
+          }
+        } catch (e) {
+          showToast("Terjadi kesalahan sistem", "error");
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles btn-icon"></i><span>Mulai Reset File SO</span>';
+          document.getElementById("progressContainer").style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

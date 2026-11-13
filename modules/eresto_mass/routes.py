@@ -15,6 +15,10 @@ import config
 from services.file_handler import save_upload, cleanup_file
 from modules.eresto_mass.cleaner import clean_mass_data
 from modules.eresto_mass.processor import process_mass_to_zip
+from modules.eresto.master_product import (
+    load_master_products, save_master_products,
+    add_product, remove_product, reorder_products
+)
 
 eresto_mass_bp = Blueprint('eresto_mass', __name__, template_folder='../../templates')
 
@@ -25,7 +29,8 @@ TEMP_FILES = {}
 @eresto_mass_bp.route('/eresto-mass')
 def index():
     """Render the eResto Mass Analysis page."""
-    return render_template('eresto_mass_analysis.html')
+    products = load_master_products()
+    return render_template('eresto_mass_analysis.html', master_products=products)
 
 
 # ─── UPLOAD ──────────────────────────────────────────────────────────────────
@@ -159,3 +164,41 @@ def download_output(filename):
     """Download the generated ZIP file."""
     filename = os.path.basename(filename)
     return send_from_directory(config.OUTPUT_FOLDER, filename, as_attachment=True)
+
+
+# ─── MASTER PRODUCT (SHARED WITH ERESTO ANALYSIS) ───────────────────────────
+
+@eresto_mass_bp.route('/api/eresto-mass/master-product', methods=['GET'])
+def get_master_products():
+    """Retrieve master product list (shared data with eResto Analysis)."""
+    return jsonify({"products": load_master_products()})
+
+
+@eresto_mass_bp.route('/api/eresto-mass/master-product', methods=['POST'])
+def update_master_products_list():
+    """Replace entire master product list."""
+    data = request.json or {}
+    products = data.get('products', [])
+    updated = reorder_products(products)
+    return jsonify({"status": "ok", "products": updated})
+
+
+@eresto_mass_bp.route('/api/eresto-mass/master-product/add', methods=['POST'])
+def add_master_product_item():
+    """Add item to master product list."""
+    data = request.json or {}
+    name = data.get('name', '').strip()
+    if not name:
+        return jsonify({"status": "error", "message": "Nama product tidak boleh kosong"}), 400
+    updated = add_product(name)
+    return jsonify({"status": "ok", "products": updated})
+
+
+@eresto_mass_bp.route('/api/eresto-mass/master-product/remove', methods=['POST'])
+def remove_master_product_item():
+    """Remove item from master product list."""
+    data = request.json or {}
+    name = data.get('name', '').strip()
+    updated = remove_product(name)
+    return jsonify({"status": "ok", "products": updated})
+

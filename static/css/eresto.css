@@ -272,6 +272,9 @@ body {
 
 .grid-col-4 {
     grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 /* Card Styling */
@@ -510,7 +513,27 @@ body {
 .add-product-form {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
+}
+
+.search-product-box {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.search-product-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 13px;
+    pointer-events: none;
+}
+
+.search-product-box input {
+    padding-left: 38px;
+    font-size: 13px;
 }
 
 .master-list-container {

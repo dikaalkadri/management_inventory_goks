@@ -50,7 +50,8 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
     # Find columns by name (case-insensitive matching)
     order_date_col = None
     product_col = None
-    qty_col = None
+    paid_qty_col = None
+    oc_qty_col = None
 
     for col in col_names:
         col_lower = str(col).strip().lower()
@@ -58,8 +59,10 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
             order_date_col = col
         elif col_lower in ['product', 'produk', 'nama produk', 'nama barang']:
             product_col = col
-        elif col_lower in ['quantity', 'qty']:
-            qty_col = col
+        elif col_lower in ['paid qty']:
+            paid_qty_col = col
+        elif col_lower in ['oc qty']:
+            oc_qty_col = col
 
     # Fallback to positional indices if not found by name
     if not order_date_col:
@@ -67,12 +70,21 @@ def extract_key_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, str, str, str]:
     if not product_col:
         idx = min(config.ERESTO_COL_PRODUCT, len(col_names) - 1)
         product_col = col_names[idx]
-    if not qty_col:
-        idx = min(config.ERESTO_COL_RAW_QTY, len(col_names) - 1)
-        qty_col = col_names[idx]
+        
+    if not paid_qty_col and len(col_names) > 22:
+        paid_qty_col = col_names[22]
+    if not oc_qty_col and len(col_names) > 24:
+        oc_qty_col = col_names[24]
+
+    qty_col = 'Quantity (Calculated)'
+    df[qty_col] = 0
+    if paid_qty_col and paid_qty_col in df.columns:
+        df[qty_col] += pd.to_numeric(df[paid_qty_col], errors='coerce').fillna(0)
+    if oc_qty_col and oc_qty_col in df.columns:
+        df[qty_col] += pd.to_numeric(df[oc_qty_col], errors='coerce').fillna(0)
 
     # Rearrange the columns to put Order Date at index 0, Product at index 15, and Quantity at index 16
-    other_cols = [c for c in col_names if c not in (order_date_col, product_col, qty_col)]
+    other_cols = [c for c in col_names if c not in (order_date_col, product_col)]
 
     # Pad other_cols if there are fewer than 14 columns
     while len(other_cols) < 14:

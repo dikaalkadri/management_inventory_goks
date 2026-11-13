@@ -39,7 +39,7 @@ def extract_key_columns_mass(df: pd.DataFrame) -> tuple:
     - Order Date : col index 0 (Column A)
     - Outlet     : col index 3 (Column D)
     - Product    : col index 15 (Column P)
-    - Quantity   : col index 21 (Column V, raw), then moved to col Q in cleaned
+    - Quantity   : Sum of Paid Qty (Column W, index 22) + OC Qty (Column Y, index 24)
 
     Returns:
         Tuple (df_reordered, date_col, outlet_col, product_col, qty_col)
@@ -49,7 +49,8 @@ def extract_key_columns_mass(df: pd.DataFrame) -> tuple:
     order_date_col = None
     outlet_col = None
     product_col = None
-    qty_col = None
+    paid_qty_col = None
+    oc_qty_col = None
 
     for col in col_names:
         col_lower = str(col).strip().lower()
@@ -59,8 +60,10 @@ def extract_key_columns_mass(df: pd.DataFrame) -> tuple:
             outlet_col = col
         elif col_lower in ['product', 'produk', 'nama produk', 'nama barang']:
             product_col = col
-        elif col_lower in ['quantity', 'qty']:
-            qty_col = col
+        elif col_lower in ['paid qty']:
+            paid_qty_col = col
+        elif col_lower in ['oc qty']:
+            oc_qty_col = col
 
     # Positional fallbacks
     if not order_date_col and len(col_names) > 0:
@@ -70,13 +73,22 @@ def extract_key_columns_mass(df: pd.DataFrame) -> tuple:
     if not product_col:
         idx = min(config.ERESTO_COL_PRODUCT, len(col_names) - 1)
         product_col = col_names[idx]
-    if not qty_col:
-        idx = min(config.ERESTO_COL_RAW_QTY, len(col_names) - 1)
-        qty_col = col_names[idx]
+        
+    if not paid_qty_col and len(col_names) > 22:
+        paid_qty_col = col_names[22]
+    if not oc_qty_col and len(col_names) > 24:
+        oc_qty_col = col_names[24]
+
+    qty_col = 'Quantity (Calculated)'
+    df[qty_col] = 0
+    if paid_qty_col and paid_qty_col in df.columns:
+        df[qty_col] += pd.to_numeric(df[paid_qty_col], errors='coerce').fillna(0)
+    if oc_qty_col and oc_qty_col in df.columns:
+        df[qty_col] += pd.to_numeric(df[oc_qty_col], errors='coerce').fillna(0)
 
     # Rearrange: Order Date at index 0, Product at index 15, Quantity at index 16
     # (same layout as single-outlet cleaner so generate_excel works unchanged)
-    other_cols = [c for c in col_names if c not in (order_date_col, outlet_col, product_col, qty_col)]
+    other_cols = [c for c in col_names if c not in (order_date_col, outlet_col, product_col)]
 
     # We want to keep outlet_col accessible but also maintain the same
     # col layout for generate_excel (A=date, P=product, Q=qty).

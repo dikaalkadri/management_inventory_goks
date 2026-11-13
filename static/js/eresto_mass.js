@@ -44,6 +44,15 @@ const skippedListWrap  = document.getElementById('skippedListWrap');
 const skippedList      = document.getElementById('skippedList');
 const resetBtn         = document.getElementById('resetBtn');
 
+// ─── Master Product DOM References ──────────────────────────────────────────
+const masterProductsList = document.getElementById('masterProductsList');
+const newProdName        = document.getElementById('newProdName');
+const addProdBtn         = document.getElementById('addProdBtn');
+const saveOrderBtn       = document.getElementById('saveOrderBtn');
+const masterProductCount = document.getElementById('masterProductCount');
+const searchMasterProd   = document.getElementById('searchMasterProd');
+let allMasterProducts    = [];
+
 // ─── Upload Handlers ─────────────────────────────────────────────────────────
 dropZone.addEventListener('click', () => fileInput.click());
 
@@ -268,3 +277,230 @@ function escapeHtml(str) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
   return String(str).replace(/[&<>"']/g, m => map[m]);
 }
+
+// ─── Master Product Management (Shared with eResto Analysis) ─────────────────
+
+async function loadMasterProductsList() {
+  if (!masterProductsList) return;
+  try {
+    const res = await fetch('/api/eresto/master-product');
+    const data = await res.json();
+    allMasterProducts = data.products || [];
+    renderMasterProducts(allMasterProducts);
+  } catch (err) {
+    console.error('Failed to load master products:', err);
+  }
+}
+
+function renderMasterProducts(productsToRender) {
+  if (!masterProductsList) return;
+  masterProductsList.innerHTML = '';
+
+  if (masterProductCount) {
+    const total = allMasterProducts.length;
+    if (productsToRender.length !== total) {
+      masterProductCount.textContent = `${productsToRender.length} / ${total} Produk`;
+    } else {
+      masterProductCount.textContent = `${total} Produk`;
+    }
+  }
+
+  if (productsToRender.length === 0) {
+    const emptyLi = document.createElement('li');
+    emptyLi.style.cssText = 'padding: 20px; text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; list-style: none;';
+    emptyLi.textContent = searchMasterProd && searchMasterProd.value.trim()
+      ? 'Tidak ada produk yang cocok dengan pencarian'
+      : 'Belum ada master product';
+    masterProductsList.appendChild(emptyLi);
+    return;
+  }
+
+  const isFiltered = searchMasterProd && searchMasterProd.value.trim().length > 0;
+
+  productsToRender.forEach((prod) => {
+    const li = document.createElement('li');
+    li.className = 'master-item';
+    li.draggable = !isFiltered;
+    li.dataset.name = prod;
+
+    li.innerHTML = `
+      <div class="item-left">
+        <i class="fa-solid fa-grip-vertical drag-handle" style="${isFiltered ? 'opacity: 0.3; cursor: not-allowed;' : ''}"></i>
+        <span>${escapeHtml(prod)}</span>
+      </div>
+      <button class="btn-remove-prod" title="Hapus Product">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    `;
+
+    if (!isFiltered) {
+      setupDragAndDropItem(li);
+    }
+
+    li.querySelector('.btn-remove-prod').addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeProductItem(prod);
+    });
+
+    masterProductsList.appendChild(li);
+  });
+}
+
+function setupDragAndDropItem(item) {
+  item.addEventListener('dragstart', () => {
+    item.classList.add('dragging');
+  });
+
+  item.addEventListener('dragend', () => {
+    item.classList.remove('dragging');
+    const currentOrder = [...masterProductsList.querySelectorAll('.master-item')].map(el => el.dataset.name);
+    allMasterProducts = currentOrder;
+  });
+}
+
+if (masterProductsList) {
+  masterProductsList.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(masterProductsList, e.clientY);
+    const dragging = document.querySelector('.dragging');
+    if (!dragging) return;
+    if (afterElement == null) {
+      masterProductsList.appendChild(dragging);
+    } else {
+      masterProductsList.insertBefore(dragging, afterElement);
+    }
+  });
+}
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [
+    ...container.querySelectorAll('.master-item:not(.dragging)'),
+  ];
+
+  return draggableElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { offset: -Infinity },
+  ).element;
+}
+
+// Add Product
+if (addProdBtn && newProdName) {
+  addProdBtn.addEventListener('click', async () => {
+    const name = newProdName.value.trim();
+    if (!name) return;
+
+    try {
+      const res = await fetch('/api/eresto/master-product/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        showToast('success', `Product "${name}" berhasil ditambahkan!`);
+        newProdName.value = '';
+        if (searchMasterProd) searchMasterProd.value = '';
+        allMasterProducts = data.products || [];
+        renderMasterProducts(allMasterProducts);
+        setTimeout(() => {
+          if (masterProductsList.lastElementChild) {
+            masterProductsList.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 100);
+      } else {
+        showToast('error', data.message || 'Gagal menambahkan product');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('error', 'Gagal terhubung dengan database product.');
+    }
+  });
+
+  newProdName.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') addProdBtn.click();
+  });
+}
+
+// Search Filter
+if (searchMasterProd) {
+  searchMasterProd.addEventListener('input', (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    if (!query) {
+      renderMasterProducts(allMasterProducts);
+    } else {
+      const filtered = allMasterProducts.filter(p => p.toLowerCase().includes(query));
+      renderMasterProducts(filtered);
+    }
+  });
+}
+
+// Remove Product
+async function removeProductItem(name) {
+  if (!confirm(`Hapus "${name}" dari Master Product?`)) return;
+
+  try {
+    const res = await fetch('/api/eresto/master-product/remove', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      showToast('info', `Product "${name}" dihapus dari master list.`);
+      allMasterProducts = data.products || [];
+      const query = searchMasterProd ? searchMasterProd.value.trim().toLowerCase() : '';
+      if (query) {
+        renderMasterProducts(allMasterProducts.filter(p => p.toLowerCase().includes(query)));
+      } else {
+        renderMasterProducts(allMasterProducts);
+      }
+    } else {
+      showToast('error', data.message || 'Gagal menghapus product');
+    }
+  } catch (err) {
+    console.error(err);
+    showToast('error', 'Gagal menghapus product.');
+  }
+}
+
+// Save Order
+if (saveOrderBtn) {
+  saveOrderBtn.addEventListener('click', async () => {
+    if (searchMasterProd && searchMasterProd.value.trim()) {
+      showToast('warning', 'Bersihkan kolom pencarian sebelum menyimpan urutan.');
+      return;
+    }
+    const listItems = [...masterProductsList.querySelectorAll('.master-item')];
+    const products = listItems.map((item) => item.dataset.name);
+
+    try {
+      const res = await fetch('/api/eresto/master-product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products }),
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        showToast('success', 'Urutan Master Product berhasil disimpan!');
+        allMasterProducts = data.products || [];
+        renderMasterProducts(allMasterProducts);
+      } else {
+        showToast('error', data.message || 'Gagal menyimpan urutan');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('error', 'Gagal menyimpan urutan product.');
+    }
+  });
+}
+
+// Initialize on page load
+loadMasterProductsList();

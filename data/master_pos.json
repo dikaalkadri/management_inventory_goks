@@ -587,6 +587,30 @@
     {
       "product": "Merdeka Berdua",
       "category": "Event"
+    },
+    {
+      "product": "Dubai Chocolate Sundae",
+      "category": "Event"
+    },
+    {
+      "product": "Pistachio Kunafa Sundae",
+      "category": "Event"
+    },
+    {
+      "product": "Pistachio Kunafa Cone",
+      "category": "Event"
+    },
+    {
+      "product": "Dubai Chocolate Cone",
+      "category": "Event"
+    },
+    {
+      "product": "Dubai Choco Vanilla Cone",
+      "category": "Event"
+    },
+    {
+      "product": "Ube Oreo Cheese Sundae",
+      "category": "Event"
     }
   ]
 }

@@ -16,6 +16,7 @@ venv.bak/
 # Application Specific
 uploads/
 output/
+*.zip
 
 # IDE / System
 .vscode/

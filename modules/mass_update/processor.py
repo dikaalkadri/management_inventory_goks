@@ -3,7 +3,7 @@ import re
 import datetime
 import zipfile
 import openpyxl
-from openpyxl.styles import Border, Side, PatternFill
+from openpyxl.styles import Border, Side, PatternFill, Alignment, Font
 from openpyxl.cell.cell import MergedCell
 
 from modules.stockin.helpers import convert_to_xlsx_if_needed
@@ -159,6 +159,35 @@ def proses_mass_update(task_id, file_paths, formulas, output_folder):
                                 cell = ws.cell(row=last_row, column=col_idx)
                                 if not isinstance(cell, MergedCell):
                                     cell.border = Border(left=cell.border.left, right=cell.border.right, top=cell.border.top, bottom=thick_side)
+
+                        # Merge sel kategori yang sama di kolom A
+                        cat_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
+                        cat_font = Font(bold=True)
+
+                        # Unmerge SEMUA merged range di kolom A yang overlap dengan baris-baris kita
+                        all_data_rows = set(sorted_rows)
+                        for mr in list(ws.merged_cells.ranges):
+                            if mr.min_col == 1 and mr.max_col == 1:
+                                # Cek apakah ada overlap dengan baris data kita
+                                mr_rows = set(range(mr.min_row, mr.max_row + 1))
+                                if mr_rows & all_data_rows:
+                                    ws.unmerge_cells(str(mr))
+
+                        i = 0
+                        while i < len(sorted_rows):
+                            row_start = sorted_rows[i]
+                            cat_val = formulas[str(row_start)].get("category", "").strip()
+                            j = i + 1
+                            while j < len(sorted_rows) and formulas[str(sorted_rows[j])].get("category", "").strip() == cat_val:
+                                j += 1
+                            row_end = sorted_rows[j - 1]
+                            if row_end > row_start:
+                                ws.merge_cells(start_row=row_start, start_column=1, end_row=row_end, end_column=1)
+                            top_cell = ws.cell(row=row_start, column=1)
+                            top_cell.value = cat_val
+                            top_cell.alignment = cat_align
+                            top_cell.font = cat_font
+                            i = j
 
                         # Kembalikan proteksi sheet
                         ws.protection.sheet = True

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goks! Visualisasi Kerugian</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/css/eresto.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .upload-zone {
+      border: 2px dashed rgba(123, 44, 191, 0.35);
+      border-radius: 14px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: rgba(123, 44, 191, 0.03);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: #7b2cbf; background: rgba(123, 44, 191, 0.08); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-zone .drop-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; color: #a78bfa; }
+    
+    .file-name-display {
+      margin-top: 15px;
+      color: #10b981;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: none;
+    }
+    
+    .chart-container-wrapper {
+      position: relative;
+      height: 400px;
+      width: 100%;
+      display: none;
+      margin-top: 20px;
+    }
+    
+    .select-dropdown {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin-bottom: 15px;
+    }
+    .select-dropdown option {
+      background: #1e1e2e;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Glow Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    {% set active_menu = 'visualisasi' %} 
+    {% include 'sidebar.html' %}
+
+    <main class="app-main">
+      <header class="main-header">
+        <div class="header-title">
+          <h1>Visualisasi Kerugian</h1>
+          <p class="header-subtitle">
+            Unggah file ZIP rekap kerugian untuk melihat visualisasi data harian atau bulanan
+          </p>
+        </div>
+        <div class="header-status">
+          <span class="status-indicator online"></span>
+          <span class="status-text">System Active</span>
+        </div>
+      </header>
+
+      <div class="content-grid" style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Upload & Settings -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <div class="card-header-icon bg-emerald-glow" style="background: rgba(167, 139, 250, 0.2); color: #a78bfa;">
+              <i class="fa-solid fa-chart-bar"></i>
+            </div>
+            <h3>Pengaturan & Upload</h3>
+          </div>
+          
+          <div class="card-body">
+            <form id="uploadForm">
+              <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #a78bfa; font-weight: 600;">Filter Data</label>
+                <select class="select-dropdown" id="filterType" name="filter_type" required>
+                    <option value="rekap">Rekap Bulanan</option>
+                    {% for i in range(1, 32) %}
+                    <option value="{{ i }}">Tanggal {{ i }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #a78bfa; font-weight: 600;">File Data ZIP</label>
+                <div class="upload-zone" id="dropZone">
+                  <i class="fa-solid fa-file-zipper drop-icon"></i>
+                  <p class="mb-1 text-white">Tarik & lepas file ZIP di sini atau klik untuk browse</p>
+                  <p class="text-xs text-gray-400" style="color: #9ca3af; font-size: 0.8rem;">Pastikan file berisi excel laporan kerugian</p>
+                  <input type="file" id="zipFile" name="zip_file" accept=".zip" required />
+                </div>
+                <div id="fileNameDisplay" class="file-name-display"><i class="fa-solid fa-check-circle"></i> <span></span></div>
+              </div>
+              
+              <button type="submit" class="btn-primary w-full" id="submitBtn" style="padding: 12px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; display: block; text-align: center; color: white;">
+                <i class="fa-solid fa-bolt me-2"></i> Proses & Visualisasikan
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Result / Chart -->
+        <div class="card glass-card" id="resultCard" style="display: none;">
+          <div class="card-header">
+            <div class="card-header-icon" style="background: rgba(167, 139, 250, 0.2); color: #a78bfa;">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h3>Hasil Visualisasi</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart-container-wrapper" id="chartContainer">
+              <canvas id="kerugianChart"></canvas>
+            </div>
+            
+            <div style="margin-top: 25px; text-align: center;">
+              <a id="downloadBtn" class="btn-primary" href="#" style="display: inline-block; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; color: white;" download>
+                <i class="fa-solid fa-download me-2"></i> Download Data (Excel)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // File Input UI
+    const zipInput = document.getElementById('zipFile');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const dropZone = document.getElementById('dropZone');
+
+    zipInput.addEventListener('change', function() {
+        if(this.files && this.files.length > 0) {
+            fileNameDisplay.querySelector('span').textContent = 'File terpilih: ' + this.files[0].name;
+            fileNameDisplay.style.display = 'block';
+        } else {
+            fileNameDisplay.style.display = 'none';
+        }
+    });
+
+    // Form Submit logic
+    let myChart = null;
+
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const filterType = document.getElementById('filterType').value;
+        
+        if (!zipInput.files.length) {
+            alert("Pilih file ZIP terlebih dahulu!");
+            return;
+        }
+
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Memproses...';
+        submitBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('zip_file', zipInput.files[0]);
+        formData.append('filter_type', filterType);
+
+        fetch('/visualisasi_kerugian', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+
+            if (data.error) {
+                alert('Error: ' + data.error);
+                return;
+            }
+
+            if (data.success) {
+                renderChart(data.data);
+                
+                document.getElementById('resultCard').style.display = 'block';
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.href = data.download_url;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat memproses data.');
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        });
+    });
+
+    function renderChart(data) {
+        const chartContainer = document.getElementById('chartContainer');
+        chartContainer.style.display = 'block';
+
+        const ctx = document.getElementById('kerugianChart').getContext('2d');
+        const labels = data.map(item => item.outlet);
+        const kerugianValues = data.map(item => item.kerugian);
+
+        if (myChart) {
+            myChart.destroy();
+        }
+
+        // Set modern chart defaults to match UI
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Kerugian (Rp)',
+                    data: kerugianValues,
+                    backgroundColor: 'rgba(167, 139, 250, 0.7)',
+                    borderColor: 'rgba(167, 139, 250, 1)',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    hoverBackgroundColor: 'rgba(196, 181, 253, 0.9)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff'
+                        }
+                    }
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>

@@ -357,9 +357,66 @@
 
           </div>
 
-          <!-- Right Side: Info Panel -->
+          <!-- Right Side: Master Product Manager (Persistent) & Panduan -->
           <div class="grid-col-4">
-            <div class="card glass-card master-product-card">
+            <!-- Master Product Manager -->
+            <div class="card glass-card master-product-card" id="masterProductCard">
+              <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="card-header-icon bg-purple-glow">
+                    <i class="fa-solid fa-list-check"></i>
+                  </div>
+                  <h3>Master Product F&B</h3>
+                </div>
+                <span class="outlet-badge" id="masterProductCount">0 Produk</span>
+              </div>
+              <div class="card-body">
+                <p class="master-desc">
+                  Daftar product tetap untuk tabel matrix daily sales (Column S). Urutan product di bawah ini akan konsisten pada seluruh file Excel outlet yang dihasilkan.
+                </p>
+
+                <!-- Add Product Input -->
+                <div class="add-product-form">
+                  <input
+                    type="text"
+                    id="newProdName"
+                    placeholder="Tambah product baru..."
+                    class="form-control"
+                  />
+                  <button class="btn btn-emerald" id="addProdBtn" title="Tambah Produk">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+
+                <!-- Quick Search Input -->
+                <div class="search-product-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input
+                    type="text"
+                    id="searchMasterProd"
+                    placeholder="Cari master product..."
+                    class="form-control"
+                  />
+                </div>
+
+                <!-- List of Master Products -->
+                <div class="master-list-container">
+                  <ul class="master-list" id="masterProductsList">
+                    <!-- Dynamic product list -->
+                  </ul>
+                </div>
+
+                <div class="master-actions">
+                  <button class="btn btn-secondary btn-block" id="saveOrderBtn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan Urutan &amp; Data</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panduan Penggunaan Card -->
+            <div class="card glass-card info-card">
               <div class="card-header">
                 <div class="card-header-icon bg-purple-glow">
                   <i class="fa-solid fa-circle-info"></i>
@@ -397,8 +454,8 @@
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <div style="min-width: 28px; height: 28px; background: rgba(90,24,154,0.5); border-radius: 50%; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#e0aaff; flex-shrink:0;">4</div>
                     <div>
-                      <p style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); margin:0 0 3px;">Master Product</p>
-                      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">Menggunakan master product list yang sama dari menu <a href="/eresto" style="color:#c77dff;">eResto Analysis</a></p>
+                      <p style="font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); margin:0 0 3px;">Master Product Sinkron</p>
+                      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">Data Master Product di atas terhubung dan tersinkronisasi otomatis dengan menu <a href="/eresto" style="color:#c77dff;">eResto Analysis</a>.</p>
                     </div>
                   </div>
                 </div>

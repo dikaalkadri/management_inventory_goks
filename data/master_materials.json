@@ -1,479 +1,499 @@
 {
   "materials": [
     {
-      "name": "Susu UHT",
       "category": "Bahan Baku Utama",
+      "name": "Susu UHT",
       "price": 19.0
     },
     {
-      "name": "Teh Bubuk Chatramue",
       "category": "Bahan Baku Utama",
+      "name": "Teh Bubuk Chatramue",
       "price": 150.0
     },
     {
-      "name": "Tapioca Pearl",
       "category": "Bahan Baku Utama",
+      "name": "Tapioca Pearl",
       "price": 52.0
     },
     {
-      "name": "Kopi Robusta Kerinci",
       "category": "Bahan Baku Utama",
+      "name": "Kopi Robusta Kerinci",
       "price": 139.0
     },
     {
-      "name": "Fructose Syrup",
       "category": "Bahan Baku Utama",
+      "name": "Fructose Syrup",
       "price": 21.0
     },
     {
-      "name": "Gula Aren Bubuk",
       "category": "Bahan Baku Utama",
+      "name": "Gula Aren Bubuk",
       "price": 35.0
     },
     {
-      "name": "Gula Aren Cair",
       "category": "Bahan Baku Utama",
+      "name": "Gula Aren Cair",
       "price": 41.0
     },
     {
-      "name": "Carnation",
       "category": "Bahan Baku Utama",
+      "name": "Carnation",
       "price": 31.0
     },
     {
-      "name": "Hazelnut Syrup",
       "category": "Bahan Baku Utama",
+      "name": "Hazelnut Syrup",
       "price": 112.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Small Cup - 14 Oz",
-      "category": "Bahan Baku Utama",
       "price": 685.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Large Cup - 22 Oz",
-      "category": "Bahan Baku Utama",
       "price": 685.0
     },
     {
-      "name": "Sedotan Besar",
       "category": "Bahan Baku Utama",
+      "name": "Sedotan Besar",
       "price": 120.0
     },
     {
-      "name": "Sedotan Kecil",
       "category": "Bahan Baku Utama",
+      "name": "Sedotan Kecil",
       "price": 38.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Cup Sealer",
-      "category": "Bahan Baku Utama",
       "price": 0.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Air Mineral SMS",
-      "category": "Bahan Baku Utama",
       "price": 0.0
     },
     {
-      "name": "Teh Bubuk Kayu Aro",
       "category": "Bahan Baku Utama",
+      "name": "Teh Bubuk Kayu Aro",
       "price": 30.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Teh Poci Vanilla",
-      "category": "Bahan Baku Utama",
       "price": 0.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Teh Poci Melati",
-      "category": "Bahan Baku Utama",
       "price": 0.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Teh Bendera",
-      "category": "Bahan Baku Utama",
       "price": 0.0
     },
     {
+      "category": "Bahan Baku Utama",
       "name": "Ice Cube",
-      "category": "Bahan Baku Utama",
       "price": 0.0
     },
     {
-      "name": "Bubble Gum Powder",
       "category": "Powder",
+      "name": "Bubble Gum Powder",
       "price": 71.0
     },
     {
-      "name": "Cotton Candy Powder",
       "category": "Powder",
+      "name": "Cotton Candy Powder",
       "price": 70.0
     },
     {
-      "name": "Cream Cheese Powder",
       "category": "Powder",
+      "name": "Cream Cheese Powder",
       "price": 116.0
     },
     {
-      "name": "Es Permen Karet Powder",
       "category": "Powder",
+      "name": "Es Permen Karet Powder",
       "price": 66.0
     },
     {
-      "name": "Green Tea Powder",
       "category": "Powder",
+      "name": "Green Tea Powder",
       "price": 74.0
     },
     {
-      "name": "Lemon Tea Powder",
       "category": "Powder",
+      "name": "Lemon Tea Powder",
       "price": 55.0
     },
     {
-      "name": "Lychee Powder",
       "category": "Powder",
+      "name": "Lychee Powder",
       "price": 72.0
     },
     {
-      "name": "Lychee Tea Powder",
       "category": "Powder",
+      "name": "Lychee Tea Powder",
       "price": 55.0
     },
     {
-      "name": "Mango Powder",
       "category": "Powder",
+      "name": "Mango Powder",
       "price": 73.0
     },
     {
-      "name": "Milo Powder",
       "category": "Powder",
+      "name": "Milo Powder",
       "price": 110.0
     },
     {
-      "name": "NDC Creamer Powder",
       "category": "Powder",
+      "name": "NDC Creamer Powder",
       "price": 43.0
     },
     {
-      "name": "Ovaltine Powder",
       "category": "Powder",
+      "name": "Ovaltine Powder",
       "price": 89.0
     },
     {
-      "name": "Red Velvet Powder",
       "category": "Powder",
+      "name": "Red Velvet Powder",
       "price": 74.0
     },
     {
-      "name": "Royal Chocolate Powder",
       "category": "Powder",
+      "name": "Royal Chocolate Powder",
       "price": 116.0
     },
     {
-      "name": "Taro Powder",
       "category": "Powder",
+      "name": "Taro Powder",
       "price": 74.0
     },
     {
-      "name": "Vanilla Powder",
       "category": "Powder",
+      "name": "Vanilla Powder",
       "price": 71.0
     },
     {
-      "name": "Cold Brew",
       "category": "Bahan Setengah Jadi",
+      "name": "Cold Brew",
       "price": 29.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Biang Black Tea Kayu Aro",
-      "category": "Bahan Setengah Jadi",
       "price": 4.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Biang Thai Tea",
-      "category": "Bahan Setengah Jadi",
       "price": 4.0
     },
     {
-      "name": "Cream Cheese",
       "category": "Bahan Setengah Jadi",
+      "name": "Cream Cheese",
       "price": 69.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Boba",
-      "category": "Bahan Setengah Jadi",
       "price": 44.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Creamer Cair",
-      "category": "Bahan Setengah Jadi",
       "price": 44.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Biang teh vanilla",
-      "category": "Bahan Setengah Jadi",
       "price": 2.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Biang teh melati",
-      "category": "Bahan Setengah Jadi",
       "price": 2.0
     },
     {
+      "category": "Bahan Setengah Jadi",
       "name": "Biang teh bendera",
-      "category": "Bahan Setengah Jadi",
       "price": 2.0
     },
     {
-      "name": "Lotus Crumb",
       "category": "Topping",
+      "name": "Lotus Crumb",
       "price": 200.0
     },
     {
-      "name": "Oreo Crumbs",
       "category": "Topping",
+      "name": "Oreo Crumbs",
       "price": 64.0
     },
     {
-      "name": "Strawberry Jam",
       "category": "Topping",
+      "name": "Strawberry Jam",
       "price": 61.0
     },
     {
-      "name": "Manggo Jam",
       "category": "Topping",
+      "name": "Manggo Jam",
       "price": 73.0
     },
     {
-      "name": "Chocolate Topping",
       "category": "Topping",
+      "name": "Chocolate Topping",
       "price": 52.0
     },
     {
-      "name": "Yakult",
       "category": "Topping",
+      "name": "Yakult",
       "price": 1990.0
     },
     {
+      "category": "Topping",
       "name": "Kacang Morin",
-      "category": "Topping",
       "price": 57.0
     },
     {
+      "category": "Topping",
       "name": "Meses",
-      "category": "Topping",
       "price": 57.0
     },
     {
-      "name": "Choco Chip",
       "category": "Topping",
+      "name": "Choco Chip",
       "price": 78.0
     },
     {
-      "name": "Nutella",
       "category": "Topping",
+      "name": "Nutella",
       "price": 213.0
     },
     {
-      "name": "Sereal",
       "category": "Topping",
+      "name": "Sereal",
       "price": 160.0
     },
     {
-      "name": "Chaca Rainbow",
       "category": "Topping",
+      "name": "Chaca Rainbow",
       "price": 51.0
     },
     {
-      "name": "Kitkat",
       "category": "Topping",
+      "name": "Kitkat",
       "price": 260.0
     },
     {
+      "category": "Ice Cream",
       "name": "Softmix Vanilla",
-      "category": "Ice Cream",
       "price": 17.0
     },
     {
+      "category": "Ice Cream",
       "name": "Softmix Mocca",
-      "category": "Ice Cream",
       "price": 17.0
     },
     {
+      "category": "Ice Cream",
       "name": "Softmix Green Tea",
-      "category": "Ice Cream",
       "price": 18.0
     },
     {
+      "category": "Ice Cream",
       "name": "Softmix Strawberry",
-      "category": "Ice Cream",
       "price": 18.0
     },
     {
+      "category": "Ice Cream",
       "name": "Softmix Chocolate",
-      "category": "Ice Cream",
       "price": 18.0
     },
     {
-      "name": "Cup 12 Oz",
       "category": "Ice Cream",
+      "name": "Cup 12 Oz",
       "price": 675.0
     },
     {
-      "name": "Cone",
       "category": "Ice Cream",
+      "name": "Cone",
       "price": 595.0
     },
     {
-      "name": "Sendok Ice Cream",
       "category": "Ice Cream",
+      "name": "Sendok Ice Cream",
       "price": 66.0
     },
     {
-      "name": "Cup 4 Oz",
       "category": "Ice Cream",
+      "name": "Cup 4 Oz",
       "price": 230.0
     },
     {
-      "name": "Donut Gula",
       "category": "Ice Cream",
+      "name": "Donut Gula",
       "price": 4300.0
     },
     {
-      "name": "Garpu Donut",
       "category": "Ice Cream",
+      "name": "Garpu Donut",
       "price": 117.0
     },
     {
-      "name": "Paper Tray",
       "category": "Ice Cream",
+      "name": "Paper Tray",
       "price": 300.0
     },
     {
-      "name": "Pisau Donut",
       "category": "Ice Cream",
+      "name": "Pisau Donut",
       "price": 120.0
     },
     {
-      "name": "Cup Twist",
       "category": "Ice Cream",
+      "name": "Cup Twist",
       "price": 1030.0
     },
     {
-      "name": "Tutup Twist",
       "category": "Ice Cream",
+      "name": "Tutup Twist",
       "price": 0.0
     },
     {
-      "name": "Sendok Silky Pudding",
       "category": "Pudding",
+      "name": "Sendok Silky Pudding",
       "price": 400.0
     },
     {
-      "name": "Paper Bag",
       "category": "Pudding",
+      "name": "Paper Bag",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Kertas Thermal (10)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Plastik Sampah Biru (32)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Plastik Cup 1 Panjang (1 pack = 10)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Plastik Cup 2 Panjang (1 pack = 10)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Plastik Cup 4 takeaway (1 pack = 5)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Plastik Cup 2 takeaway (1 pack = 5)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Batrai Kecil AAA (2)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Baterai Besar ABC (2)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Ultra Pencuci Piring (1)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Sponge Cuci Piring (1)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Hand Gloves (100)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Tissue Jolly (10)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Cairan Pembersih Lantai (4000)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "Cairan Pembersih Kaca (4000)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "detergen (1)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "hit/baygon (1)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "kapur ajaib (1)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "lem tikus (1)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
+      "category": "Bahan Lainnya",
       "name": "cairan porselen (4000)",
-      "category": "Bahan Lainnya",
       "price": 0.0
     },
     {
-      "name": "Meises Red",
       "category": "Event",
+      "name": "Meises Red",
       "price": 57.0
+    },
+    {
+      "category": "Bahan Baku",
+      "name": "Pistachio Elmer 1kg",
+      "price": 100.0
+    },
+    {
+      "category": "Bahan Baku",
+      "name": "Kunafa",
+      "price": 265.0
+    },
+    {
+      "name": "Elmer Chesee Glaze",
+      "category": "Bahan Baku",
+      "price": 66.0
+    },
+    {
+      "name": "Elmer Taro Glaze",
+      "category": "Bahan Baku",
+      "price": 74.0
     }
   ]
 }

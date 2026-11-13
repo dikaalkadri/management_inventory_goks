@@ -80,7 +80,7 @@ def process_mass_to_zip(
     master_products = load_master_products()
     if not master_products:
         raise ValueError(
-            "Master product list kosong. Isi terlebih dahulu di menu eResto Analysis → Master Product."
+            "Master product list kosong. Silakan isi terlebih dahulu pada panel Master Product."
         )
 
     outlets_list = load_outlets_inventory()
