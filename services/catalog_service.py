@@ -3,21 +3,54 @@ import json
 
 import config
 
-POS_PATH = os.path.join(config.BASE_DIR, 'data', 'master_pos.json')
+POS_PATH       = os.path.join(config.BASE_DIR, 'data', 'master_pos.json')
 MATERIALS_PATH = os.path.join(config.BASE_DIR, 'data', 'master_materials.json')
+ALIASES_PATH   = os.path.join(config.BASE_DIR, 'data', 'material_aliases.json')
 
 # ── Cache in-memory ───────────────────────────────────────────────────────────
 # Data catalog (POS & Bahan Baku) sangat jarang berubah saat proses batch
 # berjalan. Cache ini menghindari ribuan disk-read yang tidak perlu.
-_pos_cache = None
+_pos_cache      = None
 _materials_cache = None
+_aliases_cache  = None
 
 
 def invalidate_catalog_cache():
     """Reset cache. Dipanggil otomatis setelah save_pos() / save_materials()."""
-    global _pos_cache, _materials_cache
-    _pos_cache = None
+    global _pos_cache, _materials_cache, _aliases_cache
+    _pos_cache       = None
     _materials_cache = None
+    _aliases_cache   = None
+
+
+def load_material_aliases():
+    """
+    Memuat peta alias nama bahan baku dari data/material_aliases.json.
+
+    Return dict:  old_name_lower -> new_name_lower
+    Contoh: {'pistachio elmer 1kg': 'elmer pistachio glaze'}
+    """
+    global _aliases_cache
+    if _aliases_cache is not None:
+        return _aliases_cache
+
+    _aliases_cache = {}
+    if not os.path.exists(ALIASES_PATH):
+        return _aliases_cache
+    try:
+        with open(ALIASES_PATH, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        # raw: {"Nama Baru": ["Nama Lama 1", ...], "_comment": ...}
+        for new_name, old_names in raw.items():
+            if new_name.startswith('_'):          # abaikan kunci komentar
+                continue
+            if not isinstance(old_names, list):
+                continue
+            for old in old_names:
+                _aliases_cache[old.strip().lower()] = new_name.strip().lower()
+    except Exception as e:
+        print(f"[ERROR] Gagal memuat material_aliases: {e}")
+    return _aliases_cache
 
 
 def load_pos():

@@ -39,7 +39,7 @@ _REKAP_TOT_FONT      = Font(name="Segoe UI", bold=True, size=11, color="FFFFFF")
 _REKAP_TOT_FILL      = PatternFill("solid", fgColor="1B5E20")
 _REKAP_TOT_ALIGN     = Alignment(horizontal="center", vertical="center")
 
-from services.catalog_service import load_pos, load_materials
+from services.catalog_service import load_pos, load_materials, load_material_aliases
 from services.excel_style_helper import copy_row_properties
 from modules.stockin.formula_config import apply_all as apply_formulas_and_protect, RELATIVE_ROW_START
 from modules.stockin.helpers import load_inventory, safe_save_workbook
@@ -60,8 +60,12 @@ def safe_write_cell(ws, row, col, value, number_format=None):
         pass
 
 def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder, outlet=None, target_days=None):
-    pos_list = load_pos()
-    mat_list = load_materials()
+    pos_list  = load_pos()
+    mat_list  = load_materials()
+    # Muat alias: old_name_lower → new_name_lower
+    # Digunakan untuk mengenali nama lama yang masih ada di template kerugian lama,
+    # sehingga data backup-nya tetap bisa di-restore ke nama baru.
+    mat_aliases = load_material_aliases()
     total_items = max(len(pos_list), len(mat_list))
     if total_items == 0:
         raise ValueError("Data POS Menu dan Bahan Baku kosong.")
@@ -293,6 +297,10 @@ def proses_sinkronisasi_excel(sumber_path_xlsx, tujuan_path_xlsx, output_folder,
                 
                 # RESTORE DATA MANUAL JIKA ADA
                 b_key = mat_name.lower()
+                # Fallback alias: jika nama baru tidak ada di backup (karena nama baru),
+                # coba cari lewat alias (nama lama yang mungkin masih ada di template).
+                if b_key not in manual_backup and b_key in mat_aliases:
+                    b_key = mat_aliases[b_key]  # gunakan nama lama sebagai kunci backup
                 if b_key in manual_backup:
                     backup = manual_backup[b_key]
                     safe_write_cell(ws_tujuan, r, 3, backup['C'])

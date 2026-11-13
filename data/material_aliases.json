@@ -1,0 +1,5 @@
+{
+  "_comment": "Peta alias nama bahan baku. Format: 'Nama Baru' -> ['Nama Lama 1', 'Nama Lama 2', ...].",
+  "_comment2": "Digunakan saat sinkronisasi untuk mengenali nama lama yang masih ada di template kerugian lama.",
+  "Elmer Pistachio Glaze": ["Pistachio Elmer 1kg"]
+}
