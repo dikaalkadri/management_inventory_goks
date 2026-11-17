@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goks! Smart Push Gudang</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/css/eresto.css" />
+
+  <style>
+    /* Custom Styling untuk Push Gudang */
+    .tab-nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+    }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover {
+      background: rgba(123, 44, 191, 0.15);
+      color: #fff;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
+      color: #ffffff;
+      border-color: #c77dff;
+      box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+    }
+
+    .upload-zone {
+      border: 2px dashed rgba(167, 139, 250, 0.35);
+      border-radius: 14px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: rgba(123, 44, 191, 0.03);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: #9d4edd;
+      background: rgba(123, 44, 191, 0.08);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-zone .drop-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+      color: #c084fc;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card .kpi-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      margin-top: 4px;
+    }
+    .kpi-card .kpi-title {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .kpi-kritis { border-left: 4px solid #ef4444; }
+    .kpi-kritis .kpi-num { color: #f87171; }
+    .kpi-waspada { border-left: 4px solid #f59e0b; }
+    .kpi-waspada .kpi-num { color: #fbbf24; }
+    .kpi-aman { border-left: 4px solid #10b981; }
+    .kpi-aman .kpi-num { color: #34d399; }
+    .kpi-info { border-left: 4px solid #3b82f6; }
+    .kpi-info .kpi-num { color: #60a5fa; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-kritis { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-waspada { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-aman { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-gray { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
+
+    .outlet-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .outlet-card:hover {
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+    .outlet-card-header {
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(255, 255, 255, 0.015);
+    }
+    .outlet-card-header:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .outlet-title-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .outlet-name-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .outlet-meta-tag {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .outlet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .outlet-table th {
+      background: rgba(0, 0, 0, 0.25);
+      color: #94a3b8;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .outlet-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #e2e8f0;
+    }
+    .outlet-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .recommend-pill {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .day-selector-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .day-pill {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      transition: all 0.15s;
+    }
+    .day-pill.active {
+      background: #7b2cbf;
+      color: #ffffff;
+      border-color: #a78bfa;
+      font-weight: 600;
+    }
+
+    .form-control-dark {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .form-control-dark:focus {
+      outline: none;
+      border-color: #9d4edd;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Glow Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    {% set active_menu = 'push_gudang' %}
+    {% include 'sidebar.html' %}
+
+    <main class="app-main">
+      <header class="main-header">
+        <div class="header-title">
+          <h1>Smart Push Gudang</h1>
+          <p class="header-subtitle">
+            Deteksi otomatis kebutuhan pengiriman stok gudang ke 35+ outlet berdasarkan burn rate kerugian & jadwal rute.
+          </p>
+        </div>
+        <div class="header-status">
+          <span class="status-indicator online"></span>
+          <span class="status-text">Engine Ready</span>
+        </div>
+      </header>
+
+      <!-- TAB NAVIGATION -->
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('tab-rekomendasi')">
+          <i class="fa-solid fa-truck-ramp-box"></i> Rekomendasi Kirim Hari Ini
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-jadwal')">
+          <i class="fa-solid fa-calendar-days"></i> Master Jadwal Outlet
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-panduan')">
+          <i class="fa-solid fa-circle-info"></i> Logika & Parameter Buffer
+        </button>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 1: REKOMENDASI KIRIM HARI INI          -->
+      <!-- ========================================== -->
+      <div id="tab-rekomendasi" class="tab-pane">
+        <div class="content-grid" style="display: flex; flex-direction: column; gap: 24px;">
+
+          <!-- Upload Form & Settings -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-header-icon bg-emerald-glow" style="background: rgba(167, 139, 250, 0.2); color: #c084fc;">
+                <i class="fa-solid fa-file-zipper"></i>
+              </div>
+              <h3>Unggah File Kerugian & Analisis Kebutuhan</h3>
+            </div>
+
+            <div class="card-body">
+              <form id="analyzeForm">
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                  <div>
+                    <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">
+                      <i class="fa-regular fa-calendar"></i> Tanggal Pengiriman (Target Day)
+                    </label>
+                    <input type="date" id="target_date" name="target_date" value="{{ today_str }}" class="form-control-dark" required />
+                  </div>
+                  <div>
+                    <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">
+                      <i class="fa-solid fa-chart-line"></i> Lookback Burn Rate
+                    </label>
+                    <select id="lookback_days" name="lookback_days" class="form-control-dark">
+                      <option value="7" selected>7 Hari Terakhir</option>
+                      <option value="14">14 Hari Terakhir</option>
+                      <option value="30">30 Hari (1 Bulan)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">
+                      <i class="fa-solid fa-shield-halved"></i> Safety Buffer
+                    </label>
+                    <select id="buffer_days" name="buffer_days" class="form-control-dark">
+                      <option value="0">0 Hari (Pas)</option>
+                      <option value="1" selected>+1 Hari Cadangan (Standar)</option>
+                      <option value="2">+2 Hari Cadangan (Aman)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Dropzone ZIP -->
+                <div class="upload-zone" id="dropZone">
+                  <input type="file" id="zipFile" name="zip_file" accept=".zip" required />
+                  <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                  <h4 style="margin: 0 0 6px 0; color: #f1f5f9;">Tarik & Lepas File ZIP Kerugian Di Sini</h4>
+                  <p style="margin: 0; color: #94a3b8; font-size: 0.85rem;">
+                    Gunakan file ZIP hasil output *Update Kerugian* harian (berisi 35+ file Excel outlet)
+                  </p>
+                  <div id="fileSelectedDisplay" style="margin-top: 12px; color: #34d399; font-weight: 600; display: none;"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #cbd5e1; cursor: pointer;">
+                    <input type="checkbox" id="include_all_outlets" name="include_all_outlets" value="true" />
+                    <span>Sertakan semua outlet (termasuk yang tidak terjadwal kirim hari ini)</span>
+                  </label>
+
+                  <button type="submit" id="btnSubmit" class="btn btn-primary" style="padding: 12px 28px; font-weight: 700; background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Hitung Rekomendasi Kirim
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Loading Spinner -->
+          <div id="loadingArea" style="display: none; text-align: center; padding: 40px;">
+            <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2.5rem; color: #a78bfa; margin-bottom: 16px;"></i>
+            <h4 style="color: #fff;">Menganalisis Burn Rate & Data Stok 35+ Outlet...</h4>
+            <p style="color: #94a3b8; font-size: 0.85rem;">Harap tunggu beberapa detik, sistem sedang memproses file Excel.</p>
+          </div>
+
+          <!-- RESULTS AREA -->
+          <div id="resultsArea" style="display: none;">
+            <!-- KPI Summary Cards -->
+            <div class="kpi-grid">
+              <div class="kpi-card kpi-info">
+                <div class="kpi-title">Outlet Terjadwal</div>
+                <div class="kpi-num" id="kpiScheduled">0</div>
+              </div>
+              <div class="kpi-card kpi-kritis">
+                <div class="kpi-title">Outlet Kritis (&lt;1.5 hr)</div>
+                <div class="kpi-num" id="kpiKritis">0</div>
+              </div>
+              <div class="kpi-card kpi-waspada">
+                <div class="kpi-title">Outlet Perlu Kirim</div>
+                <div class="kpi-num" id="kpiWaspada">0</div>
+              </div>
+              <div class="kpi-card kpi-aman">
+                <div class="kpi-title">Outlet Stok Aman</div>
+                <div class="kpi-num" id="kpiAman">0</div>
+              </div>
+              <div class="kpi-card kpi-info" style="border-left-color: #a855f7;">
+                <div class="kpi-title">Total Item Dimuat</div>
+                <div class="kpi-num" style="color: #c084fc;" id="kpiItemsToShip">0</div>
+              </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="outletFilterSearch" placeholder="Cari nama outlet..." class="form-control-dark" style="width: 260px;" oninput="filterOutletCards()" />
+                <select id="urgencyFilter" class="form-control-dark" style="width: 170px;" onchange="filterOutletCards()">
+                  <option value="ALL">Semua Status</option>
+                  <option value="KRITIS">Hanya Kritis</option>
+                  <option value="WASPADA">Hanya Perlu Kirim</option>
+                  <option value="AMAN">Hanya Aman</option>
+                </select>
+              </div>
+
+              <div style="display: flex; gap: 12px;">
+                <button type="button" class="btn btn-secondary" onclick="toggleExpandAll()">
+                  <i class="fa-solid fa-arrows-up-down"></i> Buka / Tutup Semua
+                </button>
+                <button type="button" class="btn btn-success" onclick="downloadPushExcel()" style="background: #10b981; border: none; font-weight: 700;">
+                  <i class="fa-solid fa-file-excel"></i> Download Surat Jalan & Rekap (Excel)
+                </button>
+              </div>
+            </div>
+
+            <!-- List Outlet Cards -->
+            <div id="outletCardsContainer"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 2: MASTER JADWAL PENGIRIMAN OUTLET    -->
+      <!-- ========================================== -->
+      <div id="tab-jadwal" class="tab-pane" style="display: none;">
+        <div class="card glass-card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="card-header-icon" style="background: rgba(167, 139, 250, 0.2); color: #c084fc;">
+                <i class="fa-solid fa-route"></i>
+              </div>
+              <div>
+                <h3 style="margin: 0;">Pengaturan Jadwal Pengiriman 40 Outlet</h3>
+                <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 0.85rem;">
+                  Atur hari pengantaran masing-masing outlet. Gap hari berikutnya otomatis dihitung oleh sistem.
+                </p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-primary" onclick="saveSchedulesToServer()" style="background: #7b2cbf;">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Jadwal
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+              <input type="text" id="scheduleSearch" placeholder="Cari outlet..." class="form-control-dark" style="width: 300px;" oninput="filterScheduleTable()" />
+              <div style="font-size: 0.85rem; color: #94a3b8; display: flex; align-items: center; gap: 14px;">
+                <span><b style="color: #60a5fa;">Daily:</b> Tiap Hari (Sen–Sab)</span>
+                <span><b style="color: #fbbf24;">2x/Week:</b> Selasa & Jumat</span>
+                <span><b style="color: #f87171;">1x/Week:</b> Hanya Senin</span>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="outlet-table" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th style="width: 60px;">Kode</th>
+                    <th style="width: 220px;">Nama Outlet</th>
+                    <th style="width: 160px;">Wilayah</th>
+                    <th style="width: 180px;">Tipe Jadwal</th>
+                    <th>Hari Pengiriman</th>
+                  </tr>
+                </thead>
+                <tbody id="scheduleTableBody">
+                  {% for code, s in schedules.items() %}
+                  <tr data-code="{{ code }}" data-name="{{ s.name|lower }}">
+                    <td style="font-weight: 700; color: #c084fc;">{{ code }}</td>
+                    <td style="font-weight: 600;">{{ s.name }}</td>
+                    <td>
+                      <select class="form-control-dark sched-loc" style="padding: 6px 10px; font-size: 0.85rem;" onchange="markScheduleDirty()">
+                        <option value="Dalam Kota" {% if s.location == 'Dalam Kota' %}selected{% endif %}>Dalam Kota</option>
+                        <option value="Semi Luar Kota" {% if s.location == 'Semi Luar Kota' %}selected{% endif %}>Semi Luar Kota</option>
+                        <option value="Luar Kota (Jauh)" {% if s.location == 'Luar Kota (Jauh)' %}selected{% endif %}>Luar Kota (Jauh)</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-control-dark sched-type" style="padding: 6px 10px; font-size: 0.85rem;" onchange="handleDeliveryTypeChange('{{ code }}', this.value)">
+                        <option value="DAILY" {% if s.delivery_type == 'DAILY' %}selected{% endif %}>Harian (Sen–Sab)</option>
+                        <option value="TWICE_WEEKLY" {% if s.delivery_type == 'TWICE_WEEKLY' %}selected{% endif %}>2x Seminggu</option>
+                        <option value="ONCE_WEEKLY" {% if s.delivery_type == 'ONCE_WEEKLY' %}selected{% endif %}>1x Seminggu</option>
+                        <option value="CUSTOM" {% if s.delivery_type == 'CUSTOM' %}selected{% endif %}>Custom Hari</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="day-selector-pills" id="pills-{{ code }}">
+                        {% set days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+                        {% for d in days %}
+                        <span class="day-pill {% if d in s.delivery_days %}active{% endif %}"
+                              data-day="{{ d }}"
+                              onclick="toggleDayPill(this, '{{ code }}')">
+                          {{ days_id[d][:3] }}
+                        </span>
+                        {% endfor %}
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top: 20px; text-align: right;">
+              <button class="btn btn-primary" onclick="saveSchedulesToServer()" style="background: #7b2cbf; padding: 12px 24px; font-weight: 700;">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Jadwal
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 3: PANDUAN & PARAMETER                 -->
+      <!-- ========================================== -->
+      <div id="tab-panduan" class="tab-pane" style="display: none;">
+        <div class="card glass-card">
+          <div class="card-header">
+            <div class="card-header-icon" style="background: rgba(167, 139, 250, 0.2); color: #c084fc;">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <h3>Formula & Logika Smart Push Delivery</h3>
+          </div>
+          <div class="card-body" style="line-height: 1.8; color: #cbd5e1; font-size: 0.95rem;">
+            <p>
+              Modul ini mengubah sistem operasional dari <b>PULL (outlet request manual)</b> menjadi <b>PUSH (gudang mengirim sesuai deteksi kebutuhan)</b>.
+            </p>
+
+            <h4 style="color: #c084fc; margin-top: 20px;">1. Bagaimana Kuantitas Kirim Dihitung?</h4>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 16px; border-radius: 10px; border-left: 4px solid #7b2cbf; font-family: monospace; font-size: 0.9rem; color: #e2e8f0;">
+              Gap Hari = Selisih hari dari jadwal hari ini ke jadwal pengiriman berikutnya lagi<br />
+              Target Stok = Rata-rata Pemakaian Harian × (Gap Hari + Buffer Cadangan)<br />
+              <b>Rekomendasi Jumlah Kirim = Target Stok - Stok Akhir Saat Ini</b>
+            </div>
+
+            <h4 style="color: #c084fc; margin-top: 20px;">2. Contoh Simulasi di Lapangan:</h4>
+            <ul>
+              <li>
+                <b>Outlet Luar Kota (Jadwal 1x seminggu, tiap Senin):</b><br />
+                Hari ini Senin, kiriman berikutnya baru ada Senin depan (Gap = 7 hari + Buffer 1 = 8 hari).<br />
+                Jika pemakaian Susu UHT rata-rata 2 liter/hari, dan sisa di outlet hanya 3 liter:<br />
+                Target stok = 2 × 8 = 16 liter. Rekomendasi kirim = <b>13 liter</b>.
+              </li>
+              <li style="margin-top: 10px;">
+                <b>Outlet Dalam Kota (Jadwal Harian, Sen–Sab):</b><br />
+                Hari ini Senin, kiriman berikutnya besok Selasa (Gap = 1 hari + Buffer 1 = 2 hari).<br />
+                Target stok = 2 × 2 = 4 liter. Karena sisa di outlet 3 liter, maka rekomendasi kirim = <b>1 liter</b> saja.
+              </li>
+            </ul>
+
+            <h4 style="color: #c084fc; margin-top: 20px;">3. Arti Status Urgensi:</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 10px;">
+              <div style="padding: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px;">
+                <span class="status-badge badge-kritis">KRITIS</span>
+                <p style="font-size: 0.85rem; margin: 6px 0 0 0; color: #fca5a5;">Stok habis atau sisa stok kurang dari 1.5 hari pemakaian. Wajib diprioritaskan kirim pertama.</p>
+              </div>
+              <div style="padding: 12px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px;">
+                <span class="status-badge badge-waspada">WASPADA</span>
+                <p style="font-size: 0.85rem; margin: 6px 0 0 0; color: #fcd34d;">Stok tidak akan cukup sampai pengiriman berikutnya. Perlu dimuat ke kendaraan.</p>
+              </div>
+              <div style="padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px;">
+                <span class="status-badge badge-aman">AMAN</span>
+                <p style="font-size: 0.85rem; margin: 6px 0 0 0; color: #6ee7b7;">Stok di outlet masih berlimpah hingga pengiriman sesudahnya. Tidak perlu kirim.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    let currentAnalysisData = null;
+    let allExpanded = false;
+
+    // --- TAB SWITCHING ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      const activePane = document.getElementById(tabId);
+      if (activePane) activePane.style.display = 'block';
+
+      const clickedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (clickedBtn) clickedBtn.classList.add('active');
+    }
+
+    // --- DROPZONE SETUP ---
+    const dropZone = document.getElementById('dropZone');
+    const zipInput = document.getElementById('zipFile');
+    const fileDisplay = document.getElementById('fileSelectedDisplay');
+
+    if (dropZone && zipInput) {
+      ['dragenter', 'dragover'].forEach(name => {
+        dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+      });
+      ['dragleave', 'drop'].forEach(name => {
+        dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); });
+      });
+
+      zipInput.addEventListener('change', () => {
+        if (zipInput.files.length > 0) {
+          fileDisplay.textContent = "✅ File terpilih: " + zipInput.files[0].name;
+          fileDisplay.style.display = 'block';
+        }
+      });
+    }
+
+    // --- ANALYZE FORM SUBMIT ---
+    document.getElementById('analyzeForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      if (!zipInput.files || zipInput.files.length === 0) {
+        alert("Silakan pilih file ZIP kerugian terlebih dahulu.");
+        return;
+      }
+
+      const formData = new FormData(this);
+      const loadingArea = document.getElementById('loadingArea');
+      const resultsArea = document.getElementById('resultsArea');
+      const btnSubmit = document.getElementById('btnSubmit');
+
+      loadingArea.style.display = 'block';
+      resultsArea.style.display = 'none';
+      btnSubmit.disabled = true;
+
+      try {
+        const resp = await fetch('/api/push-gudang/analyze', {
+          method: 'POST',
+          body: formData
+        });
+        const json = await resp.json();
+
+        if (json.status === 'success') {
+          currentAnalysisData = json.data;
+          renderAnalysisResults(json.data);
+          resultsArea.style.display = 'block';
+        } else {
+          alert("Gagal analisis: " + json.message);
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan jaringan: " + err.message);
+      } finally {
+        loadingArea.style.display = 'none';
+        btnSubmit.disabled = false;
+      }
+    });
+
+    // --- RENDER RESULTS ---
+    function renderAnalysisResults(data) {
+      const kpi = data.kpi;
+      document.getElementById('kpiScheduled').textContent = kpi.total_outlets_scheduled;
+      document.getElementById('kpiKritis').textContent = kpi.kritis_outlets;
+      document.getElementById('kpiWaspada').textContent = kpi.waspada_outlets;
+      document.getElementById('kpiAman').textContent = kpi.aman_outlets;
+      document.getElementById('kpiItemsToShip').textContent = kpi.total_items_to_ship;
+
+      const container = document.getElementById('outletCardsContainer');
+      container.innerHTML = '';
+
+      if (!data.outlets || data.outlets.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 30px;">Tidak ada outlet terjadwal untuk tanggal ini.</div>';
+        return;
+      }
+
+      data.outlets.forEach(o => {
+        const card = document.createElement('div');
+        card.className = 'outlet-card';
+        card.dataset.name = (o.name || '').toLowerCase();
+        card.dataset.status = o.status;
+
+        let badgeClass = 'badge-gray';
+        if (o.status === 'KRITIS') badgeClass = 'badge-kritis';
+        else if (o.status === 'WASPADA') badgeClass = 'badge-waspada';
+        else if (o.status === 'AMAN') badgeClass = 'badge-aman';
+
+        const itemsNeeded = o.summary.total_items_needed || 0;
+        const kritisCount = o.summary.kritis_count || 0;
+
+        // Build item rows
+        let itemRowsHtml = '';
+        if (o.items && o.items.length > 0) {
+          o.items.forEach((it, idx) => {
+            const isNeedPush = (it.recommend_push > 0);
+            const rowBg = it.urgency === 'KRITIS' ? 'style="background: rgba(239, 68, 68, 0.08);"' : '';
+
+            itemRowsHtml += `
+              <tr ${rowBg}>
+                <td style="color: #94a3b8; text-align: center;">${idx + 1}</td>
+                <td style="color: #a78bfa; font-size: 0.8rem;">${it.category || '-'}</td>
+                <td style="font-weight: 600;">${it.name}</td>
+                <td style="text-align: right;">${it.curr_stock}</td>
+                <td style="text-align: right; color: #94a3b8;">${it.avg_burn_daily}/hr</td>
+                <td style="text-align: center;">
+                  <span style="font-weight: 600; color: ${it.days_left < 2 ? '#f87171' : '#e2e8f0'};">
+                    ${it.days_left} hari
+                  </span>
+                </td>
+                <td style="text-align: right;">
+                  ${isNeedPush ? `<span class="recommend-pill">${it.recommend_push}</span>` : '<span style="color: #64748b;">-</span>'}
+                </td>
+                <td style="text-align: center;">
+                  ${it.urgency === 'KRITIS' ? '<span class="status-badge badge-kritis">KRITIS</span>' :
+                    it.urgency === 'WASPADA' ? '<span class="status-badge badge-waspada">PERLU KIRIM</span>' :
+                    '<span class="status-badge badge-aman">AMAN</span>'}
+                </td>
+              </tr>
+            `;
+          });
+        } else {
+          itemRowsHtml = `<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 20px;">Tidak ada data bahan pada file outlet ini.</td></tr>`;
+        }
+
+        card.innerHTML = `
+          <div class="outlet-card-header" onclick="toggleOutletCard('body-${o.code}')">
+            <div class="outlet-title-area">
+              <span class="status-badge ${badgeClass}">${o.status}</span>
+              <div>
+                <span class="outlet-name-text">[${o.code}] ${o.name}</span>
+                <span class="outlet-meta-tag">
+                  &bull; ${o.location} &bull; ${o.delivery_type} &bull; Gap: ${o.gap_days} hari (+${data.buffer_days} buffer)
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="text-align: right; font-size: 0.85rem;">
+                <b style="color: ${itemsNeeded > 0 ? '#60a5fa' : '#34d399'}; font-size: 1rem;">${itemsNeeded}</b> item perlu kirim
+                ${kritisCount > 0 ? ` &bull; <b style="color: #f87171;">${kritisCount} kritis</b>` : ''}
+              </div>
+              <i class="fa-solid fa-chevron-down" id="icon-${o.code}" style="color: #94a3b8; transition: transform 0.2s;"></i>
+            </div>
+          </div>
+          <div class="outlet-card-body" id="body-${o.code}" style="display: none; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+            <div style="max-height: 380px; overflow-y: auto;">
+              <table class="outlet-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40px; text-align: center;">No</th>
+                    <th style="width: 140px;">Kategori</th>
+                    <th>Nama Barang</th>
+                    <th style="width: 100px; text-align: right;">Stok Terkini</th>
+                    <th style="width: 110px; text-align: right;">Avg Burn/Hr</th>
+                    <th style="width: 110px; text-align: center;">Est. Habis</th>
+                    <th style="width: 120px; text-align: right;">Rekomendasi Kirim</th>
+                    <th style="width: 110px; text-align: center;">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${itemRowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function toggleOutletCard(bodyId) {
+      const el = document.getElementById(bodyId);
+      const icon = document.getElementById(bodyId.replace('body-', 'icon-'));
+      if (el) {
+        const isHidden = (el.style.display === 'none');
+        el.style.display = isHidden ? 'block' : 'none';
+        if (icon) icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    }
+
+    function toggleExpandAll() {
+      allExpanded = !allExpanded;
+      document.querySelectorAll('.outlet-card-body').forEach(el => {
+        el.style.display = allExpanded ? 'block' : 'none';
+      });
+      document.querySelectorAll('[id^="icon-"]').forEach(icon => {
+        icon.style.transform = allExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+    }
+
+    function filterOutletCards() {
+      const q = (document.getElementById('outletFilterSearch').value || '').toLowerCase();
+      const statusFilter = document.getElementById('urgencyFilter').value;
+
+      document.querySelectorAll('.outlet-card').forEach(card => {
+        const name = card.dataset.name || '';
+        const status = card.dataset.status || '';
+
+        const matchQuery = name.includes(q);
+        const matchStatus = (statusFilter === 'ALL' || status === statusFilter);
+
+        card.style.display = (matchQuery && matchStatus) ? 'block' : 'none';
+      });
+    }
+
+    // --- DOWNLOAD EXCEL ---
+    async function downloadPushExcel() {
+      if (!currentAnalysisData) {
+        alert("Belum ada data analisis untuk diunduh.");
+        return;
+      }
+
+      try {
+        const resp = await fetch('/api/push-gudang/download-excel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentAnalysisData)
+        });
+
+        if (resp.ok) {
+          const blob = await resp.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Surat_Jalan_Push_Gudang_${currentAnalysisData.target_date.replace(/-/g, '')}.xlsx`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else {
+          const json = await resp.json();
+          alert("Gagal mengunduh Excel: " + (json.message || "Error"));
+        }
+      } catch (err) {
+        alert("Gagal mengunduh Excel: " + err.message);
+      }
+    }
+
+    // --- SCHEDULE MANAGEMENT (TAB 2) ---
+    function toggleDayPill(pill, code) {
+      pill.classList.toggle('active');
+      markScheduleDirty();
+    }
+
+    function handleDeliveryTypeChange(code, dtype) {
+      const container = document.getElementById(`pills-${code}`);
+      if (!container) return;
+
+      const pills = container.querySelectorAll('.day-pill');
+      if (dtype === 'DAILY') {
+        pills.forEach(p => {
+          const d = p.dataset.day;
+          p.classList.toggle('active', d !== 'Sunday');
+        });
+      } else if (dtype === 'TWICE_WEEKLY') {
+        pills.forEach(p => {
+          const d = p.dataset.day;
+          p.classList.toggle('active', (d === 'Tuesday' || d === 'Friday'));
+        });
+      } else if (dtype === 'ONCE_WEEKLY') {
+        pills.forEach(p => {
+          const d = p.dataset.day;
+          p.classList.toggle('active', d === 'Monday');
+        });
+      }
+      markScheduleDirty();
+    }
+
+    function markScheduleDirty() {
+      // Indikator bahwa ada perubahan
+    }
+
+    function filterScheduleTable() {
+      const q = (document.getElementById('scheduleSearch').value || '').toLowerCase();
+      document.querySelectorAll('#scheduleTableBody tr').forEach(row => {
+        const name = row.dataset.name || '';
+        const code = row.dataset.code || '';
+        row.style.display = (name.includes(q) || code.includes(q)) ? '' : 'none';
+      });
+    }
+
+    async function saveSchedulesToServer() {
+      const rows = document.querySelectorAll('#scheduleTableBody tr');
+      const schedules = {};
+
+      rows.forEach(r => {
+        const code = r.dataset.code;
+        const nameCell = r.querySelector('td:nth-child(2)');
+        const name = nameCell ? nameCell.textContent.trim() : '';
+        const loc = r.querySelector('.sched-loc').value;
+        const dtype = r.querySelector('.sched-type').value;
+
+        const activeDays = [];
+        r.querySelectorAll('.day-pill.active').forEach(p => {
+          activeDays.push(p.dataset.day);
+        });
+
+        schedules[code] = {
+          code: code,
+          name: name,
+          location: loc,
+          delivery_type: dtype,
+          delivery_days: activeDays,
+          notes: ''
+        };
+      });
+
+      try {
+        const resp = await fetch('/api/push-gudang/schedules', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ schedules: schedules })
+        });
+        const res = await resp.json();
+        if (res.status === 'success') {
+          alert('✅ Jadwal pengiriman 40 outlet berhasil disimpan!');
+        } else {
+          alert('❌ Gagal menyimpan jadwal: ' + res.message);
+        }
+      } catch (err) {
+        alert('❌ Error koneksi: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

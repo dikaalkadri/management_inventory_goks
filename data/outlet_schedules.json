@@ -1,0 +1,495 @@
+{
+  "01": {
+    "code": "01",
+    "name": "Taplau",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "02": {
+    "code": "02",
+    "name": "Air Tawar",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "03": {
+    "code": "03",
+    "name": "Gunung Pangilun",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "04": {
+    "code": "04",
+    "name": "Belibis",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "05": {
+    "code": "05",
+    "name": "Siteba",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "06": {
+    "code": "06",
+    "name": "Pasar Baru",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "07": {
+    "code": "07",
+    "name": "Tunggul Hitam",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "08": {
+    "code": "08",
+    "name": "Anduring",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "09": {
+    "code": "09",
+    "name": "Jati",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "10": {
+    "code": "10",
+    "name": "Air Pacah",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "11": {
+    "code": "11",
+    "name": "Lubuk Begalung",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "12": {
+    "code": "12",
+    "name": "Balai Baru",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "13": {
+    "code": "13",
+    "name": "Cendrawasih",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "14": {
+    "code": "14",
+    "name": "Seberang Padang",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "15": {
+    "code": "15",
+    "name": "Bandar Buat",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "16": {
+    "code": "16",
+    "name": "Air Dingin",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "17": {
+    "code": "17",
+    "name": "Tabing",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "18": {
+    "code": "18",
+    "name": "Belimbing",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "19": {
+    "code": "19",
+    "name": "Rawang",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "20": {
+    "code": "20",
+    "name": "Lubuk Buaya",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "21": {
+    "code": "21",
+    "name": "Parak Laweh",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "22": {
+    "code": "22",
+    "name": "Lubuk Lintah",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "23": {
+    "code": "23",
+    "name": "Kasang",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "24": {
+    "code": "24",
+    "name": "Bungus",
+    "delivery_type": "DAILY",
+    "delivery_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "location": "Dalam Kota",
+    "notes": ""
+  },
+  "25": {
+    "code": "25",
+    "name": "Lubuk Alung",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "26": {
+    "code": "26",
+    "name": "Kurai Taji",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "27": {
+    "code": "27",
+    "name": "Lohong",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "28": {
+    "code": "28",
+    "name": "Manggung",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "29": {
+    "code": "29",
+    "name": "Pauh Kambar",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "30": {
+    "code": "30",
+    "name": "Sicincin",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "31": {
+    "code": "31",
+    "name": "Tanah Garam",
+    "delivery_type": "ONCE_WEEKLY",
+    "delivery_days": [
+      "Monday"
+    ],
+    "location": "Luar Kota (Jauh)",
+    "notes": ""
+  },
+  "32": {
+    "code": "32",
+    "name": "Selayo",
+    "delivery_type": "ONCE_WEEKLY",
+    "delivery_days": [
+      "Monday"
+    ],
+    "location": "Luar Kota (Jauh)",
+    "notes": ""
+  },
+  "33": {
+    "code": "33",
+    "name": "Gunung Talang",
+    "delivery_type": "ONCE_WEEKLY",
+    "delivery_days": [
+      "Monday"
+    ],
+    "location": "Luar Kota (Jauh)",
+    "notes": ""
+  },
+  "34": {
+    "code": "34",
+    "name": "Sungai Sariak",
+    "delivery_type": "TWICE_WEEKLY",
+    "delivery_days": [
+      "Tuesday",
+      "Friday"
+    ],
+    "location": "Semi Luar Kota",
+    "notes": ""
+  },
+  "35": {
+    "code": "35",
+    "name": "Simpang Rumbio",
+    "delivery_type": "ONCE_WEEKLY",
+    "delivery_days": [
+      "Monday"
+    ],
+    "location": "Luar Kota (Jauh)",
+    "notes": ""
+  },
+  "36": {
+    "code": "36",
+    "name": "Kambang",
+    "delivery_type": "ONCE_WEEKLY",
+    "delivery_days": [
+      "Monday"
+    ],
+    "location": "Luar Kota (Jauh)",
+    "notes": ""
+  },
+  "37": {
+    "code": "37",
+    "name": "Surantih",
+    "delivery_type": "ONCE_WEEKLY",
+    "delivery_days": [
+      "Monday"
+    ],
+    "location": "Luar Kota (Jauh)",
+    "notes": ""
+  }
+}

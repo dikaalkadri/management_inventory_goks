@@ -14,6 +14,7 @@ from modules.perbaikan_data.routes import perbaikan_data_bp
 from modules.add_stock_auth.routes import add_stock_auth_bp
 from modules.visualisasi_kerugian.routes import visualisasi_kerugian_bp
 from modules.reset_so.routes import reset_so_bp
+from modules.push_gudang.routes import push_gudang_bp
 from services.task_manager import task_bp
 
 app = Flask(__name__)
@@ -31,6 +32,7 @@ app.register_blueprint(perbaikan_data_bp)
 app.register_blueprint(add_stock_auth_bp)
 app.register_blueprint(visualisasi_kerugian_bp)
 app.register_blueprint(reset_so_bp)
+app.register_blueprint(push_gudang_bp)
 app.register_blueprint(task_bp)
 
 # Configurations
