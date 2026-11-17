@@ -1,76 +1,71 @@
 /* ==========================================================================
-   GOKS! Bento Style Pastel Stylesheet
-   Modern, Clean, Light-Theme SaaS Bento UI Inspired by Modern Financial Dashboards
+   GOKS! Modern Bento UI Design System
+   Clean, Professional, Minimalist, Full-Width SaaS Bento Interface
    ========================================================================== */
 
 :root {
-  /* Surface & Canvas Colors */
-  --bg-body: #f6f8fb;
-  --bg-sidebar: #ffffff;
-  --bg-card: #ffffff;
-  --bg-subtle: #f8fafc;
-  --bg-hover: #f1f5f9;
+  /* Canvas & Backgrounds */
+  --bg-body: #f8fafc;        /* Cool off-white canvas */
+  --bg-sidebar: #ffffff;     /* Crisp white sidebar */
+  --bg-card: #ffffff;        /* Pure white bento cards */
+  --bg-subtle: #f1f5f9;      /* Light gray track / secondary bg */
+  --bg-hover: #f8fafc;       /* Clean row hover */
 
-  /* Borders & Dividers */
-  --border-color: #f1f5f9;
-  --border-subtle: #e2e8f0;
-  --border-strong: #cbd5e1;
+  /* Borders */
+  --border-color: #e2e8f0;   /* Clean slate-200 border */
+  --border-subtle: #f1f5f9;  /* Muted inner divider */
+  --border-strong: #cbd5e1;  /* Focus border */
 
-  /* Typography Colors */
-  --text-primary: #0f172a;     /* Slate 900 */
-  --text-secondary: #475569;   /* Slate 600 */
-  --text-muted: #94a3b8;       /* Slate 400 */
+  /* Text Colors */
+  --text-primary: #0f172a;   /* Slate 900 for bold headings & key numbers */
+  --text-secondary: #475569; /* Slate 600 for body labels & descriptions */
+  --text-muted: #94a3b8;     /* Slate 400 for subtext & meta tags */
   --text-inverse: #ffffff;
 
-  /* Brand Primary (Royal Blue from reference image) */
+  /* Primary Accent (Classic High-Trust Royal Blue) */
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-primary-light: #eff6ff;
   --color-primary-border: #bfdbfe;
 
-  /* Pastel Palette Tokens (Inspired by reference Bento cards) */
-  /* Mint / Green (Pemasukan) */
-  --pastel-green-bg: #ecfdf5;
-  --pastel-green-border: #d1fae5;
-  --pastel-green-text: #065f46;
-  --pastel-green-accent: #10b981;
+  /* Restrained Functional Accents (Used for Badges, Bars, Indicators ONLY) */
+  --accent-emerald: #10b981;
+  --accent-emerald-bg: #ecfdf5;
+  --accent-emerald-text: #047857;
+  --accent-emerald-border: #a7f3d0;
 
-  /* Rose / Pink (Pengeluaran) */
-  --pastel-red-bg: #fff1f2;
-  --pastel-red-border: #ffe4e6;
-  --pastel-red-text: #9f1239;
-  --pastel-red-accent: #f43f5e;
+  --accent-amber: #f59e0b;
+  --accent-amber-bg: #fffbeb;
+  --accent-amber-text: #b45309;
+  --accent-amber-border: #fde68a;
 
-  /* Warm Amber / Yellow (Sisa / Waspada) */
-  --pastel-amber-bg: #fffbeb;
-  --pastel-amber-border: #fef3c7;
-  --pastel-amber-text: #92400e;
-  --pastel-amber-accent: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-rose-bg: #fff1f2;
+  --accent-rose-text: #be123c;
+  --accent-rose-border: #fecdd3;
 
-  /* Soft Ice Blue */
-  --pastel-blue-bg: #eff6ff;
-  --pastel-blue-border: #dbeafe;
-  --pastel-blue-text: #1e40af;
-  --pastel-blue-accent: #3b82f6;
+  --accent-blue: #3b82f6;
+  --accent-blue-bg: #eff6ff;
+  --accent-blue-text: #1d4ed8;
+  --accent-blue-border: #bfdbfe;
 
-  /* Soft Lavender / Purple */
-  --pastel-purple-bg: #faf5ff;
-  --pastel-purple-border: #f3e8ff;
-  --pastel-purple-text: #6b21a8;
-  --pastel-purple-accent: #a855f7;
+  --accent-indigo: #6366f1;
+  --accent-indigo-bg: #eef2ff;
+  --accent-indigo-text: #4338ca;
+  --accent-indigo-border: #c7d2fe;
 
-  /* Fonts & Shadows */
+  /* Geometry & Shadows */
   --font-primary: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-  --shadow-hover: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
-  --shadow-primary: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
-
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 6px 18px -4px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 4px 12px 0 rgba(15, 23, 42, 0.05), 0 12px 28px -6px rgba(15, 23, 42, 0.05);
+  --shadow-primary: 0 4px 14px 0 rgba(37, 99, 235, 0.22);
 }
 
 /* ==========================================================================
@@ -87,18 +82,17 @@ body {
   color: var(--text-primary);
   font-family: var(--font-primary);
   min-height: 100vh;
+  width: 100%;
   overflow-x: hidden;
-  position: relative;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Soft ambient background tint (optional, replaces harsh dark blobs) */
 .glow-blob {
   display: none !important;
 }
 
 /* ==========================================================================
-   App Layout
+   Full Width Application Shell
    ========================================================================== */
 .app-container {
   display: flex;
@@ -107,10 +101,11 @@ body {
 }
 
 /* ==========================================================================
-   Sidebar Styling (Light Bento Style matching Image 1)
+   Sidebar: Clean, Minimalist, Cohesive
    ========================================================================== */
 .app-sidebar {
-  width: 270px;
+  width: 260px;
+  min-width: 260px;
   background-color: var(--bg-sidebar);
   border-right: 1px solid var(--border-color);
   padding: 24px 16px;
@@ -128,26 +123,21 @@ body {
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
-  padding: 4px 10px 18px 10px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 4px 8px 18px 8px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .brand-logo-badge {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   background: var(--color-primary);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 18px;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
-}
-
-.brand-icon {
-  font-size: 20px;
-  color: var(--color-primary);
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
 .brand-info {
@@ -156,7 +146,7 @@ body {
 }
 
 .brand-name {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.3px;
@@ -166,14 +156,14 @@ body {
 .brand-tag {
   font-size: 11px;
   color: var(--text-muted);
-  font-weight: 500;
-  margin-top: 2px;
+  font-weight: 600;
+  margin-top: 1px;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   flex-grow: 1;
 }
 
@@ -191,85 +181,70 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 9px 14px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   border-radius: var(--radius-full);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
 .nav-item i {
-  font-size: 16px;
-  width: 22px;
+  font-size: 15px;
+  width: 20px;
   text-align: center;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
+  color: #64748b;
+  transition: all 0.15s ease;
 }
-
-/* Colorful icon accents in sidebar */
-.nav-item .icon-blue { color: #3b82f6 !important; }
-.nav-item .icon-purple { color: #8b5cf6 !important; }
-.nav-item .icon-emerald { color: #10b981 !important; }
-.nav-item .icon-amber { color: #f59e0b !important; }
-.nav-item .icon-rose { color: #f43f5e !important; }
-.nav-item .icon-indigo { color: #6366f1 !important; }
-.nav-item .icon-slate { color: #64748b !important; }
 
 .nav-item:hover {
   color: var(--text-primary);
-  background-color: var(--bg-hover);
+  background-color: var(--bg-subtle);
 }
 
 .nav-item:hover i {
-  transform: scale(1.1);
+  color: var(--text-primary);
 }
 
-/* Active Nav Item - White Pill with soft border & shadow like Image 1 */
+/* Active State: Clean White Pill with Soft Border & Shadow (Reference Image 1) */
 .nav-item.active {
-  color: var(--text-primary);
-  background-color: #ffffff;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
-  font-weight: 700;
+  color: var(--color-primary) !important;
+  background-color: var(--color-primary-light) !important;
+  font-weight: 700 !important;
+  border: 1px solid var(--color-primary-border) !important;
 }
 
 .nav-item.active i {
-  color: var(--color-primary);
+  color: var(--color-primary) !important;
 }
 
 .sidebar-footer {
   padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 10px;
+  gap: 10px;
+  padding: 8px 12px;
   border-radius: var(--radius-md);
   background: var(--bg-subtle);
 }
 
 .profile-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: #e2e8f0;
   color: #475569;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
-}
-
-.profile-icon {
-  font-size: 32px;
-  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .profile-name {
@@ -284,127 +259,161 @@ body {
 }
 
 /* ==========================================================================
-   Main Area & Header
+   Main Content Area (Full Width Responsive)
    ========================================================================== */
 .app-main {
-  flex-grow: 1;
+  flex: 1;
+  width: calc(100% - 260px);
   padding: 32px 40px;
   overflow-y: auto;
-  max-width: 1600px;
+}
+
+@media (max-width: 1024px) {
+  .app-main {
+    padding: 24px 20px;
+  }
 }
 
 .main-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .header-title h1 {
   font-size: 26px;
   font-weight: 800;
   color: var(--text-primary);
-  letter-spacing: -0.5px;
-  margin-bottom: 4px;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
 }
 
 .header-subtitle {
   font-size: 14px;
   color: var(--text-secondary);
+  margin-top: 4px;
 }
 
 .header-status {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background-color: var(--pastel-green-bg);
-  color: var(--pastel-green-text);
+  gap: 7px;
+  background-color: #ffffff;
+  color: var(--accent-emerald-text);
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--pastel-green-border);
+  border: 1px solid var(--border-color);
   font-size: 12px;
   font-weight: 600;
+  box-shadow: var(--shadow-sm);
 }
 
 .status-indicator {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-}
-
-.status-indicator.online {
-  background-color: var(--pastel-green-accent);
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
-}
-
-.status-text {
-  font-size: 12px;
-  font-weight: 600;
+  background-color: var(--accent-emerald);
 }
 
 /* ==========================================================================
-   Notice / Announcement Banner (Top Image 1)
+   Segmented Pill Tab Navigation (Replacing disconnected buttons)
    ========================================================================== */
-.banner-notice, .info-banner {
-  background: var(--pastel-blue-bg);
-  border: 1px solid var(--pastel-blue-border);
+.tab-nav {
+  display: inline-flex;
+  background: var(--bg-subtle) !important;
+  padding: 5px;
   border-radius: var(--radius-lg);
-  padding: 12px 20px;
-  color: var(--pastel-blue-text);
-  font-size: 13px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  border: 1px solid var(--border-color);
+  gap: 4px;
   margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
-.banner-notice a {
+.tab-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-secondary) !important;
+  padding: 8px 18px !important;
+  border-radius: var(--radius-md) !important;
+  cursor: pointer;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: none !important;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Active Segmented Tab */
+.tab-btn.active {
+  background: #ffffff !important;
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.tab-btn.active i {
   color: var(--color-primary);
-  font-weight: 700;
-  text-decoration: underline;
 }
 
 /* ==========================================================================
-   Bento Cards & Containers
+   Bento Cards: Modern, Clean White, Proportional
    ========================================================================== */
 .card, .glass-card, .upload-card-wrapper {
-  background-color: var(--bg-card) !important;
+  background-color: #ffffff !important;
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-xl) !important;
   box-shadow: var(--shadow-card) !important;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   backdrop-filter: none !important;
 }
 
 .card:hover {
   box-shadow: var(--shadow-hover) !important;
+  border-color: #cbd5e1 !important;
 }
 
 .card-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border-color);
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-subtle);
   background: #ffffff;
 }
 
+.card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .card-header h2, .card-header h3 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .card-header-icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .card-body {
@@ -413,274 +422,204 @@ body {
 }
 
 /* ==========================================================================
-   Bento Card Colors & Variants (Matching Image 1)
+   Hero Bento Card (Inspired by Reference Image 2: Anggaran Banner)
    ========================================================================== */
-
-/* Hero Blue Bento Card (Image 1 big Saldo card) */
-.bento-hero, .card-hero-blue {
-  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%) !important;
+.bento-hero, .bento-hero-banner {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: var(--radius-xl) !important;
-  padding: 28px;
-  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3) !important;
+  padding: 26px 30px !important;
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25) !important;
   position: relative;
   overflow: hidden;
 }
 
-.bento-hero h3, .bento-hero p, .bento-hero span {
+.bento-hero-amber {
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%) !important;
   color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.25) !important;
 }
 
-.bento-hero .hero-num {
-  font-size: 2.2rem;
+.bento-hero h3, .bento-hero h2 {
+  color: #ffffff !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.bento-hero p, .bento-hero span {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.bento-hero .hero-metric {
+  font-size: 32px;
   font-weight: 800;
   color: #ffffff;
-  margin: 10px 0;
   letter-spacing: -0.5px;
+  margin: 8px 0;
 }
 
-/* Green Pastel Bento (Pemasukan) */
-.bento-green, .kpi-aman, .bg-emerald-glow {
-  background-color: var(--pastel-green-bg) !important;
-  border: 1px solid var(--pastel-green-border) !important;
-  color: var(--pastel-green-text) !important;
-  border-radius: var(--radius-lg) !important;
+/* Thin clean progress line inside hero cards */
+.bento-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: 14px;
 }
 
-.bento-green .bento-icon, .bg-emerald-glow {
-  background-color: rgba(16, 185, 129, 0.15) !important;
-  color: #059669 !important;
-}
-
-/* Red/Pink Pastel Bento (Pengeluaran / Kritis) */
-.bento-pink, .kpi-kritis, .bg-danger-glow {
-  background-color: var(--pastel-red-bg) !important;
-  border: 1px solid var(--pastel-red-border) !important;
-  color: var(--pastel-red-text) !important;
-  border-radius: var(--radius-lg) !important;
-}
-
-.bento-pink .bento-icon, .bg-danger-glow {
-  background-color: rgba(244, 63, 94, 0.15) !important;
-  color: #e11d48 !important;
-}
-
-/* Amber/Yellow Pastel Bento (Waspada / Sisa) */
-.bento-amber, .kpi-waspada, .bg-yellow-glow {
-  background-color: var(--pastel-amber-bg) !important;
-  border: 1px solid var(--pastel-amber-border) !important;
-  color: var(--pastel-amber-text) !important;
-  border-radius: var(--radius-lg) !important;
-}
-
-.bento-amber .bento-icon, .bg-yellow-glow {
-  background-color: rgba(245, 158, 11, 0.15) !important;
-  color: #d97706 !important;
-}
-
-/* Blue Pastel Bento */
-.bento-blue, .kpi-info, .bg-blue-glow {
-  background-color: var(--pastel-blue-bg) !important;
-  border: 1px solid var(--pastel-blue-border) !important;
-  color: var(--pastel-blue-text) !important;
-  border-radius: var(--radius-lg) !important;
-}
-
-.bento-blue .bento-icon, .bg-blue-glow {
-  background-color: rgba(59, 130, 246, 0.15) !important;
-  color: #2563eb !important;
-}
-
-/* Purple Pastel Bento */
-.bento-purple, .bg-purple-glow {
-  background-color: var(--pastel-purple-bg) !important;
-  border: 1px solid var(--pastel-purple-border) !important;
-  color: var(--pastel-purple-text) !important;
-  border-radius: var(--radius-lg) !important;
-}
-
-.bento-purple .bento-icon, .bg-purple-glow {
-  background-color: rgba(168, 85, 247, 0.15) !important;
-  color: #7e22ce !important;
+.bento-progress-fill {
+  height: 100%;
+  background: #ffffff;
+  border-radius: var(--radius-full);
 }
 
 /* ==========================================================================
-   KPI & Stat Boxes Grid
+   Proportional Bento Stat Cards (Clean White with Subtle Accent Badges)
    ========================================================================== */
 .kpi-grid, .stats-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .kpi-card, .stat-box {
-  background-color: #ffffff !important;
+  background: #ffffff !important;
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-lg) !important;
   padding: 18px 20px !important;
-  box-shadow: var(--shadow-card) !important;
+  box-shadow: var(--shadow-sm) !important;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  justify-content: space-between;
+  min-height: 110px;
+  transition: all 0.2s ease;
 }
 
 .kpi-card:hover, .stat-box:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover) !important;
+  box-shadow: var(--shadow-card) !important;
+  transform: translateY(-1px);
 }
 
-.kpi-card .kpi-title, .stat-label {
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-title, .stat-label {
   font-size: 12px;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-weight: 700;
 }
 
-.kpi-card .kpi-num, .stat-value {
-  font-size: 1.8rem;
+.kpi-icon-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.kpi-num, .stat-value {
+  font-size: 26px;
   font-weight: 800;
   color: var(--text-primary);
   font-family: var(--font-primary);
+  margin-top: 8px;
 }
 
-.kpi-kritis .kpi-num { color: #e11d48 !important; }
-.kpi-waspada .kpi-num { color: #d97706 !important; }
-.kpi-aman .kpi-num { color: #059669 !important; }
-.kpi-info .kpi-num { color: #2563eb !important; }
+/* Clean Accent Badges for KPI (NOT painting the whole card surface!) */
+.badge-accent-blue { background: var(--accent-blue-bg); color: var(--accent-blue-text); }
+.badge-accent-green { background: var(--accent-emerald-bg); color: var(--accent-emerald-text); }
+.badge-accent-amber { background: var(--accent-amber-bg); color: var(--accent-amber-text); }
+.badge-accent-rose { background: var(--accent-rose-bg); color: var(--accent-rose-text); }
 
 /* ==========================================================================
-   Tab Navigation & Filter Pills (Like Image 2)
+   Modern Bento Grid System (12 Columns Responsive)
    ========================================================================== */
-.tab-nav {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border-color) !important;
-  padding-bottom: 12px;
-  flex-wrap: wrap;
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  width: 100%;
 }
 
-.tab-btn {
-  background: #ffffff !important;
-  border: 1px solid var(--border-subtle) !important;
-  color: var(--text-secondary) !important;
-  padding: 8px 18px !important;
-  border-radius: var(--radius-full) !important;
-  cursor: pointer;
-  font-weight: 600 !important;
-  font-size: 13px !important;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
+.col-span-12 { grid-column: span 12; }
+.col-span-8  { grid-column: span 8; }
+.col-span-7  { grid-column: span 7; }
+.col-span-6  { grid-column: span 6; }
+.col-span-5  { grid-column: span 5; }
+.col-span-4  { grid-column: span 4; }
+.col-span-3  { grid-column: span 3; }
 
-.tab-btn:hover {
-  background: var(--bg-subtle) !important;
-  color: var(--text-primary) !important;
-  border-color: var(--border-strong) !important;
-}
-
-/* Active tab becomes solid dark pill matching Image 2 "Semua" */
-.tab-btn.active {
-  background: var(--text-primary) !important;
-  color: #ffffff !important;
-  border-color: var(--text-primary) !important;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15) !important;
-}
-
-.tab-btn.active i {
-  color: #ffffff !important;
+@media (max-width: 1100px) {
+  .col-span-8, .col-span-7, .col-span-6, .col-span-5, .col-span-4 {
+    grid-column: span 12;
+  }
 }
 
 /* ==========================================================================
-   Drag & Drop / Upload Zone (Clean Light Bento)
+   Full Width Tables (Reference Image 2)
    ========================================================================== */
-.drag-drop-zone, .upload-zone {
-  border: 2px dashed #cbd5e1 !important;
-  border-radius: var(--radius-xl) !important;
-  padding: 36px 20px !important;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background-color: var(--bg-subtle) !important;
-  color: var(--text-secondary) !important;
-  position: relative;
-}
-
-.drag-drop-zone:hover, .drag-drop-zone.dragover,
-.upload-zone:hover, .upload-zone.drag-over {
-  border-color: var(--color-primary) !important;
-  background-color: var(--pastel-blue-bg) !important;
-}
-
-.drop-icon {
-  font-size: 38px;
-  color: var(--color-primary) !important;
-  margin-bottom: 12px;
-}
-
-.drag-drop-zone h4, .upload-zone h4 {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-primary) !important;
-  margin-bottom: 6px;
-}
-
-.drag-drop-sub, .upload-zone p {
-  font-size: 13px;
-  color: var(--text-muted) !important;
-}
-
-/* ==========================================================================
-   Tables (Clean Pastel Bento Style matching Image 2)
-   ========================================================================== */
-.preview-table-container, .outlet-table-wrap {
+.table-card-container, .preview-table-container, .outlet-table-wrap {
   background: #ffffff !important;
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-xl) !important;
-  box-shadow: var(--shadow-card) !important;
+  box-shadow: var(--shadow-sm) !important;
   overflow: hidden;
+  width: 100%;
 }
 
-.preview-table, .outlet-table {
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.bento-table, .preview-table, .outlet-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 13.5px;
 }
 
-.preview-table thead, .outlet-table thead {
-  background-color: var(--bg-subtle) !important;
+.bento-table thead, .preview-table thead, .outlet-table thead {
+  background-color: #f8fafc !important;
 }
 
-.preview-table th, .outlet-table th {
-  background-color: var(--bg-subtle) !important;
+.bento-table th, .preview-table th, .outlet-table th {
+  background-color: #f8fafc !important;
   color: var(--text-muted) !important;
-  padding: 14px 18px !important;
+  padding: 12px 18px !important;
   text-align: left;
   font-weight: 700 !important;
   font-size: 11px !important;
   text-transform: uppercase !important;
   letter-spacing: 0.6px !important;
   border-bottom: 1px solid var(--border-color) !important;
+  white-space: nowrap;
 }
 
-.preview-table td, .outlet-table td {
+.bento-table td, .preview-table td, .outlet-table td {
   padding: 14px 18px !important;
-  border-bottom: 1px solid var(--border-color) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
   color: var(--text-primary) !important;
   vertical-align: middle;
 }
 
-.preview-table tbody tr:hover, .outlet-table tbody tr:hover {
-  background-color: var(--bg-subtle) !important;
+.bento-table tbody tr:hover, .preview-table tbody tr:hover, .outlet-table tbody tr:hover {
+  background-color: var(--bg-hover) !important;
 }
 
-/* Status Badges & Pills */
+/* ==========================================================================
+   Pill Badges & Status Indicators
+   ========================================================================== */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -694,40 +633,198 @@ body {
 }
 
 .badge-kritis {
-  background: var(--pastel-red-bg) !important;
-  color: var(--pastel-red-text) !important;
-  border: 1px solid var(--pastel-red-border) !important;
+  background: var(--accent-rose-bg) !important;
+  color: var(--accent-rose-text) !important;
+  border: 1px solid var(--accent-rose-border) !important;
 }
 
 .badge-waspada {
-  background: var(--pastel-amber-bg) !important;
-  color: var(--pastel-amber-text) !important;
-  border: 1px solid var(--pastel-amber-border) !important;
+  background: var(--accent-amber-bg) !important;
+  color: var(--accent-amber-text) !important;
+  border: 1px solid var(--accent-amber-border) !important;
 }
 
 .badge-aman {
-  background: var(--pastel-green-bg) !important;
-  color: var(--pastel-green-text) !important;
-  border: 1px solid var(--pastel-green-border) !important;
+  background: var(--accent-emerald-bg) !important;
+  color: var(--accent-emerald-text) !important;
+  border: 1px solid var(--accent-emerald-border) !important;
 }
 
 .badge-gray {
   background: var(--bg-subtle) !important;
-  color: var(--text-muted) !important;
-  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 .recommend-pill {
-  background: var(--pastel-blue-bg) !important;
-  color: var(--pastel-blue-text) !important;
-  border: 1px solid var(--pastel-blue-border) !important;
-  padding: 4px 10px;
+  background: var(--accent-blue-bg) !important;
+  color: var(--accent-blue-text) !important;
+  border: 1px solid var(--accent-blue-border) !important;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 12px;
 }
 
-/* Accordion Outlet Cards in Push Gudang */
+/* ==========================================================================
+   Buttons (Minimalist, Crisp Pill Buttons)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.btn-pill {
+  border-radius: var(--radius-full) !important;
+}
+
+.btn-primary {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover) !important;
+  box-shadow: var(--shadow-primary) !important;
+}
+
+.btn-secondary, .btn-ghost {
+  background: #ffffff !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.btn-secondary:hover, .btn-ghost:hover {
+  background: var(--bg-subtle) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.btn-success {
+  background: var(--accent-emerald) !important;
+  color: #ffffff !important;
+}
+
+.btn-success:hover {
+  background: #059669 !important;
+}
+
+/* Filter Pill Buttons (Reference Image 2) */
+.filter-pills {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  background: #ffffff;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-pill:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.filter-pill.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+/* ==========================================================================
+   Form Controls, Inputs, Dropzones
+   ========================================================================== */
+.form-control, .form-control-dark, .select-dropdown, input[type="text"], input[type="date"], select {
+  width: 100%;
+  background: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 9px 13px !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-primary);
+  font-size: 13.5px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus, .form-control-dark:focus, select:focus, input:focus {
+  outline: none !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+.drag-drop-zone, .upload-zone {
+  border: 2px dashed #cbd5e1 !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 30px 20px !important;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background-color: var(--bg-subtle) !important;
+  color: var(--text-secondary) !important;
+  position: relative;
+}
+
+.drag-drop-zone:hover, .upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--color-primary) !important;
+  background-color: #f0f7ff !important;
+}
+
+.drop-icon {
+  font-size: 32px;
+  color: var(--color-primary) !important;
+  margin-bottom: 10px;
+}
+
+/* Day Selector in Schedule Tab */
+.day-selector-pills {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.day-pill {
+  padding: 4px 10px !important;
+  border-radius: var(--radius-full) !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  background: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.15s ease;
+}
+
+.day-pill:hover {
+  border-color: var(--border-strong) !important;
+  color: var(--text-primary) !important;
+}
+
+.day-pill.active {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* Outlet Card Accordion */
 .outlet-card {
   background: #ffffff !important;
   border: 1px solid var(--border-color) !important;
@@ -735,12 +832,12 @@ body {
   margin-bottom: 12px;
   overflow: hidden;
   box-shadow: var(--shadow-sm) !important;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .outlet-card:hover {
+  border-color: #cbd5e1 !important;
   box-shadow: var(--shadow-card) !important;
-  border-color: var(--border-subtle) !important;
 }
 
 .outlet-card-header {
@@ -753,11 +850,11 @@ body {
 }
 
 .outlet-card-header:hover {
-  background: var(--bg-subtle) !important;
+  background: var(--bg-hover) !important;
 }
 
 .outlet-name-text {
-  font-size: 15px !important;
+  font-size: 14.5px !important;
   font-weight: 700 !important;
   color: var(--text-primary) !important;
 }
@@ -767,180 +864,19 @@ body {
   color: var(--text-muted) !important;
 }
 
-/* ==========================================================================
-   Buttons (Pill style matching Image 1 & 2)
-   ========================================================================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border-radius: var(--radius-full) !important;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.btn-primary {
-  background: var(--color-primary) !important;
-  color: #ffffff !important;
-  box-shadow: var(--shadow-primary) !important;
-}
-
-.btn-primary:hover {
-  background: var(--color-primary-hover) !important;
-  transform: translateY(-1px);
-}
-
-.btn-secondary, .btn-ghost {
-  background: #ffffff !important;
-  color: var(--text-secondary) !important;
-  border: 1px solid var(--border-subtle) !important;
-}
-
-.btn-secondary:hover, .btn-ghost:hover {
-  background: var(--bg-subtle) !important;
-  color: var(--text-primary) !important;
-  border-color: var(--border-strong) !important;
-}
-
-.btn-success {
-  background: var(--pastel-green-accent) !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
-}
-
-.btn-success:hover {
-  background: #059669 !important;
-  transform: translateY(-1px);
-}
-
-.btn-danger {
-  background: var(--pastel-red-accent) !important;
-  color: #ffffff !important;
-}
-
-/* ==========================================================================
-   Form Controls, Inputs, Dropdowns
-   ========================================================================== */
-.form-control, .form-control-dark, .select-dropdown, input[type="text"], input[type="date"], input[type="number"], select {
-  width: 100%;
-  background-color: #ffffff !important;
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: var(--radius-md) !important;
-  padding: 10px 14px !important;
-  color: var(--text-primary) !important;
-  font-family: var(--font-primary);
-  font-size: 13px !important;
-  transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-control-dark:focus, .select-dropdown:focus, input:focus, select:focus {
-  outline: none !important;
-  border-color: var(--color-primary) !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
-}
-
-.form-group label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-
-.select-dropdown option, select option {
-  background: #ffffff !important;
-  color: #0f172a !important;
-}
-
-/* Config Bar / Filter Rows */
-.config-bar {
-  background: #ffffff !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
-  padding: 16px 20px !important;
-  margin-bottom: 24px;
-}
-
-.config-bar input {
-  background: var(--bg-subtle) !important;
-  border: 1px solid var(--border-subtle) !important;
-  color: var(--text-primary) !important;
-}
-
-/* Day pills in schedule tab */
-.day-pill {
-  padding: 5px 12px !important;
-  border-radius: var(--radius-full) !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  cursor: pointer;
-  background: #ffffff !important;
-  border: 1px solid var(--border-subtle) !important;
-  color: var(--text-secondary) !important;
-  transition: all 0.15s ease;
-}
-
-.day-pill:hover {
-  background: var(--bg-subtle) !important;
-  color: var(--text-primary) !important;
-}
-
-.day-pill.active {
-  background: var(--color-primary) !important;
-  color: #ffffff !important;
-  border-color: var(--color-primary) !important;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3) !important;
-}
-
-/* ==========================================================================
-   Active File Box & Success Indicators
-   ========================================================================== */
-.active-file-box {
-  background-color: var(--pastel-blue-bg) !important;
-  border: 1px solid var(--pastel-blue-border) !important;
-  border-radius: var(--radius-lg) !important;
-  padding: 14px 18px !important;
-  color: var(--pastel-blue-text) !important;
-}
-
-.file-name {
-  color: var(--text-primary) !important;
-  font-weight: 700;
-}
-
-.file-status.found {
-  background: var(--pastel-green-bg) !important;
-  color: var(--pastel-green-text) !important;
-  border: 1px solid var(--pastel-green-border) !important;
-  border-radius: var(--radius-full);
-}
-
-.file-status.notfound {
-  background: var(--pastel-red-bg) !important;
-  color: var(--pastel-red-text) !important;
-  border: 1px solid var(--pastel-red-border) !important;
-  border-radius: var(--radius-full);
-}
-
-/* Toasts in Light Theme */
+/* Toast Alerts */
 .toast {
   background-color: #ffffff !important;
-  border: 1px solid var(--border-subtle) !important;
+  border: 1px solid var(--border-color) !important;
   color: var(--text-primary) !important;
   border-radius: var(--radius-lg) !important;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
 }
 
-.toast-success { border-left: 4px solid var(--pastel-green-accent) !important; }
-.toast-danger { border-left: 4px solid var(--pastel-red-accent) !important; }
+.toast-success { border-left: 4px solid var(--accent-emerald) !important; }
+.toast-danger { border-left: 4px solid var(--accent-rose) !important; }
 
-/* Custom clean scrollbar */
+/* Clean Minimalist Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -950,99 +886,8 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
-
-/* ==========================================================================
-   Global Overrides for Mass Analysis, Sync, & Utility Modules
-   ========================================================================== */
-.outlet-table thead th {
-  background: #f8fafc !important;
-  color: var(--text-muted) !important;
-  font-weight: 700 !important;
-  font-size: 11px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.6px !important;
-  border-bottom: 1px solid var(--border-color) !important;
-}
-
-.outlet-table tbody td {
-  color: var(--text-primary) !important;
-  border-bottom: 1px solid var(--border-color) !important;
-}
-
-.outlet-table tbody td:first-child {
-  color: var(--color-primary) !important;
-  font-weight: 700 !important;
-}
-
-.outlet-badge {
-  display: inline-block !important;
-  background: var(--pastel-blue-bg) !important;
-  color: var(--pastel-blue-text) !important;
-  border: 1px solid var(--pastel-blue-border) !important;
-  border-radius: var(--radius-full) !important;
-  padding: 3px 10px !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-}
-
-.skipped-list {
-  background: var(--pastel-red-bg) !important;
-  border: 1px solid var(--pastel-red-border) !important;
-  border-radius: var(--radius-md) !important;
-  color: var(--pastel-red-text) !important;
-  font-size: 13px !important;
-}
-
-.skipped-list strong {
-  color: #e11d48 !important;
-}
-
-.result-meta-box {
-  background: #ffffff !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
-  padding: 16px !important;
-}
-
-.result-meta-box .meta-val {
-  font-size: 26px !important;
-  font-weight: 800 !important;
-  color: var(--color-primary) !important;
-}
-
-.result-meta-box .meta-lbl {
-  font-size: 12px !important;
-  color: var(--text-muted) !important;
-  font-weight: 600 !important;
-}
-
-.processed-item {
-  color: var(--text-primary) !important;
-}
-
-/* Master list in Eresto Cleaner */
-.master-list-container {
-  background: #ffffff !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--radius-lg) !important;
-}
-
-.master-item {
-  background: var(--bg-subtle) !important;
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: var(--radius-md) !important;
-  color: var(--text-primary) !important;
-}
-
-.master-item:hover {
-  background: #ffffff !important;
-  border-color: var(--border-strong) !important;
-  box-shadow: var(--shadow-sm) !important;
-}
-

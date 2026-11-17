@@ -12,19 +12,19 @@
   <link rel="stylesheet" href="/static/css/eresto.css" />
 
   <style>
-    /* Custom Styling untuk Push Gudang Bento Pastel */
+    /* Custom Styling untuk Smart Push Gudang Bento UI */
     .upload-zone {
       border: 2px dashed #cbd5e1;
       border-radius: 18px;
-      padding: 30px 20px;
+      padding: 36px 20px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       background: #f8fafc;
       position: relative;
     }
     .upload-zone:hover, .upload-zone.drag-over {
-      border-color: #3b82f6;
+      border-color: var(--color-primary);
       background: #eff6ff;
     }
     .upload-zone input[type="file"] {
@@ -35,71 +35,100 @@
       width: 100%;
       height: 100%;
     }
-    .upload-zone .drop-icon {
-      font-size: 2.5rem;
+    .upload-zone .drop-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: var(--color-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
       margin-bottom: 12px;
-      display: block;
-      color: #3b82f6;
+      transition: transform 0.2s ease;
+    }
+    .upload-zone:hover .drop-icon-box {
+      transform: scale(1.08);
     }
 
+    /* KPI Bento Cards */
     .kpi-card {
       background: #ffffff;
-      border: 1px solid #f1f5f9;
-      border-radius: 18px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
       padding: 18px 20px;
-      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
-      position: relative;
-      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 110px;
+      transition: all 0.2s ease;
     }
-    .kpi-card .kpi-num {
-      font-size: 1.8rem;
+    .kpi-card:hover {
+      box-shadow: var(--shadow-card);
+      transform: translateY(-1px);
+    }
+    .kpi-num {
+      font-size: 26px;
       font-weight: 800;
-      font-family: 'Outfit', sans-serif;
-      margin-top: 4px;
+      font-family: var(--font-primary);
+      color: var(--text-primary);
+      margin-top: 6px;
     }
-    .kpi-card .kpi-title {
-      font-size: 0.8rem;
-      color: #94a3b8;
+    .kpi-title {
+      font-size: 11.5px;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-weight: 700;
     }
-    .kpi-kritis { border-left: 4px solid #f43f5e; background: #fff1f2; }
-    .kpi-kritis .kpi-num { color: #e11d48; }
-    .kpi-waspada { border-left: 4px solid #f59e0b; background: #fffbeb; }
-    .kpi-waspada .kpi-num { color: #d97706; }
-    .kpi-aman { border-left: 4px solid #10b981; background: #ecfdf5; }
-    .kpi-aman .kpi-num { color: #059669; }
-    .kpi-info { border-left: 4px solid #3b82f6; background: #eff6ff; }
-    .kpi-info .kpi-num { color: #2563eb; }
 
+    /* Status Badges */
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .badge-kritis { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
-    .badge-waspada { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; }
-    .badge-aman { background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; }
-    .badge-gray { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+    .badge-kritis {
+      background: var(--accent-rose-bg);
+      color: var(--accent-rose-text);
+      border: 1px solid var(--accent-rose-border);
+    }
+    .badge-waspada {
+      background: var(--accent-amber-bg);
+      color: var(--accent-amber-text);
+      border: 1px solid var(--accent-amber-border);
+    }
+    .badge-aman {
+      background: var(--accent-emerald-bg);
+      color: var(--accent-emerald-text);
+      border: 1px solid var(--accent-emerald-border);
+    }
+    .badge-gray {
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
 
+    /* Outlet Bento Card */
     .outlet-card {
       background: #ffffff;
-      border: 1px solid #f1f5f9;
-      border-radius: 18px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
       margin-bottom: 14px;
       overflow: hidden;
-      box-shadow: 0 2px 10px -2px rgba(15, 23, 42, 0.03);
+      box-shadow: var(--shadow-sm);
       transition: all 0.2s ease;
     }
     .outlet-card:hover {
-      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+      box-shadow: var(--shadow-card);
       border-color: #cbd5e1;
     }
     .outlet-card-header {
@@ -110,6 +139,7 @@
       cursor: pointer;
       user-select: none;
       background: #ffffff;
+      transition: background 0.15s ease;
     }
     .outlet-card-header:hover {
       background: #f8fafc;
@@ -120,35 +150,36 @@
       gap: 12px;
     }
     .outlet-name-text {
-      font-size: 1.05rem;
+      font-size: 15px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text-primary);
     }
     .outlet-meta-tag {
-      font-size: 0.8rem;
-      color: #64748b;
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
+    /* Data Tables inside Outlet Cards */
     .outlet-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 13px;
     }
     .outlet-table th {
       background: #f8fafc;
-      color: #64748b;
+      color: var(--text-secondary);
       padding: 12px 16px;
       text-align: left;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border-color);
     }
     .outlet-table td {
       padding: 12px 16px;
-      border-bottom: 1px solid #f8fafc;
-      color: #1e293b;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--text-primary);
     }
     .outlet-table tr:hover td {
       background: #f8fafc;
@@ -156,12 +187,14 @@
     .recommend-pill {
       background: #eff6ff;
       color: #1d4ed8;
-      border: 1px solid #dbeafe;
+      border: 1px solid #bfdbfe;
       padding: 4px 10px;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       font-weight: 700;
+      display: inline-block;
     }
 
+    /* Day Selector Pills for Tab 2 */
     .day-selector-pills {
       display: flex;
       flex-wrap: wrap;
@@ -169,52 +202,49 @@
     }
     .day-pill {
       padding: 5px 12px;
-      border-radius: 9999px;
-      font-size: 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       user-select: none;
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #64748b;
-      transition: all 0.15s;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
     }
     .day-pill:hover {
       background: #f8fafc;
-      color: #0f172a;
+      color: var(--text-primary);
     }
     .day-pill.active {
-      background: #2563eb;
+      background: var(--color-primary);
       color: #ffffff;
-      border-color: #2563eb;
+      border-color: var(--color-primary);
       font-weight: 700;
       box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
     }
 
+    /* Form Controls */
     .form-control-dark {
       width: 100%;
       padding: 10px 14px;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      color: #0f172a;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-family: var(--font-primary);
+      font-size: 13.5px;
+      transition: all 0.15s ease;
     }
     .form-control-dark:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
   </style>
 </head>
 
 <body>
-  <!-- Background Glow Blobs -->
-  <div class="glow-blob blob-1"></div>
-  <div class="glow-blob blob-2"></div>
-  <div class="glow-blob blob-3"></div>
-
   <div class="app-container">
     <!-- Sidebar Navigation -->
     {% set active_menu = 'push_gudang' %}
@@ -225,16 +255,16 @@
         <div class="header-title">
           <h1>Smart Push Gudang</h1>
           <p class="header-subtitle">
-            Deteksi otomatis kebutuhan pengiriman stok gudang ke 35+ outlet berdasarkan burn rate kerugian & jadwal rute.
+            Deteksi otomatis kebutuhan pengiriman stok gudang ke 40 outlet berdasarkan burn rate kerugian & jadwal rute.
           </p>
         </div>
         <div class="header-status">
-          <span class="status-indicator online"></span>
-          <span class="status-text">Engine Ready</span>
+          <span class="status-indicator"></span>
+          <span>Engine Ready</span>
         </div>
       </header>
 
-      <!-- TAB NAVIGATION -->
+      <!-- TAB NAVIGATION: Segmented Bento Track -->
       <div class="tab-nav">
         <button class="tab-btn active" onclick="switchTab('tab-rekomendasi')">
           <i class="fa-solid fa-truck-ramp-box"></i> Rekomendasi Kirim Hari Ini
@@ -251,28 +281,35 @@
       <!-- TAB 1: REKOMENDASI KIRIM HARI INI          -->
       <!-- ========================================== -->
       <div id="tab-rekomendasi" class="tab-pane">
-        <div class="content-grid" style="display: flex; flex-direction: column; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 24px;">
 
-          <!-- Upload Form & Settings -->
-          <div class="card glass-card">
+          <!-- Upload Form & Settings Bento Card -->
+          <div class="card">
             <div class="card-header">
-              <div class="card-header-icon bg-emerald-glow" style="background: rgba(167, 139, 250, 0.2); color: #c084fc;">
-                <i class="fa-solid fa-file-zipper"></i>
+              <div class="card-header-left">
+                <div class="card-header-icon" style="background: #eff6ff; color: #2563eb;">
+                  <i class="fa-solid fa-file-zipper"></i>
+                </div>
+                <div>
+                  <h3>Unggah File Kerugian & Analisis Kebutuhan</h3>
+                  <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0 0;">
+                    Sistem mengompilasi sisa stok harian dan menghitung kebutuhan muatan untuk outlet terjadwal
+                  </p>
+                </div>
               </div>
-              <h3>Unggah File Kerugian & Analisis Kebutuhan</h3>
             </div>
 
             <div class="card-body">
               <form id="analyzeForm">
                 <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
                   <div>
-                    <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
                       <i class="fa-regular fa-calendar"></i> Tanggal Pengiriman (Target Day)
                     </label>
                     <input type="date" id="target_date" name="target_date" value="{{ today_str }}" class="form-control-dark" required />
                   </div>
                   <div>
-                    <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
                       <i class="fa-solid fa-chart-line"></i> Lookback Burn Rate
                     </label>
                     <select id="lookback_days" name="lookback_days" class="form-control-dark">
@@ -282,7 +319,7 @@
                     </select>
                   </div>
                   <div>
-                    <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
                       <i class="fa-solid fa-shield-halved"></i> Safety Buffer
                     </label>
                     <select id="buffer_days" name="buffer_days" class="form-control-dark">
@@ -296,21 +333,25 @@
                 <!-- Dropzone ZIP -->
                 <div class="upload-zone" id="dropZone">
                   <input type="file" id="zipFile" name="zip_file" accept=".zip" required />
-                  <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
-                  <h4 style="margin: 0 0 6px 0; color: #f1f5f9;">Tarik & Lepas File ZIP Kerugian Di Sini</h4>
-                  <p style="margin: 0; color: #94a3b8; font-size: 0.85rem;">
-                    Gunakan file ZIP hasil output *Update Kerugian* harian (berisi 35+ file Excel outlet)
+                  <div class="drop-icon-box">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                  </div>
+                  <h4 style="margin: 0 0 6px 0; color: var(--text-primary); font-size: 15px; font-weight: 700;">
+                    Tarik & Lepas File ZIP Kerugian Di Sini
+                  </h4>
+                  <p style="margin: 0; color: var(--text-muted); font-size: 13px;">
+                    Gunakan file ZIP hasil download harian <b>Update Kerugian</b> (berisi laporan Excel outlet)
                   </p>
-                  <div id="fileSelectedDisplay" style="margin-top: 12px; color: #34d399; font-weight: 600; display: none;"></div>
+                  <div id="fileSelectedDisplay" style="margin-top: 14px; color: var(--accent-emerald-text); font-weight: 700; font-size: 13px; display: none;"></div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                  <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #cbd5e1; cursor: pointer;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; flex-wrap: wrap; gap: 12px;">
+                  <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
                     <input type="checkbox" id="include_all_outlets" name="include_all_outlets" value="true" />
-                    <span>Sertakan semua outlet (termasuk yang tidak terjadwal kirim hari ini)</span>
+                    <span>Sertakan semua outlet (termasuk yang tidak terjadwal rute hari ini)</span>
                   </label>
 
-                  <button type="submit" id="btnSubmit" class="btn btn-primary" style="padding: 12px 28px; font-weight: 700; background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);">
+                  <button type="submit" id="btnSubmit" class="btn btn-primary" style="padding: 12px 28px; font-weight: 700;">
                     <i class="fa-solid fa-magnifying-glass-chart"></i> Hitung Rekomendasi Kirim
                   </button>
                 </div>
@@ -319,42 +360,96 @@
           </div>
 
           <!-- Loading Spinner -->
-          <div id="loadingArea" style="display: none; text-align: center; padding: 40px;">
-            <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2.5rem; color: #a78bfa; margin-bottom: 16px;"></i>
-            <h4 style="color: #fff;">Menganalisis Burn Rate & Data Stok 35+ Outlet...</h4>
-            <p style="color: #94a3b8; font-size: 0.85rem;">Harap tunggu beberapa detik, sistem sedang memproses file Excel.</p>
+          <div id="loadingArea" style="display: none; text-align: center; padding: 48px; background: #ffffff; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-card);">
+            <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 16px;"></i>
+            <h4 style="color: var(--text-primary); font-size: 16px; font-weight: 700;">Menganalisis Burn Rate & Data Stok 40 Outlet...</h4>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Harap tunggu beberapa saat, sistem sedang mengalkulasi kebutuhan rute.</p>
           </div>
 
           <!-- RESULTS AREA -->
           <div id="resultsArea" style="display: none;">
-            <!-- KPI Summary Cards -->
+            <!-- KPI Summary Bento Cards -->
             <div class="kpi-grid">
-              <div class="kpi-card kpi-info">
-                <div class="kpi-title">Outlet Terjadwal</div>
+              <!-- 1. Terjadwal -->
+              <div class="kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="kpi-title">Outlet Terjadwal</span>
+                  <span style="width: 32px; height: 32px; border-radius: 10px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 13px;">
+                    <i class="fa-solid fa-calendar-check"></i>
+                  </span>
+                </div>
                 <div class="kpi-num" id="kpiScheduled">0</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #2563eb;"></span>
+                  <span>Sesuai rute hari ini</span>
+                </div>
               </div>
-              <div class="kpi-card kpi-kritis">
-                <div class="kpi-title">Outlet Kritis (&lt;1.5 hr)</div>
-                <div class="kpi-num" id="kpiKritis">0</div>
+
+              <!-- 2. Kritis -->
+              <div class="kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="kpi-title">Outlet Kritis (&lt;1.5 hr)</span>
+                  <span style="width: 32px; height: 32px; border-radius: 10px; background: #fff1f2; color: #be123c; display: flex; align-items: center; justify-content: center; font-size: 13px;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                  </span>
+                </div>
+                <div class="kpi-num" style="color: #be123c;" id="kpiKritis">0</div>
+                <div style="font-size: 12px; color: #be123c; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #f43f5e;"></span>
+                  <span>Prioritas muat pagi</span>
+                </div>
               </div>
-              <div class="kpi-card kpi-waspada">
-                <div class="kpi-title">Outlet Perlu Kirim</div>
-                <div class="kpi-num" id="kpiWaspada">0</div>
+
+              <!-- 3. Waspada -->
+              <div class="kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="kpi-title">Outlet Perlu Kirim</span>
+                  <span style="width: 32px; height: 32px; border-radius: 10px; background: #fffbeb; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 13px;">
+                    <i class="fa-solid fa-box-archive"></i>
+                  </span>
+                </div>
+                <div class="kpi-num" style="color: #b45309;" id="kpiWaspada">0</div>
+                <div style="font-size: 12px; color: #b45309; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;"></span>
+                  <span>Di bawah safety buffer</span>
+                </div>
               </div>
-              <div class="kpi-card kpi-aman">
-                <div class="kpi-title">Outlet Stok Aman</div>
-                <div class="kpi-num" id="kpiAman">0</div>
+
+              <!-- 4. Aman -->
+              <div class="kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="kpi-title">Outlet Stok Aman</span>
+                  <span style="width: 32px; height: 32px; border-radius: 10px; background: #ecfdf5; color: #047857; display: flex; align-items: center; justify-content: center; font-size: 13px;">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </span>
+                </div>
+                <div class="kpi-num" style="color: #047857;" id="kpiAman">0</div>
+                <div style="font-size: 12px; color: #047857; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+                  <span>Cukup hingga rute depan</span>
+                </div>
               </div>
-              <div class="kpi-card kpi-info" style="border-left-color: #a855f7;">
-                <div class="kpi-title">Total Item Dimuat</div>
-                <div class="kpi-num" style="color: #c084fc;" id="kpiItemsToShip">0</div>
+
+              <!-- 5. Total Item -->
+              <div class="kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span class="kpi-title">Total Item Dimuat</span>
+                  <span style="width: 32px; height: 32px; border-radius: 10px; background: #eef2ff; color: #4338ca; display: flex; align-items: center; justify-content: center; font-size: 13px;">
+                    <i class="fa-solid fa-dolly"></i>
+                  </span>
+                </div>
+                <div class="kpi-num" style="color: #4338ca;" id="kpiItemsToShip">0</div>
+                <div style="font-size: 12px; color: #4338ca; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #6366f1;"></span>
+                  <span>Rekomendasi kebutuhan</span>
+                </div>
               </div>
             </div>
 
-            <!-- Action Bar -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <div style="display: flex; gap: 10px; align-items: center;">
-                <input type="text" id="outletFilterSearch" placeholder="Cari nama outlet..." class="form-control-dark" style="width: 260px;" oninput="filterOutletCards()" />
+            <!-- Action & Filter Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="outletFilterSearch" placeholder="Cari nama atau kode outlet..." class="form-control-dark" style="width: 260px;" oninput="filterOutletCards()" />
                 <select id="urgencyFilter" class="form-control-dark" style="width: 170px;" onchange="filterOutletCards()">
                   <option value="ALL">Semua Status</option>
                   <option value="KRITIS">Hanya Kritis</option>
@@ -363,12 +458,12 @@
                 </select>
               </div>
 
-              <div style="display: flex; gap: 12px;">
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                 <button type="button" class="btn btn-secondary" onclick="toggleExpandAll()">
                   <i class="fa-solid fa-arrows-up-down"></i> Buka / Tutup Semua
                 </button>
-                <button type="button" class="btn btn-success" onclick="downloadPushExcel()" style="background: #10b981; border: none; font-weight: 700;">
-                  <i class="fa-solid fa-file-excel"></i> Download Surat Jalan & Rekap (Excel)
+                <button type="button" class="btn btn-success" onclick="downloadPushExcel()" style="background: #10b981; border: none; font-weight: 700; color: #ffffff;">
+                  <i class="fa-solid fa-file-excel"></i> Download Rekap & Surat Jalan (Excel)
                 </button>
               </div>
             </div>
@@ -384,44 +479,44 @@
       <!-- TAB 2: MASTER JADWAL PENGIRIMAN OUTLET    -->
       <!-- ========================================== -->
       <div id="tab-jadwal" class="tab-pane" style="display: none;">
-        <div class="card glass-card">
-          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div class="card-header-icon" style="background: rgba(167, 139, 250, 0.2); color: #c084fc;">
+        <div class="card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div class="card-header-left">
+              <div class="card-header-icon" style="background: #eff6ff; color: #2563eb;">
                 <i class="fa-solid fa-route"></i>
               </div>
               <div>
                 <h3 style="margin: 0;">Pengaturan Jadwal Pengiriman 40 Outlet</h3>
-                <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 0.85rem;">
+                <p style="margin: 2px 0 0 0; color: var(--text-muted); font-size: 12.5px;">
                   Atur hari pengantaran masing-masing outlet. Gap hari berikutnya otomatis dihitung oleh sistem.
                 </p>
               </div>
             </div>
 
             <div style="display: flex; gap: 10px;">
-              <button class="btn btn-primary" onclick="saveSchedulesToServer()" style="background: #7b2cbf;">
+              <button class="btn btn-primary" onclick="saveSchedulesToServer()">
                 <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Jadwal
               </button>
             </div>
           </div>
 
           <div class="card-body">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-              <input type="text" id="scheduleSearch" placeholder="Cari outlet..." class="form-control-dark" style="width: 300px;" oninput="filterScheduleTable()" />
-              <div style="font-size: 0.85rem; color: #94a3b8; display: flex; align-items: center; gap: 14px;">
-                <span><b style="color: #60a5fa;">Daily:</b> Tiap Hari (Sen–Sab)</span>
-                <span><b style="color: #fbbf24;">2x/Week:</b> Selasa & Jumat</span>
-                <span><b style="color: #f87171;">1x/Week:</b> Hanya Senin</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+              <input type="text" id="scheduleSearch" placeholder="Cari nama atau kode outlet..." class="form-control-dark" style="width: 320px;" oninput="filterScheduleTable()" />
+              <div style="font-size: 12.5px; color: var(--text-secondary); display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <span><b style="color: #2563eb;">Daily:</b> Tiap Hari (Sen–Sab)</span>
+                <span><b style="color: #d97706;">2x/Week:</b> Selasa & Jumat</span>
+                <span><b style="color: #be123c;">1x/Week:</b> Hanya Senin</span>
               </div>
             </div>
 
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
               <table class="outlet-table" style="width: 100%;">
                 <thead>
                   <tr>
-                    <th style="width: 60px;">Kode</th>
+                    <th style="width: 70px;">Kode</th>
                     <th style="width: 220px;">Nama Outlet</th>
-                    <th style="width: 160px;">Wilayah</th>
+                    <th style="width: 170px;">Wilayah</th>
                     <th style="width: 180px;">Tipe Jadwal</th>
                     <th>Hari Pengiriman</th>
                   </tr>
@@ -429,17 +524,17 @@
                 <tbody id="scheduleTableBody">
                   {% for code, s in schedules.items() %}
                   <tr data-code="{{ code }}" data-name="{{ s.name|lower }}">
-                    <td style="font-weight: 700; color: #c084fc;">{{ code }}</td>
-                    <td style="font-weight: 600;">{{ s.name }}</td>
+                    <td style="font-weight: 700; color: var(--color-primary);">{{ code }}</td>
+                    <td style="font-weight: 600; color: var(--text-primary);">{{ s.name }}</td>
                     <td>
-                      <select class="form-control-dark sched-loc" style="padding: 6px 10px; font-size: 0.85rem;" onchange="markScheduleDirty()">
+                      <select class="form-control-dark sched-loc" style="padding: 6px 10px; font-size: 12.5px;" onchange="markScheduleDirty()">
                         <option value="Dalam Kota" {% if s.location == 'Dalam Kota' %}selected{% endif %}>Dalam Kota</option>
                         <option value="Semi Luar Kota" {% if s.location == 'Semi Luar Kota' %}selected{% endif %}>Semi Luar Kota</option>
                         <option value="Luar Kota (Jauh)" {% if s.location == 'Luar Kota (Jauh)' %}selected{% endif %}>Luar Kota (Jauh)</option>
                       </select>
                     </td>
                     <td>
-                      <select class="form-control-dark sched-type" style="padding: 6px 10px; font-size: 0.85rem;" onchange="handleDeliveryTypeChange('{{ code }}', this.value)">
+                      <select class="form-control-dark sched-type" style="padding: 6px 10px; font-size: 12.5px;" onchange="handleDeliveryTypeChange('{{ code }}', this.value)">
                         <option value="DAILY" {% if s.delivery_type == 'DAILY' %}selected{% endif %}>Harian (Sen–Sab)</option>
                         <option value="TWICE_WEEKLY" {% if s.delivery_type == 'TWICE_WEEKLY' %}selected{% endif %}>2x Seminggu</option>
                         <option value="ONCE_WEEKLY" {% if s.delivery_type == 'ONCE_WEEKLY' %}selected{% endif %}>1x Seminggu</option>
@@ -465,7 +560,7 @@
             </div>
 
             <div style="margin-top: 20px; text-align: right;">
-              <button class="btn btn-primary" onclick="saveSchedulesToServer()" style="background: #7b2cbf; padding: 12px 24px; font-weight: 700;">
+              <button class="btn btn-primary" onclick="saveSchedulesToServer()" style="padding: 12px 24px; font-weight: 700;">
                 <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Jadwal
               </button>
             </div>
@@ -474,59 +569,291 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- TAB 3: PANDUAN & PARAMETER                 -->
+      <!-- TAB 3: PANDUAN & PARAMETER BUFFER (BENTO) -->
       <!-- ========================================== -->
       <div id="tab-panduan" class="tab-pane" style="display: none;">
-        <div class="card glass-card">
-          <div class="card-header">
-            <div class="card-header-icon" style="background: rgba(167, 139, 250, 0.2); color: #c084fc;">
-              <i class="fa-solid fa-calculator"></i>
-            </div>
-            <h3>Formula & Logika Smart Push Delivery</h3>
-          </div>
-          <div class="card-body" style="line-height: 1.8; color: #cbd5e1; font-size: 0.95rem;">
-            <p>
-              Modul ini mengubah sistem operasional dari <b>PULL (outlet request manual)</b> menjadi <b>PUSH (gudang mengirim sesuai deteksi kebutuhan)</b>.
-            </p>
+        <div style="display: flex; flex-direction: column; gap: 24px;">
 
-            <h4 style="color: #c084fc; margin-top: 20px;">1. Bagaimana Kuantitas Kirim Dihitung?</h4>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: 16px; border-radius: 10px; border-left: 4px solid #7b2cbf; font-family: monospace; font-size: 0.9rem; color: #e2e8f0;">
-              Gap Hari = Selisih hari dari jadwal hari ini ke jadwal pengiriman berikutnya lagi<br />
-              Target Stok = Rata-rata Pemakaian Harian × (Gap Hari + Buffer Cadangan)<br />
-              <b>Rekomendasi Jumlah Kirim = Target Stok - Stok Akhir Saat Ini</b>
-            </div>
-
-            <h4 style="color: #c084fc; margin-top: 20px;">2. Contoh Simulasi di Lapangan:</h4>
-            <ul>
-              <li>
-                <b>Outlet Luar Kota (Jadwal 1x seminggu, tiap Senin):</b><br />
-                Hari ini Senin, kiriman berikutnya baru ada Senin depan (Gap = 7 hari + Buffer 1 = 8 hari).<br />
-                Jika pemakaian Susu UHT rata-rata 2 liter/hari, dan sisa di outlet hanya 3 liter:<br />
-                Target stok = 2 × 8 = 16 liter. Rekomendasi kirim = <b>13 liter</b>.
-              </li>
-              <li style="margin-top: 10px;">
-                <b>Outlet Dalam Kota (Jadwal Harian, Sen–Sab):</b><br />
-                Hari ini Senin, kiriman berikutnya besok Selasa (Gap = 1 hari + Buffer 1 = 2 hari).<br />
-                Target stok = 2 × 2 = 4 liter. Karena sisa di outlet 3 liter, maka rekomendasi kirim = <b>1 liter</b> saja.
-              </li>
-            </ul>
-
-            <h4 style="color: #c084fc; margin-top: 20px;">3. Arti Status Urgensi:</h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 10px;">
-              <div style="padding: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px;">
-                <span class="status-badge badge-kritis">KRITIS</span>
-                <p style="font-size: 0.85rem; margin: 6px 0 0 0; color: #fca5a5;">Stok habis atau sisa stok kurang dari 1.5 hari pemakaian. Wajib diprioritaskan kirim pertama.</p>
+          <!-- 1. Hero Bento Banner (Full Width) -->
+          <div class="card bento-hero">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+              <div style="max-width: 720px;">
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.16); padding: 4px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Operational Shift: PULL &rarr; PUSH
+                </div>
+                <h2 style="font-size: 22px; font-weight: 800; color: #ffffff; margin-bottom: 8px; letter-spacing: -0.3px;">
+                  Sistem Prediktif Smart Push Delivery
+                </h2>
+                <p style="font-size: 14px; color: rgba(255, 255, 255, 0.9); line-height: 1.6; margin: 0;">
+                  Menggantikan sistem manual PULL (outlet meminta barang saat stok habis) menjadi sistem PUSH berbasis analitik. Gudang secara proaktif menghitung dan mengirim stok sebelum outlet kehabisan bahan, terintegrasi dengan jadwal rute & burn rate harian.
+                </p>
               </div>
-              <div style="padding: 12px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px;">
-                <span class="status-badge badge-waspada">WASPADA</span>
-                <p style="font-size: 0.85rem; margin: 6px 0 0 0; color: #fcd34d;">Stok tidak akan cukup sampai pengiriman berikutnya. Perlu dimuat ke kendaraan.</p>
-              </div>
-              <div style="padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px;">
-                <span class="status-badge badge-aman">AMAN</span>
-                <p style="font-size: 0.85rem; margin: 6px 0 0 0; color: #6ee7b7;">Stok di outlet masih berlimpah hingga pengiriman sesudahnya. Tidak perlu kirim.</p>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <div style="background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; padding: 14px 20px; text-align: center; min-width: 120px;">
+                  <div style="font-size: 11px; text-transform: uppercase; color: rgba(255, 255, 255, 0.75); font-weight: 700; letter-spacing: 0.5px;">Cakupan</div>
+                  <div style="font-size: 20px; font-weight: 800; color: #ffffff; margin-top: 4px;">40 Outlet</div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; padding: 14px 20px; text-align: center; min-width: 120px;">
+                  <div style="font-size: 11px; text-transform: uppercase; color: rgba(255, 255, 255, 0.75); font-weight: 700; letter-spacing: 0.5px;">Akurasi Burn</div>
+                  <div style="font-size: 20px; font-weight: 800; color: #ffffff; margin-top: 4px;">Real-time</div>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- 2. Grid: Formula Breakdown (Span 7) & Parameters (Span 5) -->
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px;">
+
+            <!-- Card: Interactive Formula Calculation -->
+            <div class="card" style="padding: 24px;">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9;">
+                <div style="width: 38px; height: 38px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                  <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">Logika Perhitungan Kuantitas Kirim</h3>
+                  <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0 0;">3 tahapan kalkulasi otomatis yang dijalankan engine untuk setiap bahan</p>
+                </div>
+              </div>
+
+              <!-- 3 Formula Steps in Bento Cards -->
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Step 1 -->
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 14px;">
+                  <div style="background: var(--color-primary); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 2px;">1</div>
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">Gap Hari Pengiriman</span>
+                      <span style="background: #eff6ff; color: #1d4ed8; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600;">Jadwal Route</span>
+                    </div>
+                    <p style="font-size: 12.5px; color: var(--text-secondary); margin: 4px 0 0 0;">
+                      Selisih hari dari jadwal kirim hari ini ke jadwal pengantaran berikutnya lagi untuk masing-masing outlet.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 14px;">
+                  <div style="background: var(--color-primary); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 2px;">2</div>
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">Target Stok Minimum</span>
+                      <span style="background: #eff6ff; color: #1d4ed8; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600;">Lead Time Safe</span>
+                    </div>
+                    <div style="font-family: var(--font-primary); font-size: 13.5px; font-weight: 700; color: #1e40af; margin: 4px 0 2px 0;">
+                      Target Stok = Rata-rata Pemakaian Harian &times; (Gap Hari + Buffer Cadangan)
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin: 0;">
+                      Memastikan outlet tetap beroperasi aman hingga jadwal kunjungan truk logistik berikutnya.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: #eff6ff; border: 1px solid var(--color-primary-border); border-radius: 14px;">
+                  <div style="background: #1d4ed8; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 2px;">3</div>
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 13.5px; font-weight: 700; color: #1e3a8a;">Rekomendasi Jumlah Kirim</span>
+                      <span style="background: var(--color-primary); color: #ffffff; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 700;">Final Qty</span>
+                    </div>
+                    <div style="font-family: var(--font-primary); font-size: 14px; font-weight: 800; color: #1e40af; margin: 4px 0 2px 0;">
+                      Kuantitas Kirim = Target Stok &minus; Stok Akhir Saat Ini
+                    </div>
+                    <p style="font-size: 12px; color: #2563eb; margin: 0;">
+                      Jika hasil kalkulasi &le; 0, kuantitas diset 0 (stok masih mencukupi, tidak perlu dikirim).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: Parameter Settings Breakdown -->
+            <div class="card" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9;">
+                  <div style="width: 38px; height: 38px; border-radius: 12px; background: #f8fafc; color: var(--text-secondary); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    <i class="fa-solid fa-sliders"></i>
+                  </div>
+                  <div>
+                    <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">Parameter & Buffer</h3>
+                    <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0 0;">Faktor penentu ketelitian kalkulasi</p>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                      <i class="fa-solid fa-chart-line" style="color: var(--color-primary); font-size: 13px;"></i>
+                      <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Lookback Burn Rate</span>
+                    </div>
+                    <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                      Menghitung rata-rata pemakaian harian berdasarkan riwayat <b>7 hari</b>, <b>14 hari</b>, atau <b>30 hari</b> terakhir dari laporan kerugian outlet.
+                    </p>
+                  </div>
+
+                  <div style="border-top: 1px solid #f1f5f9; padding-top: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                      <i class="fa-solid fa-shield-halved" style="color: var(--accent-emerald); font-size: 13px;"></i>
+                      <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Safety Buffer Cadangan</span>
+                    </div>
+                    <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 10px 0;">
+                      Tambahan proteksi hari untuk mengantisipasi lonjakan pelanggan tak terduga (weekend surge) atau keterlambatan ekspedisi luar kota.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                      <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 12px;">
+                        <span style="font-size: 11.5px; font-weight: 700; color: var(--text-primary);">+1 Hari (Standar)</span>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Direkomendasikan untuk operasional harian.</div>
+                      </div>
+                      <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 12px;">
+                        <span style="font-size: 11.5px; font-weight: 700; color: var(--text-primary);">+2 Hari (Aman)</span>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Cocok untuk outlet luar kota jarak jauh.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Grid: 2 Field Simulation Bento Cards (Span 6 + Span 6) -->
+          <div>
+            <div style="margin-bottom: 14px;">
+              <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Contoh Simulasi Operasional Lapangan</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Perbandingan kuantitas kirim antara outlet luar kota vs outlet dalam kota dengan burn rate yang sama</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <!-- Simulation A: Luar Kota -->
+              <div class="card" style="padding: 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 32px; height: 32px; border-radius: 10px; background: var(--accent-amber-bg); color: var(--accent-amber-text); display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                      <i class="fa-solid fa-truck-plane"></i>
+                    </span>
+                    <div>
+                      <h4 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin: 0;">Outlet Luar Kota</h4>
+                      <span style="font-size: 11.5px; color: var(--text-muted);">Rute Mingguan (1x Seminggu)</span>
+                    </div>
+                  </div>
+                  <span class="status-badge badge-waspada">Gap 7 Hari</span>
+                </div>
+
+                <div style="background: #f8fafc; border-radius: 12px; padding: 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; border: 1px solid var(--border-color);">
+                  Pengiriman hari ini <b>Senin</b>, jadwal berikutnya baru <b>Senin depan</b> (Gap = 7 hr + Buffer 1 hr = <b>8 hari</b>).<br />
+                  Pemakaian Susu UHT = <b>2 liter/hari</b>, Sisa stok di outlet = <b>3 liter</b>.
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #f1f5f9;">
+                  <div>
+                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Target Stok</div>
+                    <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">2 &times; 8 = 16 Liter</div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Rekomendasi Kirim</div>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--color-primary);">13 Liter</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulation B: Dalam Kota -->
+              <div class="card" style="padding: 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 32px; height: 32px; border-radius: 10px; background: var(--accent-blue-bg); color: var(--accent-blue-text); display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                      <i class="fa-solid fa-truck"></i>
+                    </span>
+                    <div>
+                      <h4 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin: 0;">Outlet Dalam Kota</h4>
+                      <span style="font-size: 11.5px; color: var(--text-muted);">Rute Harian (Senin &ndash; Sabtu)</span>
+                    </div>
+                  </div>
+                  <span class="status-badge" style="background: var(--accent-blue-bg); color: var(--accent-blue-text); border: 1px solid var(--accent-blue-border);">Gap 1 Hari</span>
+                </div>
+
+                <div style="background: #f8fafc; border-radius: 12px; padding: 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; border: 1px solid var(--border-color);">
+                  Pengiriman hari ini <b>Senin</b>, jadwal berikutnya besok <b>Selasa</b> (Gap = 1 hr + Buffer 1 hr = <b>2 hari</b>).<br />
+                  Pemakaian Susu UHT = <b>2 liter/hari</b>, Sisa stok di outlet = <b>3 liter</b>.
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #f1f5f9;">
+                  <div>
+                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Target Stok</div>
+                    <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">2 &times; 2 = 4 Liter</div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Rekomendasi Kirim</div>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--accent-emerald);">1 Liter</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Grid: 3 Clean Status Urgensi Bento Cards (Span 4 + Span 4 + Span 4) -->
+          <div>
+            <div style="margin-bottom: 14px;">
+              <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Hierarki Status Urgensi Stok</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Tingkat prioritas penyiapan muatan di gudang sebelum armada diberangkatkan</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+              <!-- Card Kritis -->
+              <div class="card" style="padding: 22px; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-rose);"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <span class="status-badge badge-kritis">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Kritis
+                  </span>
+                  <span style="font-size: 11.5px; font-weight: 700; color: var(--accent-rose);">Prioritas #1</span>
+                </div>
+                <h4 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Stok Menipis &lt; 1.5 Hari</h4>
+                <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 16px 0;">
+                  Stok habis atau sisa stok tidak mencukupi untuk 1.5 hari operasional. Berisiko tinggi terjadi stock-out dan kehilangan omset penjualan jika tidak segera dimuat.
+                </p>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--accent-rose-text); background: var(--accent-rose-bg); padding: 8px 12px; border-radius: 10px;">
+                  <i class="fa-solid fa-truck-fast"></i> Wajib dimuat pertama ke armada
+                </div>
+              </div>
+
+              <!-- Card Waspada -->
+              <div class="card" style="padding: 22px; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-amber);"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <span class="status-badge badge-waspada">
+                    <i class="fa-solid fa-circle-exclamation"></i> Perlu Kirim
+                  </span>
+                  <span style="font-size: 11.5px; font-weight: 700; color: var(--accent-amber-text);">Prioritas #2</span>
+                </div>
+                <h4 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Di Bawah Target Buffer</h4>
+                <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 16px 0;">
+                  Stok masih ada saat ini, namun diproyeksikan habis sebelum jadwal pengiriman berikutnya datang. Kuantitas rekomendasi dihitung untuk mencapai target aman.
+                </p>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--accent-amber-text); background: var(--accent-amber-bg); padding: 8px 12px; border-radius: 10px;">
+                  <i class="fa-solid fa-box-open"></i> Siapkan kuantitas sesuai kalkulasi
+                </div>
+              </div>
+
+              <!-- Card Aman -->
+              <div class="card" style="padding: 22px; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-emerald);"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <span class="status-badge badge-aman">
+                    <i class="fa-solid fa-circle-check"></i> Stok Aman
+                  </span>
+                  <span style="font-size: 11.5px; font-weight: 700; color: var(--accent-emerald-text);">Optimal</span>
+                </div>
+                <h4 style="font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Melimpah Hingga Rute Depan</h4>
+                <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 16px 0;">
+                  Sisa stok di outlet masih mencukupi hingga jadwal pengantaran sesudahnya. Tidak ada pengiriman barang yang dialokasikan guna menghindari penumpukan gudang outlet.
+                </p>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--accent-emerald-text); background: var(--accent-emerald-bg); padding: 8px 12px; border-radius: 10px;">
+                  <i class="fa-solid fa-shield-check"></i> Tidak perlu alokasi kirim hari ini
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -623,7 +950,7 @@
       container.innerHTML = '';
 
       if (!data.outlets || data.outlets.length === 0) {
-        container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 30px;">Tidak ada outlet terjadwal untuk tanggal ini.</div>';
+        container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 36px; background: #ffffff; border-radius: 16px; border: 1px solid var(--border-color);">Tidak ada outlet terjadwal untuk tanggal ini.</div>';
         return;
       }
 
@@ -646,22 +973,22 @@
         if (o.items && o.items.length > 0) {
           o.items.forEach((it, idx) => {
             const isNeedPush = (it.recommend_push > 0);
-            const rowBg = it.urgency === 'KRITIS' ? 'style="background: rgba(239, 68, 68, 0.08);"' : '';
+            const rowBg = it.urgency === 'KRITIS' ? 'style="background: #fff1f2;"' : '';
 
             itemRowsHtml += `
               <tr ${rowBg}>
-                <td style="color: #94a3b8; text-align: center;">${idx + 1}</td>
-                <td style="color: #a78bfa; font-size: 0.8rem;">${it.category || '-'}</td>
-                <td style="font-weight: 600;">${it.name}</td>
-                <td style="text-align: right;">${it.curr_stock}</td>
-                <td style="text-align: right; color: #94a3b8;">${it.avg_burn_daily}/hr</td>
+                <td style="color: var(--text-muted); text-align: center;">${idx + 1}</td>
+                <td style="color: var(--color-primary); font-size: 12px; font-weight: 600;">${it.category || '-'}</td>
+                <td style="font-weight: 600; color: var(--text-primary);">${it.name}</td>
+                <td style="text-align: right; font-weight: 600;">${it.curr_stock}</td>
+                <td style="text-align: right; color: var(--text-secondary);">${it.avg_burn_daily}/hr</td>
                 <td style="text-align: center;">
-                  <span style="font-weight: 600; color: ${it.days_left < 2 ? '#f87171' : '#e2e8f0'};">
+                  <span style="font-weight: 600; color: ${it.days_left < 2 ? '#e11d48' : 'var(--text-secondary)'};">
                     ${it.days_left} hari
                   </span>
                 </td>
                 <td style="text-align: right;">
-                  ${isNeedPush ? `<span class="recommend-pill">${it.recommend_push}</span>` : '<span style="color: #64748b;">-</span>'}
+                  ${isNeedPush ? `<span class="recommend-pill">${it.recommend_push}</span>` : '<span style="color: var(--text-muted);">-</span>'}
                 </td>
                 <td style="text-align: center;">
                   ${it.urgency === 'KRITIS' ? '<span class="status-badge badge-kritis">KRITIS</span>' :
@@ -672,7 +999,7 @@
             `;
           });
         } else {
-          itemRowsHtml = `<tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 20px;">Tidak ada data bahan pada file outlet ini.</td></tr>`;
+          itemRowsHtml = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">Tidak ada data bahan pada file outlet ini.</td></tr>`;
         }
 
         card.innerHTML = `
@@ -687,26 +1014,26 @@
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 16px;">
-              <div style="text-align: right; font-size: 0.85rem;">
-                <b style="color: ${itemsNeeded > 0 ? '#60a5fa' : '#34d399'}; font-size: 1rem;">${itemsNeeded}</b> item perlu kirim
-                ${kritisCount > 0 ? ` &bull; <b style="color: #f87171;">${kritisCount} kritis</b>` : ''}
+              <div style="text-align: right; font-size: 13px;">
+                <b style="color: ${itemsNeeded > 0 ? 'var(--color-primary)' : 'var(--accent-emerald)'}; font-size: 15px;">${itemsNeeded}</b> item perlu kirim
+                ${kritisCount > 0 ? ` &bull; <b style="color: var(--accent-rose);">${kritisCount} kritis</b>` : ''}
               </div>
-              <i class="fa-solid fa-chevron-down" id="icon-${o.code}" style="color: #94a3b8; transition: transform 0.2s;"></i>
+              <i class="fa-solid fa-chevron-down" id="icon-${o.code}" style="color: var(--text-muted); transition: transform 0.2s;"></i>
             </div>
           </div>
-          <div class="outlet-card-body" id="body-${o.code}" style="display: none; border-top: 1px solid rgba(255, 255, 255, 0.05);">
-            <div style="max-height: 380px; overflow-y: auto;">
+          <div class="outlet-card-body" id="body-${o.code}" style="display: none; border-top: 1px solid var(--border-subtle);">
+            <div style="max-height: 420px; overflow-y: auto;">
               <table class="outlet-table">
                 <thead>
                   <tr>
-                    <th style="width: 40px; text-align: center;">No</th>
-                    <th style="width: 140px;">Kategori</th>
+                    <th style="width: 44px; text-align: center;">No</th>
+                    <th style="width: 150px;">Kategori</th>
                     <th>Nama Barang</th>
-                    <th style="width: 100px; text-align: right;">Stok Terkini</th>
-                    <th style="width: 110px; text-align: right;">Avg Burn/Hr</th>
+                    <th style="width: 110px; text-align: right;">Stok Terkini</th>
+                    <th style="width: 120px; text-align: right;">Avg Burn/Hr</th>
                     <th style="width: 110px; text-align: center;">Est. Habis</th>
-                    <th style="width: 120px; text-align: right;">Rekomendasi Kirim</th>
-                    <th style="width: 110px; text-align: center;">Status</th>
+                    <th style="width: 130px; text-align: right;">Rekomendasi Kirim</th>
+                    <th style="width: 120px; text-align: center;">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -819,7 +1146,7 @@
     }
 
     function markScheduleDirty() {
-      // Indikator bahwa ada perubahan
+      // Indikator perubahan
     }
 
     function filterScheduleTable() {

@@ -87,18 +87,23 @@
 
       <div class="content-grid" style="display: flex; flex-direction: column; gap: 24px;">
         <!-- Upload & Settings -->
-        <div class="card glass-card">
+        <div class="card">
           <div class="card-header">
-            <div class="card-header-icon bg-emerald-glow" style="background: rgba(167, 139, 250, 0.2); color: #a78bfa;">
-              <i class="fa-solid fa-chart-bar"></i>
+            <div class="card-header-left">
+              <div class="card-header-icon" style="background: #eff6ff; color: #2563eb;">
+                <i class="fa-solid fa-chart-bar"></i>
+              </div>
+              <div>
+                <h3>Pengaturan & Unggah File</h3>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0 0;">Pilih cakupan tanggal dan unggah file rekap ZIP</p>
+              </div>
             </div>
-            <h3>Pengaturan & Upload</h3>
           </div>
           
           <div class="card-body">
             <form id="uploadForm">
               <div class="form-group" style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; color: #a78bfa; font-weight: 600;">Filter Data</label>
+                <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Filter Periode Data</label>
                 <select class="select-dropdown" id="filterType" name="filter_type" required>
                     <option value="rekap">Rekap Bulanan</option>
                     {% for i in range(1, 32) %}
@@ -108,39 +113,46 @@
               </div>
 
               <div class="form-group" style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; color: #a78bfa; font-weight: 600;">File Data ZIP</label>
-                <div class="upload-zone" id="dropZone">
-                  <i class="fa-solid fa-file-zipper drop-icon"></i>
-                  <p class="mb-1 text-white">Tarik & lepas file ZIP di sini atau klik untuk browse</p>
-                  <p class="text-xs text-gray-400" style="color: #9ca3af; font-size: 0.8rem;">Pastikan file berisi excel laporan kerugian</p>
-                  <input type="file" id="zipFile" name="zip_file" accept=".zip" required />
+                <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">File Data ZIP Kerugian</label>
+                <div class="upload-zone" id="dropZone" style="border: 2px dashed #cbd5e1; border-radius: 16px; padding: 36px 20px; text-align: center; cursor: pointer; background: #f8fafc; transition: all 0.2s; position: relative;">
+                  <div style="width: 48px; height: 48px; border-radius: 50%; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 10px;">
+                    <i class="fa-solid fa-file-zipper"></i>
+                  </div>
+                  <h4 style="margin: 0 0 6px 0; color: #0f172a; font-size: 15px; font-weight: 700;">Tarik & lepas file ZIP di sini atau klik untuk browse</h4>
+                  <p style="margin: 0; color: #64748b; font-size: 13px;">Pastikan file ZIP berisi laporan Excel kerugian outlet</p>
+                  <input type="file" id="zipFile" name="zip_file" accept=".zip" required style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;" />
                 </div>
-                <div id="fileNameDisplay" class="file-name-display"><i class="fa-solid fa-check-circle"></i> <span></span></div>
+                <div id="fileNameDisplay" class="file-name-display" style="margin-top: 12px; color: #047857; font-weight: 700; font-size: 13px; display: none;"><i class="fa-solid fa-circle-check"></i> <span></span></div>
               </div>
               
-              <button type="submit" class="btn-primary w-full" id="submitBtn" style="padding: 12px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; display: block; text-align: center; color: white;">
-                <i class="fa-solid fa-bolt me-2"></i> Proses & Visualisasikan
+              <button type="submit" class="btn btn-primary" id="submitBtn" style="padding: 12px 28px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="fa-solid fa-bolt"></i> Proses & Visualisasikan
               </button>
             </form>
           </div>
         </div>
 
         <!-- Result / Chart -->
-        <div class="card glass-card" id="resultCard" style="display: none;">
+        <div class="card" id="resultCard" style="display: none;">
           <div class="card-header">
-            <div class="card-header-icon" style="background: rgba(167, 139, 250, 0.2); color: #a78bfa;">
-              <i class="fa-solid fa-chart-line"></i>
+            <div class="card-header-left">
+              <div class="card-header-icon" style="background: #eff6ff; color: #2563eb;">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <div>
+                <h3>Hasil Visualisasi Grafik</h3>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0 0;">Distribusi nilai kerugian per outlet</p>
+              </div>
             </div>
-            <h3>Hasil Visualisasi</h3>
           </div>
           <div class="card-body">
-            <div class="chart-container-wrapper" id="chartContainer">
+            <div class="chart-container-wrapper" id="chartContainer" style="position: relative; height: 420px; width: 100%; margin-top: 10px;">
               <canvas id="kerugianChart"></canvas>
             </div>
             
-            <div style="margin-top: 25px; text-align: center;">
-              <a id="downloadBtn" class="btn-primary" href="#" style="display: inline-block; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; color: white;" download>
-                <i class="fa-solid fa-download me-2"></i> Download Data (Excel)
+            <div style="margin-top: 24px; text-align: center;">
+              <a id="downloadBtn" class="btn btn-primary" href="#" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; text-decoration: none; font-weight: 700;" download>
+                <i class="fa-solid fa-file-excel"></i> Download Data (Excel)
               </a>
             </div>
           </div>
