@@ -12,17 +12,16 @@
     <link rel="stylesheet" href="/static/css/eresto.css" />
     <style>
       .section-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 18px;
+        background: rgba(18, 18, 29, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
         margin-bottom: 28px;
-        box-shadow: var(--shadow-card);
         overflow: hidden;
       }
       .section-head {
-        background: #ffffff;
-        padding: 18px 24px;
-        border-bottom: 1px solid #f1f5f9;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -30,11 +29,10 @@
       .section-head h2 {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #0f172a;
         margin: 0;
       }
       .section-body {
-        padding: 24px;
+        padding: 20px;
       }
 
       .inv-table {
@@ -44,56 +42,49 @@
         margin-bottom: 16px;
       }
       .inv-table th {
-        background: #f8fafc;
-        color: #64748b;
-        font-weight: 700;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-secondary);
+        font-weight: 600;
         padding: 12px 10px;
         text-align: left;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .inv-table td {
         padding: 10px;
-        border-bottom: 1px solid #f1f5f9;
-        color: #0f172a;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
       .inv-table tr:hover td {
-        background: #f8fafc;
+        background: rgba(255, 255, 255, 0.02);
       }
       .inv-table input, .inv-table select {
-        background: #ffffff;
-        border: 1px solid #cbd5e1;
-        color: #0f172a;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
         padding: 6px 10px;
-        border-radius: 8px;
+        border-radius: 6px;
         width: 100%;
-        font-family: inherit;
-        font-size: 0.85rem;
       }
       .inv-table select option {
-        background: #ffffff;
-        color: #0f172a;
+        background: var(--bg-dark);
       }
 
       .btn {
         padding: 8px 16px;
-        border-radius: 10px;
+        border-radius: 8px;
         font-size: 0.85rem;
         font-weight: 600;
         border: none;
         cursor: pointer;
         transition: 0.2s;
       }
-      .btn-primary { background: #2563eb; color: white; }
-      .btn-primary:hover { background: #1d4ed8; }
-      .btn-accent { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
-      .btn-accent:hover { background: #fef3c7; }
-      .btn-danger { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; padding: 6px 12px; }
-      .btn-danger:hover { background: #ffe4e6; }
-      .btn-ghost { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
-      .btn-ghost:hover { background: #f1f5f9; color: #0f172a; }
+      .btn-primary { background: var(--color-emerald); color: white; }
+      .btn-primary:hover { background: var(--color-emerald-light); }
+      .btn-accent { background: rgba(249, 168, 38, 0.2); color: #f9a826; border: 1px solid rgba(249, 168, 38, 0.3); }
+      .btn-accent:hover { background: rgba(249, 168, 38, 0.3); }
+      .btn-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; padding: 6px 12px; }
+      .btn-danger:hover { background: rgba(239, 68, 68, 0.3); }
+      .btn-ghost { background: rgba(255, 255, 255, 0.1); color: white; }
+      .btn-ghost:hover { background: rgba(255, 255, 255, 0.2); }
 
       .add-form {
         display: grid;
@@ -102,26 +93,25 @@
         align-items: end;
         margin-top: 16px;
         padding-top: 20px;
-        border-top: 1px dashed #e2e8f0;
+        border-top: 1px dashed rgba(255, 255, 255, 0.1);
       }
       .add-form .form-group { display: flex; flex-direction: column; gap: 6px; }
-      .add-form label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.4px; }
+      .add-form label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; }
       .add-form input, .add-form select {
-        background: #ffffff;
-        border: 1px solid #cbd5e1;
-        color: #0f172a;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
         padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 0.85rem;
+        border-radius: 6px;
       }
-      .add-form select option { background: #ffffff; color: #0f172a; }
+      .add-form select option { background: var(--bg-dark); }
       
       .kw-input { font-family: "DM Mono", monospace !important; }
 
       /* Toast */
-      #toast { position: fixed; top: 20px; right: 20px; padding: 14px 22px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0; color: #0f172a; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1); border-left: 4px solid #10b981; transform: translateX(120%); transition: 0.3s; z-index: 1000; font-weight: 600; }
+      #toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; background: rgba(18, 18, 29, 0.9); border-left: 4px solid var(--color-emerald); transform: translateX(120%); transition: 0.3s; z-index: 1000; }
       #toast.show { transform: translateX(0); }
-      #toast.error { border-left-color: #f43f5e; }
+      #toast.error { border-left-color: #ef4444; }
     </style>
   </head>
 

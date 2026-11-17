@@ -91,13 +91,13 @@
                   </button>
                 </div>
                 
-                <div id="progressContainer" style="display: none; margin-top: 25px; background: #f8fafc; padding: 20px; border-radius: 14px; border: 1px solid #e2e8f0;">
-                  <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 12px; color: #64748b; font-weight: 600;">
-                    <span><i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: #2563eb;"></i>Sedang memproses file...</span>
-                    <span id="progressText" style="color: #0f172a; font-weight: 700;">0 / 0</span>
+                <div id="progressContainer" style="display: none; margin-top: 25px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 12px; color: #b3b3b3; font-weight: 600;">
+                    <span><i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: #a78bfa;"></i>Sedang memproses file...</span>
+                    <span id="progressText">0 / 0</span>
                   </div>
-                  <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden; position: relative;">
-                    <div id="progressBar" style="width: 0%; height: 100%; background: #2563eb; border-radius: 9999px; transition: width 0.3s ease-in-out;"></div>
+                  <div style="width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; position: relative;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #7b2cbf, #a78bfa); transition: width 0.3s ease-in-out;"></div>
                   </div>
                 </div>
               </div>
@@ -109,18 +109,18 @@
                   <i class="fa-solid fa-circle-check"></i>
                 </div>
                 <h2 style="margin-bottom: 15px;">Proses Selesai!</h2>
-                <p class="download-desc" id="successMessage" style="color: var(--text-secondary); margin-bottom: 25px;">Kolom O sampai X berhasil disembunyikan pada semua file.</p>
+                <p class="download-desc" id="successMessage" style="color: #b3b3b3; margin-bottom: 25px;">Kolom O sampai X berhasil disembunyikan pada semua file.</p>
                 <div class="result-stats" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 30px;">
-                  <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 16px 32px; border-radius: 14px; box-shadow: var(--shadow-sm);">
-                    <span id="statSuccess" style="font-size: 2rem; font-weight: 800; color: var(--accent-emerald); display: block;">0</span>
-                    <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Berhasil</span>
+                  <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 15px 30px; border-radius: 12px;">
+                    <span id="statSuccess" style="font-size: 2rem; font-weight: bold; color: #34d399; display: block;">0</span>
+                    <span style="font-size: 0.85rem; color: #b3b3b3;">Berhasil</span>
                   </div>
-                  <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 16px 32px; border-radius: 14px; box-shadow: var(--shadow-sm);">
-                    <span id="statFail" style="font-size: 2rem; font-weight: 800; color: var(--accent-rose); display: block;">0</span>
-                    <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Gagal</span>
+                  <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 15px 30px; border-radius: 12px;">
+                    <span id="statFail" style="font-size: 2rem; font-weight: bold; color: #f87171; display: block;">0</span>
+                    <span style="font-size: 0.85rem; color: #b3b3b3;">Gagal</span>
                   </div>
                 </div>
-                <div id="errorContainer" style="text-align: left; font-size: 0.85rem; color: var(--accent-rose-text); max-height: 150px; overflow-y: auto; margin-bottom: 20px; background: var(--accent-rose-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--accent-rose-border);"></div>
+                <div id="errorContainer" style="text-align: left; font-size: 0.85rem; color: #f87171; max-height: 150px; overflow-y: auto; margin-bottom: 20px; background: rgba(239, 68, 68, 0.05); padding: 10px; border-radius: 8px;"></div>
                 <div class="download-actions" style="display: flex; justify-content: center; gap: 15px;">
                   <a href="#" class="btn btn-success btn-large" id="downloadLink" style="padding: 12px 25px; font-size: 1.05rem;">
                     <i class="fa-solid fa-cloud-arrow-down btn-icon"></i>
