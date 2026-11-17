@@ -12,52 +12,20 @@
   <link rel="stylesheet" href="/static/css/eresto.css" />
 
   <style>
-    /* Custom Styling untuk Push Gudang */
-    .tab-nav {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 12px;
-    }
-    .tab-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .tab-btn:hover {
-      background: rgba(123, 44, 191, 0.15);
-      color: #fff;
-    }
-    .tab-btn.active {
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
-      color: #ffffff;
-      border-color: #c77dff;
-      box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
-    }
-
+    /* Custom Styling untuk Push Gudang Bento Pastel */
     .upload-zone {
-      border: 2px dashed rgba(167, 139, 250, 0.35);
-      border-radius: 14px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 18px;
       padding: 30px 20px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
-      background: rgba(123, 44, 191, 0.03);
+      background: #f8fafc;
       position: relative;
     }
     .upload-zone:hover, .upload-zone.drag-over {
-      border-color: #9d4edd;
-      background: rgba(123, 44, 191, 0.08);
+      border-color: #3b82f6;
+      background: #eff6ff;
     }
     .upload-zone input[type="file"] {
       position: absolute;
@@ -71,20 +39,15 @@
       font-size: 2.5rem;
       margin-bottom: 12px;
       display: block;
-      color: #c084fc;
+      color: #3b82f6;
     }
 
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
     .kpi-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 16px 20px;
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
       position: relative;
       overflow: hidden;
     }
@@ -99,55 +62,57 @@
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .kpi-kritis { border-left: 4px solid #ef4444; }
-    .kpi-kritis .kpi-num { color: #f87171; }
-    .kpi-waspada { border-left: 4px solid #f59e0b; }
-    .kpi-waspada .kpi-num { color: #fbbf24; }
-    .kpi-aman { border-left: 4px solid #10b981; }
-    .kpi-aman .kpi-num { color: #34d399; }
-    .kpi-info { border-left: 4px solid #3b82f6; }
-    .kpi-info .kpi-num { color: #60a5fa; }
+    .kpi-kritis { border-left: 4px solid #f43f5e; background: #fff1f2; }
+    .kpi-kritis .kpi-num { color: #e11d48; }
+    .kpi-waspada { border-left: 4px solid #f59e0b; background: #fffbeb; }
+    .kpi-waspada .kpi-num { color: #d97706; }
+    .kpi-aman { border-left: 4px solid #10b981; background: #ecfdf5; }
+    .kpi-aman .kpi-num { color: #059669; }
+    .kpi-info { border-left: 4px solid #3b82f6; background: #eff6ff; }
+    .kpi-info .kpi-num { color: #2563eb; }
 
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 4px 10px;
-      border-radius: 20px;
+      border-radius: 9999px;
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .badge-kritis { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-waspada { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-aman { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-gray { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
+    .badge-kritis { background: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; }
+    .badge-waspada { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; }
+    .badge-aman { background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; }
+    .badge-gray { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
 
     .outlet-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 18px;
       margin-bottom: 14px;
       overflow: hidden;
-      transition: border-color 0.2s;
+      box-shadow: 0 2px 10px -2px rgba(15, 23, 42, 0.03);
+      transition: all 0.2s ease;
     }
     .outlet-card:hover {
-      border-color: rgba(167, 139, 250, 0.3);
+      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+      border-color: #cbd5e1;
     }
     .outlet-card-header {
-      padding: 14px 18px;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       user-select: none;
-      background: rgba(255, 255, 255, 0.015);
+      background: #ffffff;
     }
     .outlet-card-header:hover {
-      background: rgba(255, 255, 255, 0.04);
+      background: #f8fafc;
     }
     .outlet-title-area {
       display: flex;
@@ -157,11 +122,11 @@
     .outlet-name-text {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #fff;
+      color: #0f172a;
     }
     .outlet-meta-tag {
       font-size: 0.8rem;
-      color: #94a3b8;
+      color: #64748b;
     }
 
     .outlet-table {
@@ -170,27 +135,30 @@
       font-size: 0.88rem;
     }
     .outlet-table th {
-      background: rgba(0, 0, 0, 0.25);
-      color: #94a3b8;
-      padding: 10px 14px;
+      background: #f8fafc;
+      color: #64748b;
+      padding: 12px 16px;
       text-align: left;
-      font-weight: 600;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #f1f5f9;
     }
     .outlet-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      color: #e2e8f0;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f8fafc;
+      color: #1e293b;
     }
     .outlet-table tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
+      background: #f8fafc;
     }
     .recommend-pill {
-      background: rgba(59, 130, 246, 0.15);
-      color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      padding: 3px 8px;
-      border-radius: 6px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+      padding: 4px 10px;
+      border-radius: 9999px;
       font-weight: 700;
     }
 
@@ -200,35 +168,43 @@
       gap: 6px;
     }
     .day-pill {
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 5px 12px;
+      border-radius: 9999px;
       font-size: 0.75rem;
+      font-weight: 600;
       cursor: pointer;
       user-select: none;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
       transition: all 0.15s;
     }
+    .day-pill:hover {
+      background: #f8fafc;
+      color: #0f172a;
+    }
     .day-pill.active {
-      background: #7b2cbf;
+      background: #2563eb;
       color: #ffffff;
-      border-color: #a78bfa;
-      font-weight: 600;
+      border-color: #2563eb;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
     }
 
     .form-control-dark {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
     }
     .form-control-dark:focus {
       outline: none;
-      border-color: #9d4edd;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
     }
   </style>
 </head>

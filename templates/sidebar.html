@@ -1,74 +1,71 @@
 <aside class="app-sidebar">
   <div class="sidebar-brand">
-    <i class="fa-solid fa-chart-line-up brand-icon"></i>
+    <div class="brand-logo-badge">
+      <i class="fa-solid fa-chart-line"></i>
+    </div>
     <div class="brand-info">
       <span class="brand-name">Goks!</span>
-      <span class="brand-tag">F&B Automation</span>
+      <span class="brand-tag">F&B Inventory & Operations</span>
     </div>
   </div>
 
   <nav class="sidebar-nav">
+    <div class="nav-section-title">Ringkasan & Gudang</div>
     <a href="/" class="nav-item {% if active_menu == 'stockin' %}active{% endif %}">
-      <i class="fa-solid fa-truck-ramp-box"></i>
+      <i class="fa-solid fa-truck-ramp-box icon-blue"></i>
       <span>Stock-In Gudang</span>
     </a>
-    <!--
-    <a href="/eresto" class="nav-item {% if active_menu == 'eresto' %}active{% endif %}">
-      <i class="fa-solid fa-file-excel"></i>
-      <span>eResto Analysis</span>
+    <a href="/push-gudang" class="nav-item {% if active_menu == 'push_gudang' %}active{% endif %}">
+      <i class="fa-solid fa-truck-fast icon-purple"></i>
+      <span>Smart Push Gudang</span>
     </a>
-    -->
+    <a href="/visualisasi_kerugian" class="nav-item {% if active_menu == 'visualisasi' %}active{% endif %}">
+      <i class="fa-solid fa-chart-pie icon-emerald"></i>
+      <span>Visualisasi Kerugian</span>
+    </a>
+
+    <div class="nav-section-title">Analisis & Sinkronisasi</div>
     <a href="/eresto-mass" class="nav-item {% if active_menu == 'eresto_mass' %}active{% endif %}">
-      <i class="fa-solid fa-layer-group"></i>
+      <i class="fa-solid fa-layer-group icon-amber"></i>
       <span>eResto Mass Analysis</span>
     </a>
-    <!--
-    <a href="/sinkronisasi" class="nav-item {% if active_menu == 'sinkronisasi' %}active{% endif %}">
-      <i class="fa-solid fa-arrows-rotate"></i>
-      <span>Sinkronisasi Penjualan</span>
-    </a>
-    -->
     <a href="/mass-sinkronisasi" class="nav-item {% if active_menu == 'mass_sinkronisasi' %}active{% endif %}">
-      <i class="fa-solid fa-bolt"></i>
+      <i class="fa-solid fa-bolt icon-blue"></i>
       <span>Mass Sinkronisasi</span>
     </a>
     <a href="/update-kerugian" class="nav-item {% if active_menu == 'update_kerugian' %}active{% endif %}">
-      <i class="fa-solid fa-calendar-check"></i>
+      <i class="fa-solid fa-calendar-check icon-rose"></i>
       <span>Update Kerugian Harian</span>
     </a>
+    <a href="/add-stock-auth" class="nav-item {% if active_menu == 'add_stock_auth' %}active{% endif %}">
+      <i class="fa-solid fa-boxes-packing icon-indigo"></i>
+      <span>Add Stock Auth</span>
+    </a>
+
+    <div class="nav-section-title">Alat & Pengaturan</div>
     <a href="/mass-update" class="nav-item {% if active_menu == 'mass_update' %}active{% endif %}">
-      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <i class="fa-solid fa-wand-magic-sparkles icon-purple"></i>
       <span>Update Rumus Massal</span>
     </a>
     <a href="/mass-hide" class="nav-item {% if active_menu == 'mass_hide' %}active{% endif %}">
-      <i class="fa-solid fa-eye-slash"></i>
+      <i class="fa-solid fa-eye-slash icon-slate"></i>
       <span>Format Laporan</span>
     </a>
     <a href="/perbaikan-data" class="nav-item {% if active_menu == 'perbaikan_data' %}active{% endif %}">
-      <i class="fa-solid fa-wrench"></i>
+      <i class="fa-solid fa-wrench icon-amber"></i>
       <span>Perbaikan Data</span>
     </a>
-    <a href="/add-stock-auth" class="nav-item {% if active_menu == 'add_stock_auth' %}active{% endif %}">
-      <i class="fa-solid fa-boxes-packing"></i>
-      <span>Add Stock Auth</span>
-    </a>
-    <a href="/visualisasi_kerugian" class="nav-item {% if active_menu == 'visualisasi' %}active{% endif %}">
-      <i class="fa-solid fa-chart-pie"></i>
-      <span>Visualisasi Kerugian</span>
-    </a>
-    <a href="/push-gudang" class="nav-item {% if active_menu == 'push_gudang' %}active{% endif %}">
-      <i class="fa-solid fa-truck-fast"></i>
-      <span>Smart Push Gudang</span>
-    </a>
     <a href="/reset-so" class="nav-item {% if active_menu == 'reset_so' %}active{% endif %}">
-      <i class="fa-solid fa-eraser"></i>
+      <i class="fa-solid fa-eraser icon-rose"></i>
       <span>Reset SO Bulanan</span>
     </a>
   </nav>
 
   <div class="sidebar-footer">
     <div class="user-profile">
-      <i class="fa-solid fa-circle-user profile-icon"></i>
+      <div class="profile-avatar">
+        <i class="fa-solid fa-user"></i>
+      </div>
       <div>
         <div class="profile-name">Outlet Manager</div>
         <div class="profile-role">Administrator</div>
